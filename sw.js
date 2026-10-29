@@ -1,7 +1,6 @@
 // MEA CS service worker — แคชไฟล์แอปเพื่อเปิดเร็ว/ออฟไลน์ (ไม่แคชข้อมูล API)
-const VERSION = 'mcs-1.0.0';
-const CORE = ['./', './index.html', './manifest.json', './assets/login-bg.webp', './assets/app-bg.webp', './assets/smart-logo.png',
-  './assets/robot.webp', './assets/van.webp', './assets/mea-logo.png', './assets/mea-seal.png', './assets/icon-192.png'];
+const VERSION = 'mcs-1.0.1';
+const CORE = ['./', './index.html', './manifest.json'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(VERSION).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== VERSION).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
