@@ -1,0 +1,2221 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MEA CS</title>
+<meta name="description" content="MEA CS — Electric Vehicle Customer Service สำหรับเจ้าหน้าที่การไฟฟ้านครหลวง โดย SMART TERMINAL CORPORATION">
+<meta name="theme-color" content="#26282E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MEA CS">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icon-192.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#26282E; --card:rgba(255,255,255,.10); --card2:rgba(255,255,255,.14); --raise:rgba(34,36,42,.86);
+  --line:rgba(255,255,255,.20); --line2:rgba(255,255,255,.34); --well:rgba(10,11,14,.34); --solid:#2E3036; --solid2:#373A41;
+  --tx:#FFFFFF; --mut:rgba(255,255,255,.70); --mut2:rgba(255,255,255,.86); --dim:rgba(255,255,255,.48);
+  --acc:#F37321; --acc-hi:#FF8F45; --acc-lo:#D9580E; --acc-soft:rgba(243,115,33,.18); --on-acc:#FFFFFF; --ink:#1E1F23;
+  --gray:#6D6E71; --ok:#3DDC84; --ok-soft:rgba(61,220,132,.16); --warn:#FFC24B; --warn-soft:rgba(255,194,75,.16);
+  --bad:#FF5A5A; --bad-soft:rgba(255,90,90,.16); --info:#7EC8FF; --info-soft:rgba(126,200,255,.16);
+  --r:20px; --r-sm:14px; --blur:blur(14px) saturate(140%);
+  --nav-h:74px; --safe-b:env(safe-area-inset-bottom,0px); --safe-t:env(safe-area-inset-top,0px);
+  --font:'Sarabun','Loma',system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--tx);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none;padding:0}
+a{color:var(--acc-hi)}
+.num{font-variant-numeric:tabular-nums}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+svg.i.sm{width:18px;height:18px}
+svg.i.lg{width:30px;height:30px}
+
+/* ---------- page frame ---------- */
+#app{max-width:480px;margin:0 auto;min-height:100%;position:relative}
+.page-bg{position:fixed;inset:0;z-index:-1;background:
+  linear-gradient(180deg,rgba(18,19,23,.30) 0%,rgba(18,19,23,.62) 38%,rgba(18,19,23,.86) 100%),
+  url(assets/app-bg.webp) center top/cover no-repeat,var(--bg)}
+@media(min-width:481px){.page-bg{background:
+  linear-gradient(180deg,rgba(18,19,23,.40),rgba(18,19,23,.86)),url(assets/app-bg.webp) center top/480px auto repeat-y,var(--bg)}}
+
+/* ---------- glass ---------- */
+.glass{background:var(--card);border:1px solid var(--line);border-radius:var(--r);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.glass.tight{border-radius:var(--r-sm)}
+.well{background:var(--well);border:1px solid var(--line);border-radius:var(--r-sm)}
+
+/* ---------- login ---------- */
+.login{--u:min(1vw,4.8px);position:relative;min-height:100svh;padding-bottom:24px;background:#1b1c20 url(assets/login-bg.webp) center top/100% auto no-repeat}
+.login-card{min-height:0}
+.login-card{position:absolute;left:calc(12.5 * var(--u));width:calc(75 * var(--u));top:calc(89.8 * var(--u));
+  padding:calc(4.6 * var(--u)) calc(5 * var(--u)) calc(3.2 * var(--u));border-radius:calc(4.6 * var(--u));
+  background:rgba(40,42,48,.46);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(16px) saturate(130%);-webkit-backdrop-filter:blur(16px) saturate(130%);
+  box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.login-logo{display:block;width:calc(11 * var(--u));margin:0 auto calc(1.4 * var(--u))}
+.login-card h1{margin:0;text-align:center;font-size:max(18px,calc(4.2 * var(--u)));font-weight:700;line-height:1.3}
+.login-card .sub{margin:2px 0 calc(3 * var(--u));text-align:center;color:var(--mut);font-size:max(13px,calc(2.7 * var(--u)))}
+.login-card label{display:block;font-size:max(13px,calc(2.5 * var(--u)));color:var(--mut2);margin:calc(1.6 * var(--u)) 0 6px}
+.login-card label small{color:var(--mut)}
+.field-ico{position:relative}
+.field-ico>svg.i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--mut2);pointer-events:none}
+.field-ico .in{padding-left:48px}
+.field-ico .eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:42px;height:42px;display:grid;place-items:center;color:var(--mut2);border-radius:10px}
+.login .in{height:max(48px,calc(8.4 * var(--u)));background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.28)}
+.btn-login{margin-top:calc(2.6 * var(--u));width:100%;height:max(50px,calc(8.8 * var(--u)))}
+.login-foot{display:flex;align-items:center;gap:10px;margin-top:calc(3 * var(--u));color:var(--mut);font-size:12px;justify-content:center;white-space:nowrap}
+.login-foot:before,.login-foot:after{content:"";height:1px;flex:1;background:rgba(255,255,255,.25)}
+.login-switch{display:block;margin:12px auto 0;color:var(--mut2);font-size:14px;text-decoration:underline;text-underline-offset:3px}
+.login-msg{margin-top:10px;font-size:14px;color:#FFB4A0;text-align:center;min-height:0}
+.login-note{margin:10px 0 0;font-size:12px;color:var(--mut);text-align:center}
+.setup{padding:110px 22px 40px}
+
+/* ---------- inputs ---------- */
+.in,select.in,textarea.in{width:100%;height:50px;border-radius:14px;border:1px solid var(--line2);background:rgba(255,255,255,.07);padding:0 14px;outline:none;font-size:16px;transition:border-color .15s,background .15s}
+textarea.in{height:auto;min-height:104px;padding:12px 14px;resize:vertical;line-height:1.55}
+.in::placeholder{color:rgba(255,255,255,.45)}
+.in:focus{border-color:var(--acc);background:rgba(255,255,255,.11)}
+select.in{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
+select.in option{background:var(--solid);color:#fff}
+input[type=datetime-local].in,input[type=date].in{color-scheme:dark}
+.picker{display:flex;align-items:center;justify-content:space-between;text-align:left;cursor:pointer}
+.picker .plh{color:rgba(255,255,255,.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.picker span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fl{display:block;margin:14px 0 6px;font-size:14px;color:var(--mut2);font-weight:600}
+.fl .req{color:var(--acc-hi)}
+.hint{font-size:13px;color:var(--mut);margin-top:6px}
+.err{font-size:13px;color:#FF9C8A;margin-top:6px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.toggle:last-child{border-bottom:0}
+.sw{position:relative;width:52px;height:30px;flex-shrink:0}
+.sw input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer;z-index:1}
+.sw span{position:absolute;inset:0;border-radius:30px;background:rgba(255,255,255,.22);transition:.2s}
+.sw span:after{content:"";position:absolute;left:3px;top:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s}
+.sw input:checked+span{background:var(--acc)}
+.sw input:checked+span:after{transform:translateX(22px)}
+.sw input:focus-visible+span{outline:2px solid #fff;outline-offset:2px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{padding:8px 14px;border-radius:999px;border:1px solid var(--line2);background:rgba(255,255,255,.06);font-size:14px;color:var(--mut2)}
+.seg button[aria-pressed=true]{background:#fff;color:var(--ink);border-color:#fff;font-weight:700}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:50px;padding:0 20px;border-radius:14px;font-weight:700;font-size:16px;letter-spacing:.2px;transition:transform .08s,opacity .15s,filter .15s;white-space:nowrap}
+.btn:active{transform:scale(.98)}
+.btn[disabled]{opacity:.5;pointer-events:none}
+.btn-acc{background:linear-gradient(180deg,var(--acc-hi),var(--acc) 55%,var(--acc-lo));color:var(--on-acc);box-shadow:0 8px 22px rgba(243,115,33,.35)}
+.btn-ghost{background:rgba(255,255,255,.08);border:1px solid var(--line2);color:var(--tx)}
+.btn-white{background:#fff;color:var(--ink)}
+.btn-bad{background:linear-gradient(180deg,#FF6B5E,#D93A2B);color:#fff;box-shadow:0 8px 22px rgba(217,58,43,.35)}
+.btn-sm{height:40px;padding:0 14px;font-size:14px;border-radius:12px}
+.btn-block{width:100%}
+.btn-row{display:flex;gap:10px;margin-top:18px}
+.btn-row>.btn{flex:1}
+.link{color:var(--acc-hi);font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:4px}
+.icon-btn{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:#fff;position:relative}
+.icon-btn .dot{position:absolute;top:7px;right:8px;min-width:10px;height:10px;border-radius:10px;background:var(--acc);border:2px solid #2a2b30}
+.icon-btn .dot.n{min-width:18px;height:18px;top:2px;right:2px;font-size:11px;font-weight:700;line-height:14px;text-align:center;padding:0 4px}
+.chev{width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(255,255,255,.6);display:grid;place-items:center;flex-shrink:0}
+.chev svg.i{width:16px;height:16px}
+.chev.acc{border-color:var(--acc);color:var(--acc)}
+
+/* ---------- shell ---------- */
+.hdr{position:sticky;top:0;z-index:20;padding:calc(var(--safe-t) + 12px) 16px 10px;display:flex;align-items:center;gap:10px;
+  background:linear-gradient(180deg,rgba(20,21,25,.72),rgba(20,21,25,.0));}
+.hdr.solid{background:rgba(26,27,31,.80);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-bottom:1px solid rgba(255,255,255,.08)}
+.brand{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.brand img{width:46px;height:auto}
+.brand .wm{line-height:1}
+.brand .wm b{font-size:28px;font-weight:800;letter-spacing:.5px}
+.brand .wm b em{font-style:normal;color:var(--acc)}
+.brand .wm small{display:block;font-size:10.5px;letter-spacing:1.4px;color:var(--mut2);margin-top:3px;font-weight:600}
+.back{display:flex;align-items:center;gap:6px;min-width:0;flex:1}
+.back h2{margin:0;font-size:19px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.back h2 small{display:block;font-size:12px;font-weight:500;color:var(--mut);margin-top:-2px}
+main.view{padding:4px 16px calc(var(--nav-h) + var(--safe-b) + 28px)}
+main.view.no-nav{padding-bottom:calc(var(--safe-b) + 28px)}
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(10px + var(--safe-b));width:calc(min(100vw,480px) - 24px);height:var(--nav-h);
+  z-index:30;display:grid;grid-template-columns:repeat(3,1fr);border-radius:24px;background:rgba(44,46,52,.78);border:1px solid var(--line);
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--mut);font-size:13px;position:relative}
+.nav button svg.i{width:26px;height:26px}
+.nav button[aria-current=page]{color:var(--acc)}
+.nav button[aria-current=page]:after{content:"";position:absolute;bottom:8px;width:52%;height:3px;border-radius:3px;background:var(--acc)}
+.nav button .badge{position:absolute;top:10px;left:calc(50% + 8px)}
+body.kb .nav,body.kb .fab{display:none}
+.fab{position:fixed;z-index:31;right:max(14px,calc(50% - 240px + 14px));bottom:calc(var(--nav-h) + var(--safe-b) + 22px);width:76px;height:76px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#FFA05E,var(--acc) 55%,#C94F0B);box-shadow:0 10px 28px rgba(243,115,33,.55),inset 0 0 0 2px rgba(255,255,255,.25);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px;gap:0}
+.fab img{width:46px;height:46px;object-fit:contain;margin-top:-4px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
+.fab:after{content:"✦";position:absolute;right:-2px;top:-4px;font-size:18px;color:#fff;text-shadow:0 0 8px #FFB27A}
+
+/* ---------- home ---------- */
+.greet{margin:6px 4px 12px}
+.greet h3{margin:0;font-size:22px;font-weight:700}
+.greet button{display:flex;align-items:center;gap:6px;font-size:15px;color:var(--mut2);margin-top:2px}
+.hero{display:flex;align-items:center;gap:8px;padding:18px 16px 18px 20px;margin-bottom:14px;min-height:140px;position:relative;overflow:hidden;width:100%;text-align:left}
+.hero .t{flex:1 1 auto;min-width:0;position:relative;z-index:1}
+.hero .t b{display:block;font-size:22px;font-weight:800;line-height:1.15;overflow-wrap:anywhere}
+.hero .t>span:not(.pill){display:block;font-size:15px;color:var(--mut2);margin:4px 0 10px;white-space:nowrap}
+.hero .car{width:44%;max-width:190px;flex-shrink:1;min-width:0;height:auto;filter:drop-shadow(0 10px 12px rgba(0,0,0,.45));margin-right:-4px}
+.hero .car.icon{width:120px;height:90px;color:rgba(255,255,255,.75);display:grid;place-items:center}
+.pill{flex-shrink:0;align-self:flex-start;display:inline-flex;align-items:center;gap:6px;padding:3px 12px;border-radius:999px;font-size:14px;font-weight:600;border:1.5px solid currentColor;white-space:nowrap}
+.pill:before{content:"";width:10px;height:10px;border-radius:50%;background:currentColor}
+.pill.ok{color:var(--ok);background:var(--ok-soft)} .pill.warn{color:var(--warn);background:var(--warn-soft)}
+.pill.bad{color:var(--bad);background:var(--bad-soft)} .pill.info{color:var(--info);background:var(--info-soft)}
+.pill.mut{color:var(--mut2);background:rgba(255,255,255,.08)} .pill.acc{color:var(--acc-hi);background:var(--acc-soft)}
+.pill.flat:before{display:none}
+.tag{display:inline-block;padding:1px 9px;border-radius:8px;font-size:12px;font-weight:700;background:rgba(255,255,255,.12);color:var(--mut2)}
+.tag.acc{background:var(--acc-soft);color:var(--acc-hi)} .tag.bad{background:var(--bad-soft);color:#FF9C8A} .tag.ok{background:var(--ok-soft);color:var(--ok)}
+.alerts{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.alert{display:flex;align-items:center;gap:12px;padding:12px 14px;text-align:left;width:100%}
+.alert .ic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--acc-soft);color:var(--acc-hi);flex-shrink:0}
+.alert.bad .ic{background:var(--bad-soft);color:#FF9C8A}
+.alert .tx{flex:1;min-width:0;font-size:14px;line-height:1.35}
+.alert .tx b{display:block;font-size:15px}
+.alert .tx span{color:var(--mut)}
+.menu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.mcard{display:flex;align-items:center;gap:10px;padding:16px 10px 16px 14px;min-height:92px;min-width:0;text-align:left;position:relative;transition:transform .1s,background .15s}
+.mcard:active{transform:scale(.98);background:var(--card2)}
+.mcard>svg.i{width:30px;height:30px;color:var(--acc);stroke-width:1.7}
+.mcard .t{flex:1;min-width:0}
+.mcard .t b{display:block;font-size:16px;font-weight:700;line-height:1.25;overflow-wrap:anywhere}
+.mcard .t small{display:block;font-size:12px;overflow-wrap:anywhere;color:var(--mut);margin-top:2px;line-height:1.25}
+.mcard .chev{width:24px;height:24px;border-color:var(--acc);color:var(--acc)}
+.mcard .badge{position:absolute;top:8px;right:10px}
+.badge{min-width:20px;height:20px;border-radius:10px;background:var(--acc);color:#fff;font-size:12px;font-weight:800;display:inline-grid;place-items:center;padding:0 6px;line-height:1}
+.badge.bad{background:#E5483A}
+.help-bar{display:flex;align-items:center;gap:14px;padding:14px 16px;margin-top:14px;width:calc(100% - 88px);text-align:left}
+.help-bar .ic{width:48px;height:48px;border-radius:50%;background:var(--acc);display:grid;place-items:center;flex-shrink:0;color:#fff}
+.help-bar .tx{flex:1;min-width:0}
+.help-bar .tx b{display:block;font-size:16px}
+.help-bar .tx span{font-size:13px;color:var(--mut)}
+
+/* ---------- generic blocks ---------- */
+.sec{margin:18px 2px 10px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.sec h4{margin:0;font-size:17px;font-weight:700}
+.card{padding:16px;margin-bottom:12px}
+.card h5{margin:0 0 8px;font-size:16px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:9px 14px;font-size:15px}
+.kv dt{color:var(--mut)}
+.kv dd{margin:0;text-align:right;font-weight:600;word-break:break-word}
+.list{display:flex;flex-direction:column;gap:10px}
+.item{display:flex;align-items:flex-start;gap:12px;padding:14px;text-align:left;width:100%}
+.item .ic{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:var(--acc-soft);color:var(--acc-hi);flex-shrink:0}
+.item .ic.gray{background:rgba(255,255,255,.1);color:var(--mut2)}
+.item .bd{flex:1;min-width:0}
+.item .bd b{display:block;font-size:16px;line-height:1.35}
+.item .bd .meta{font-size:13px;color:var(--mut);margin-top:3px;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
+.item .bd p{margin:6px 0 0;font-size:14px;color:var(--mut2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.item .end{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
+.empty{padding:34px 16px;text-align:center;color:var(--mut)}
+.empty svg.i{width:44px;height:44px;color:var(--dim);margin-bottom:8px}
+.empty b{display:block;color:var(--mut2);font-size:16px;margin-bottom:4px}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:6px -16px 12px;padding:2px 16px}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex-shrink:0;padding:9px 16px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid var(--line);font-size:14.5px;color:var(--mut2);display:inline-flex;gap:6px;align-items:center}
+.tabs button[aria-selected=true]{background:#fff;color:var(--ink);border-color:#fff;font-weight:700}
+.tabs button .badge{height:18px;min-width:18px;font-size:11px}
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.cat{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 6px;border-radius:16px;font-size:13.5px;text-align:center;line-height:1.25;border:1px solid var(--line);background:rgba(255,255,255,.07)}
+.cat svg.i{width:28px;height:28px;color:var(--acc)}
+.cat[aria-pressed=true]{background:#fff;color:var(--ink);border-color:#fff;font-weight:700}
+.cat[aria-pressed=true] svg.i{color:var(--acc-lo)}
+.photos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ph{position:relative;aspect-ratio:1;border-radius:14px;overflow:hidden;background:var(--well);border:1px dashed var(--line2);display:grid;place-items:center;color:var(--mut)}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.ph .x{position:absolute;top:5px;right:5px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.6);display:grid;place-items:center;color:#fff}
+.ph.add{flex-direction:column;gap:2px;font-size:12px}
+.ph.pdf{border-style:solid;font-size:12px;flex-direction:column}
+.steps{display:flex;align-items:flex-start;margin:4px 0 2px}
+.steps .s{flex:1;text-align:center;font-size:11.5px;color:var(--dim);position:relative;line-height:1.25}
+.steps .s i{display:block;width:22px;height:22px;border-radius:50%;margin:0 auto 5px;border:2px solid rgba(255,255,255,.3);background:var(--bg);position:relative;z-index:1}
+.steps .s:before{content:"";position:absolute;top:10px;left:-50%;width:100%;height:2px;background:rgba(255,255,255,.2)}
+.steps .s:first-child:before{display:none}
+.steps .s.done{color:var(--mut2)}
+.steps .s.done i{background:var(--acc);border-color:var(--acc)}
+.steps .s.done:before{background:var(--acc)}
+.steps .s.cur{color:#fff;font-weight:700}
+.steps .s.cur i{border-color:var(--acc);box-shadow:0 0 0 4px var(--acc-soft);background:var(--acc)}
+.tl{position:relative;margin:4px 0 0 6px;padding-left:20px;border-left:2px solid rgba(255,255,255,.16)}
+.tl .e{position:relative;padding:0 0 14px}
+.tl .e:before{content:"";position:absolute;left:-27px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--solid2);border:2px solid var(--acc)}
+.tl .e:last-child{padding-bottom:0}
+.tl .e b{font-size:15px}
+.tl .e .meta{font-size:12.5px;color:var(--mut)}
+.tl .e p{margin:3px 0 0;font-size:14px;color:var(--mut2);white-space:pre-wrap;word-break:break-word}
+.appt{display:flex;gap:12px;align-items:center;padding:14px;border-radius:16px;background:var(--acc-soft);border:1px solid rgba(243,115,33,.45);margin-bottom:12px}
+.appt .d{text-align:center;min-width:56px;padding:6px 4px;border-radius:12px;background:var(--acc);color:#fff;line-height:1.1}
+.appt .d b{display:block;font-size:24px}
+.appt .d small{font-size:12px}
+.appt .tx{flex:1;min-width:0;font-size:14px}
+.appt .tx b{display:block;font-size:16px}
+.stars{display:flex;gap:6px;justify-content:center;margin:8px 0}
+.stars button{width:46px;height:46px;display:grid;place-items:center;color:rgba(255,255,255,.3)}
+.stars button svg{width:36px;height:36px;fill:currentColor;stroke:none}
+.stars button.on{color:#FFC24B}
+.stars.ro{justify-content:flex-start;gap:2px;margin:0}
+.stars.ro svg{width:16px;height:16px;fill:#FFC24B}
+
+/* ---------- AI chat ---------- */
+.ai-wrap{display:flex;flex-direction:column;min-height:calc(100svh - 76px)}
+.ai-head{display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:10px}
+.ai-head img{width:64px;height:64px;object-fit:contain;filter:drop-shadow(0 6px 8px rgba(0,0,0,.35))}
+.ai-head b{display:block;font-size:18px}
+.ai-head span{font-size:13px;color:var(--mut)}
+.chat{flex:1;display:flex;flex-direction:column;gap:10px;padding-bottom:12px}
+.bub{max-width:86%;padding:11px 14px;border-radius:18px;font-size:15.5px;line-height:1.55;white-space:pre-wrap;word-break:break-word}
+.bub.u{align-self:flex-end;background:linear-gradient(180deg,var(--acc-hi),var(--acc));color:#fff;border-bottom-right-radius:6px}
+.bub.a{align-self:flex-start;background:var(--raise);border:1px solid var(--line);border-bottom-left-radius:6px}
+.bub.a .who{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mut);margin-bottom:3px}
+.bub.a .who img{width:20px;height:20px}
+.bub.sys{align-self:center;background:rgba(255,255,255,.08);font-size:13px;color:var(--mut2);max-width:94%;text-align:center}
+.bub .spk{margin-left:auto}
+.typing{display:inline-flex;gap:4px}
+.typing i{width:7px;height:7px;border-radius:50%;background:var(--mut);animation:bl 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+@keyframes bl{0%,80%,100%{opacity:.25}40%{opacity:1}}
+.draft{align-self:stretch;padding:14px;border-radius:18px;background:var(--solid);border:1.5px solid var(--acc)}
+.draft h6{margin:0 0 6px;font-size:14px;color:var(--acc-hi);display:flex;align-items:center;gap:6px}
+.draft b{display:block;font-size:16px}
+.draft p{margin:6px 0 10px;font-size:14px;color:var(--mut2);white-space:pre-wrap}
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:2px 16px 10px}
+.chips::-webkit-scrollbar{display:none}
+.chips button{flex-shrink:0;padding:8px 14px;border-radius:999px;border:1px solid var(--line2);background:rgba(255,255,255,.08);font-size:14px;white-space:nowrap}
+.composer{position:sticky;bottom:calc(var(--safe-b) + 10px);display:flex;align-items:flex-end;gap:8px;padding:8px;border-radius:22px;background:rgba(40,42,48,.92);border:1px solid var(--line);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.composer textarea{flex:1;min-height:44px;max-height:140px;border:0;background:transparent;outline:none;resize:none;padding:10px 8px;font-size:16px;line-height:1.4}
+.composer .icon-btn{width:44px;height:44px;flex-shrink:0;background:rgba(255,255,255,.1)}
+.composer .send{background:var(--acc)}
+.composer .mic.on{background:#E5483A;animation:pulse 1.2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 8px rgba(229,72,58,.25)}}
+.ai-tools{display:flex;gap:8px;margin:0 0 8px;flex-wrap:wrap}
+
+/* ---------- sheet / dialog ---------- */
+.scrim{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center;animation:fi .18s}
+.sheet{width:100%;max-width:480px;max-height:92svh;overflow:auto;background:var(--solid);border:1px solid var(--line);border-bottom:0;border-radius:24px 24px 0 0;
+  padding:8px 18px calc(var(--safe-b) + 20px);animation:su .22s ease-out;overscroll-behavior:contain}
+.sheet .grip{width:44px;height:5px;border-radius:5px;background:rgba(255,255,255,.3);margin:4px auto 10px}
+.sheet h3{margin:0 0 4px;font-size:20px;display:flex;align-items:center;gap:8px}
+.sheet .lead{margin:0 0 10px;color:var(--mut);font-size:14px}
+.sheet .opt{display:flex;align-items:center;gap:12px;width:100%;padding:14px 12px;border-radius:14px;text-align:left;font-size:16px;border:1px solid transparent}
+.sheet .opt:hover,.sheet .opt:focus-visible{background:rgba(255,255,255,.06)}
+.sheet .opt[aria-selected=true]{background:#fff;color:var(--ink);font-weight:700}
+.sheet .opt[aria-selected=true] svg.i{color:var(--acc-lo)}
+.sheet .opt small{display:block;color:var(--mut);font-size:13px;font-weight:400}
+.sheet .opt[aria-selected=true] small{color:#555}
+.viewer{position:fixed;inset:0;z-index:70;background:#111;display:flex;flex-direction:column}
+.viewer .vh{display:flex;align-items:center;gap:8px;padding:calc(var(--safe-t) + 8px) 10px 8px;background:#1d1e22}
+.viewer .vh b{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.viewer iframe,.viewer .img{flex:1;border:0;width:100%;background:#333}
+.viewer .img{display:grid;place-items:center;overflow:auto}
+.viewer .img img{max-width:100%;max-height:100%}
+@keyframes fi{from{opacity:0}}
+@keyframes su{from{transform:translateY(40px);opacity:.4}}
+.toast{position:fixed;left:50%;transform:translateX(-50%);top:calc(var(--safe-t) + 14px);z-index:90;max-width:min(92vw,440px);padding:12px 18px;border-radius:14px;background:#fff;color:var(--ink);font-weight:600;font-size:15px;box-shadow:0 10px 30px rgba(0,0,0,.35);animation:fi .2s}
+.toast.bad{background:#FFE3DE;color:#8A1C10}
+.qr{background:#fff;padding:14px;border-radius:16px;width:max-content;margin:10px auto}
+.qr img,.qr canvas{display:block;width:220px!important;height:220px!important}
+.offline{position:fixed;top:0;left:0;right:0;z-index:80;background:#8A5A00;color:#fff;text-align:center;font-size:13px;padding:calc(var(--safe-t) + 4px) 8px 4px}
+.loading{display:flex;justify-content:center;padding:40px}
+.spin{width:34px;height:34px;border-radius:50%;border:3px solid rgba(255,255,255,.2);border-top-color:var(--acc);animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.banner{padding:10px 14px;border-radius:14px;background:var(--warn-soft);border:1px solid rgba(255,194,75,.45);color:#FFE2A6;font-size:14px;margin-bottom:12px}
+.banner.info{background:var(--info-soft);border-color:rgba(126,200,255,.45);color:#D3ECFF}
+.sos{display:flex;align-items:center;gap:14px;width:100%;padding:18px;border-radius:20px;text-align:left;background:linear-gradient(135deg,#E5483A,#A8261A);box-shadow:0 10px 26px rgba(229,72,58,.35);margin-bottom:12px}
+.sos .ic{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center}
+.sos b{display:block;font-size:19px}
+.sos span{font-size:13.5px;opacity:.9}
+.call{display:flex;align-items:center;gap:12px;padding:14px;text-decoration:none;color:inherit}
+.faq details{border-bottom:1px solid var(--line);padding:2px 0}
+.faq details:last-child{border-bottom:0}
+.faq summary{list-style:none;cursor:pointer;padding:12px 0;font-weight:600;display:flex;justify-content:space-between;gap:10px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:after{content:"+";color:var(--acc);font-size:22px;line-height:1}
+.faq details[open] summary:after{content:"–"}
+.faq p{margin:0 0 12px;color:var(--mut2);font-size:15px}
+.msgs{display:flex;flex-direction:column;gap:8px;max-height:52svh;overflow:auto;padding:4px 2px 8px}
+.msg{max-width:84%;padding:9px 13px;border-radius:16px;font-size:15px;white-space:pre-wrap;word-break:break-word}
+.msg.me{align-self:flex-end;background:var(--acc);border-bottom-right-radius:5px}
+.msg.them{align-self:flex-start;background:var(--solid2);border-bottom-left-radius:5px}
+.msg.sos{background:#C9372A}
+.msg small{display:block;font-size:11.5px;opacity:.75;margin-top:2px}
+.msg .who{font-size:12px;opacity:.8;margin-bottom:2px;font-weight:700}
+.avatar{width:64px;height:64px;border-radius:50%;background:var(--acc-soft);display:grid;place-items:center;color:var(--acc-hi);flex-shrink:0}
+.avatar svg.i{width:34px;height:34px}
+.prof{display:flex;align-items:center;gap:14px;padding:18px;margin-bottom:12px}
+.prof b{display:block;font-size:19px}
+.prof span{font-size:14px;color:var(--mut)}
+.rowlink{display:flex;align-items:center;gap:12px;width:100%;padding:15px 16px;text-align:left;border-bottom:1px solid var(--line);font-size:16px}
+.rowlink:last-child{border-bottom:0}
+a.rowlink,a.call{color:inherit;text-decoration:none}
+.rowlink>svg.i:first-child{color:var(--acc)}
+.rowlink span{flex:1}
+.rowlink small{color:var(--mut);font-size:13px}
+.group{padding:0;overflow:hidden;margin-bottom:14px}
+.table{width:100%;border-collapse:collapse;font-size:14px}
+.table td,.table th{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.table th{color:var(--mut);font-weight:600}
+.report{background:#fff;color:#1b1b1b;border-radius:14px;padding:20px 18px;font-size:14px}
+.report h2{margin:0;font-size:18px}
+.report .rh{display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--acc);padding-bottom:10px;margin-bottom:12px}
+.report .rh img{height:40px}
+.report .kv dt{color:#666}.report .kv dd{color:#111}
+.report .box{border:1px solid #ddd;border-radius:10px;padding:10px 12px;margin-top:10px;white-space:pre-wrap}
+.report .sign{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:30px;text-align:center;font-size:13px;color:#444}
+.report .sign div{border-top:1px solid #999;padding-top:6px}
+.staff-panel{border:1.5px dashed rgba(126,200,255,.55);background:rgba(126,200,255,.06)}
+.staff-panel h5{color:var(--info)}
+@media print{
+  body{background:#fff}
+  .page-bg,.hdr,.nav,.fab,.no-print,.toast{display:none!important}
+  main.view{padding:0}
+  .report{border-radius:0;padding:0}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+:focus-visible{outline:2px solid var(--acc-hi);outline-offset:2px}
+
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+<script>
+'use strict';
+/* =====================================================================
+   MEA CS Application · v1.0.0
+   บจก. สมาร์ท เทอร์มินอล คอร์ปอเรชั่น — ผู้ให้บริการรถยนต์ไฟฟ้า กฟน.
+   ใช้ publishable/anon key เท่านั้น — ห้ามใส่ service_role
+   ===================================================================== */
+const APP_VER = '1.0.0';
+const CFG = {
+  url: 'https://tfyhyrmbrqvitqnewzzv.supabase.co',
+  key: 'sb_publishable_rRejJXeG3YAuH7Uc---ACA_GwmHxlEf',   // publishable key (ปลอดภัยสำหรับหน้าเว็บ)
+  aiFn: 'cs-ai'     // ชื่อ Edge Function ของ AI CS Agent
+};
+const TZ = 'Asia/Bangkok';
+
+/* ---------- icons (stroke) ---------- */
+const IC = {
+  car:'<path d="M5 17h14M3 13l2-6a2 2 0 0 1 2-1.4h10A2 2 0 0 1 19 7l2 6v4a1 1 0 0 1-1 1h-1.5M3 13v4a1 1 0 0 0 1 1h1.5M3 13h18"/><circle cx="7.5" cy="17" r="1.8"/><circle cx="16.5" cy="17" r="1.8"/>',
+  van:'<path d="M2 16V8a2 2 0 0 1 2-2h11l5 5v5a1 1 0 0 1-1 1h-1M2 16a1 1 0 0 0 1 1h1M8 17h7M2 11h18M9 6v5M15 6v5"/><circle cx="6" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>',
+  bot:'<rect x="4" y="8" width="16" height="12" rx="4"/><path d="M12 4v4M9 14h.01M15 14h.01"/><circle cx="12" cy="3.5" r="1"/><path d="M2 13v3M22 13v3"/>',
+  wrench:'<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/>',
+  clip:'<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6M9 18h3"/>',
+  cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M9 15l2 2 4-4"/>',
+  calp:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/>',
+  doc:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',
+  headset:'<path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="13" width="4" height="6" rx="1.5"/><rect x="17.5" y="13" width="4" height="6" rx="1.5"/><path d="M20 19a3 3 0 0 1-3 3h-3"/>',
+  bell:'<path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+  userc:'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3.2"/><path d="M6.2 19a7 7 0 0 1 11.6 0"/>',
+  home:'<path d="M3 11 12 3l9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  chevR:'<path d="m9 6 6 6-6 6"/>', chevL:'<path d="m15 6-6 6 6 6"/>', chevD:'<path d="m6 9 6 6 6-6"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>', x:'<path d="M18 6 6 18M6 6l12 12"/>', check:'<path d="m5 12 5 5 9-10"/>',
+  lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+  eye:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  eyeoff:'<path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6C3.9 8.4 2 12 2 12s3.5 7 10 7a9.7 9.7 0 0 0 5.4-1.6M9.9 9.9a3 3 0 0 0 4.2 4.2"/>',
+  bolt:'<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>', plug:'<path d="M9 2v6M15 2v6M6 8h12v4a6 6 0 0 1-12 0zM12 18v4"/>',
+  crash:'<path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h.01"/>', tool:'<path d="M3 21l6-6M14.5 4.5l5 5-8 8-5-5zM16 3l5 5"/>',
+  life:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M5.6 5.6 9.2 9.2M14.8 14.8l3.6 3.6M18.4 5.6l-3.6 3.6M9.2 14.8l-3.6 3.6"/>',
+  dots:'<circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/>',
+  camera:'<path d="M3 8a2 2 0 0 1 2-2h2l2-2h6l2 2h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="4"/>',
+  pin:'<path d="M12 21s-7-6.3-7-12a7 7 0 0 1 14 0c0 5.7-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/>',
+  send:'<path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/>', mic:'<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/>',
+  speaker:'<path d="M11 5 6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/>',
+  mute:'<path d="M11 5 6 9H2v6h4l5 4zM22 9l-6 6M16 9l6 6"/>',
+  phone:'<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/>',
+  chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>', siren:'<path d="M7 18v-6a5 5 0 0 1 10 0v6M5 21h14v-3H5zM12 2v2M4.2 5.2l1.4 1.4M19.8 5.2l-1.4 1.4"/>',
+  star:'<path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/>',
+  qr:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 17h4v4h-4"/>',
+  shield:'<path d="M12 3 4 6v6c0 5 3.4 8.3 8 9 4.6-.7 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/>',
+  book:'<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>',
+  file:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/>',
+  hand:'<path d="M18 11V6a2 2 0 0 0-4 0M14 10V4a2 2 0 0 0-4 0v2M10 10.5V6a2 2 0 0 0-4 0v8M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2a8 8 0 0 1-6-2.7L3.3 16a2 2 0 0 1 3-2.6L8 15"/>',
+  logout:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>',
+  users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/>',
+  gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+  list:'<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>', history:'<path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5M12 7v5l3 2"/>',
+  swap:'<path d="M7 4 3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/>', trash:'<path d="M3 6h18M8 6V4h8v2M6 6l1 14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-14"/>',
+  edit:'<path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>', print:'<path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/>',
+  link:'<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>',
+  ext:'<path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
+  dl:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>', info:'<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',
+  spark:'<path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/>',
+  forward:'<path d="M15 17l5-5-5-5M4 18v-2a4 4 0 0 1 4-4h12"/>', audit:'<path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+  gauge:'<path d="M12 14l4-4M3.3 17a10 10 0 1 1 17.4 0"/>', battery:'<rect x="2" y="7" width="18" height="10" rx="2"/><path d="M22 11v2M6 10v4M10 10v4"/>',
+  inbox:'<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5h13l3.5 7v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z"/>',
+  refresh:'<path d="M21 12a9 9 0 1 1-2.6-6.4L21 8M21 3v5h-5"/>'
+};
+const ic = (n, c = '') => `<svg class="i ${c}" viewBox="0 0 24 24" aria-hidden="true">${IC[n] || IC.dots}</svg>`;
+const starSvg = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg>';
+
+/* ---------- labels ---------- */
+const L = {
+  vstatus: { ready:['พร้อมใช้งาน','ok'], in_use:['กำลังใช้งาน','info'], service:['อยู่ระหว่างให้บริการ/ซ่อม','warn'],
+             maintenance:['บำรุงรักษา','warn'], accident:['อุบัติเหตุ/รอตรวจ','bad'], off:['งดใช้งาน','mut'] },
+  tstatus: { draft:['ร่าง','mut'], submitted:['ส่งเรื่องแล้ว','info'], acknowledged:['รับเรื่องแล้ว','info'],
+             in_progress:['กำลังดำเนินการ','warn'], waiting_parts:['รออะไหล่','warn'], resolved:['เสร็จ — รอยืนยันผล','acc'],
+             closed:['ปิดงานแล้ว','ok'], cancelled:['ยกเลิก','mut'] },
+  cat: { breakdown:['รถเสีย','wrench'], accident:['อุบัติเหตุ','crash'], charging:['ปัญหาชาร์จไฟ','plug'],
+         equipment:['อุปกรณ์ชำรุด','tool'], help:['ขอความช่วยเหลือ','life'], other:['อื่น ๆ','dots'] },
+  pri: { low:'ไม่เร่งด่วน', normal:'ปกติ', high:'เร่งด่วน', urgent:'ฉุกเฉิน' },
+  mstatus: { planned:['ตามแผน','mut'], requested:['ขอนัดแล้ว — รอยืนยัน','info'], appointed:['ยืนยันนัดแล้ว','acc'],
+             in_progress:['กำลังดำเนินการ','warn'], done:['เสร็จแล้ว','ok'], cancelled:['ยกเลิก','mut'] },
+  rstatus: { draft:['ร่าง','mut'], requested:['ส่งคำขอแล้ว','info'], approved:['อนุมัติแล้ว','acc'], delivered:['ส่งมอบรถแล้ว','warn'],
+             returned:['คืนรถแล้ว','ok'], rejected:['ไม่อนุมัติ','bad'], cancelled:['ยกเลิก','mut'] },
+  doccat: { handover:['เอกสารส่งมอบ','clip'], insurance:['ประกันภัย','shield'], act:['พ.ร.บ.','shield'], manual:['คู่มือรถ','book'],
+            charging:['คู่มือชาร์จ','plug'], repair_report:['รายงานซ่อม','wrench'], contract:['สัญญา','doc'], other:['อื่น ๆ','file'] },
+  role: { vehicle_user:'ผู้ใช้รถ กฟน.', coordinator:'ผู้ประสานงานหน่วยงาน กฟน.', cs_operator:'เจ้าหน้าที่ SMART CS',
+          service_manager:'ผู้จัดการบริการ SMART', technician:'ช่างเทคนิค', admin:'ผู้ดูแลระบบ' },
+  ckind: { mea_coordinator:'ผู้ประสานงาน กฟน.', driver:'พนักงานขับรถ', smart_cs:'SMART CS', smart_manager:'ผู้จัดการบริการ SMART', emergency:'ติดต่อฉุกเฉิน', other:'อื่น ๆ' }
+};
+const pill = (map, k, cls = '') => { const v = (L[map] || {})[k] || [k || '-', 'mut']; return `<span class="pill ${v[1]} ${cls}">${esc(v[0])}</span>`; };
+
+/* ---------- utils ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
+const nz = v => (v === null || v === undefined || v === '') ? null : v;
+const dash = v => nz(v) == null ? '–' : esc(v);
+function fmtDate(d, withTime = false) {
+  if (!d) return '–';
+  const dt = typeof d === 'string' && d.length === 10 ? new Date(d + 'T00:00:00+07:00') : new Date(d);
+  if (isNaN(dt)) return '–';
+  const o = { timeZone: TZ, day: 'numeric', month: 'short', year: 'numeric' };
+  if (withTime) Object.assign(o, { hour: '2-digit', minute: '2-digit' });
+  return dt.toLocaleString('th-TH', o) + (withTime ? ' น.' : '');
+}
+function fmtRel(d) {
+  const s = (Date.now() - new Date(d)) / 1000;
+  if (s < 60) return 'เมื่อสักครู่';
+  if (s < 3600) return Math.floor(s / 60) + ' นาทีที่แล้ว';
+  if (s < 86400) return Math.floor(s / 3600) + ' ชม.ที่แล้ว';
+  if (s < 86400 * 7) return Math.floor(s / 86400) + ' วันที่แล้ว';
+  return fmtDate(d);
+}
+function dayParts(d) {
+  const dt = new Date(d);
+  return { d: dt.toLocaleString('th-TH', { timeZone: TZ, day: 'numeric' }),
+           m: dt.toLocaleString('th-TH', { timeZone: TZ, month: 'short' }),
+           t: dt.toLocaleString('th-TH', { timeZone: TZ, hour: '2-digit', minute: '2-digit' }) + ' น.',
+           w: dt.toLocaleString('th-TH', { timeZone: TZ, weekday: 'long' }) };
+}
+// ค่าสำหรับ <input type=datetime-local> ตามเวลาไทย
+function toLocalInput(d) {
+  if (!d) return '';
+  const dt = new Date(new Date(d).getTime() + 7 * 3600e3);
+  return dt.toISOString().slice(0, 16);
+}
+const fromLocalInput = v => v ? v + ':00+07:00' : '';
+const fmtNum = n => n == null ? '–' : Number(n).toLocaleString('th-TH');
+const fmtSize = b => b < 1024 ? b + ' B' : b < 1048576 ? (b / 1024).toFixed(0) + ' KB' : (b / 1048576).toFixed(1) + ' MB';
+const daysTo = d => Math.ceil((new Date(d + 'T00:00:00+07:00') - Date.now()) / 86400e3);
+
+function toast(msg, bad = false, ms = 2800) {
+  $$('.toast').forEach(t => t.remove());
+  const t = document.createElement('div');
+  t.className = 'toast' + (bad ? ' bad' : '');
+  t.setAttribute('role', bad ? 'alert' : 'status');
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), ms);
+}
+
+/* ---------- storage (กัน private mode) ---------- */
+const store = {
+  get(k, d = null) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+  del(k) { try { localStorage.removeItem(k); } catch {} }
+};
+const sstore = {
+  get(k, d = null) { try { const v = sessionStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v) { try { sessionStorage.setItem(k, JSON.stringify(v)); } catch {} }
+};
+
+/* ---------- API ---------- */
+class ApiError extends Error {}
+// คีย์แบบใหม่ (sb_publishable_) ส่งเฉพาะ apikey; คีย์ JWT แบบเดิมส่ง Authorization ด้วย
+function apiHeaders() {
+  const h = { apikey: CFG.key, 'Content-Type': 'application/json', Accept: 'application/json' };
+  if (!/^sb_/.test(CFG.key)) h.Authorization = `Bearer ${CFG.key}`;
+  return h;
+}
+async function api(fn, args = {}, { silent = false } = {}) {
+  if (!CFG.url || !CFG.key) throw new ApiError('ยังไม่ได้ตั้งค่าการเชื่อมต่อฐานข้อมูล');
+  let r;
+  try {
+    r = await fetch(`${CFG.url}/rest/v1/rpc/${fn}`, {
+      method: 'POST',
+      headers: apiHeaders(),
+      body: JSON.stringify(args)
+    });
+  } catch (e) {
+    throw new ApiError(navigator.onLine ? 'เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ กรุณาลองใหม่' : 'ไม่มีสัญญาณอินเทอร์เน็ต');
+  }
+  const data = await r.json().catch(() => null);
+  if (!r.ok) {
+    const m = (data && (data.message || data.hint || data.error)) || `เกิดข้อผิดพลาด (${r.status})`;
+    if (/^SESSION/.test(m)) { if (!silent) toast(m.replace(/^SESSION:\s*/, ''), true); endSession(); throw new ApiError('SESSION'); }
+    throw new ApiError(m);
+  }
+  if (data && typeof data === 'object' && !Array.isArray(data) && data.error) throw new ApiError(data.error);
+  return data;
+}
+const T = () => S.token;
+// เรียก API พร้อมแจ้ง error เป็น toast
+async function run(fn, args, okMsg) {
+  try { const r = await api(fn, args); if (okMsg) toast(okMsg); return r; }
+  catch (e) { if (e.message !== 'SESSION') toast(e.message, true); return null; }
+}
+
+/* ---------- state ---------- */
+const S = {
+  token: null, kind: null, role: null, me: null, vid: null, home: null, models: [], support: {},
+  get isStaff() { return this.kind === 'staff'; },
+  get isSmart() { return this.kind === 'staff' && ['cs_operator','service_manager','technician','admin'].includes(this.role); },
+  can(...roles) { return roles.includes(this.role); },
+  get vehicle() { return (this.me?.vehicles || []).find(v => v.id === this.vid) || null; }
+};
+function saveSess() { store.set('mcs_sess', { token: S.token, kind: S.kind, role: S.role, vid: S.vid }); }
+function endSession() {
+  S.token = null; S.me = null; S.home = null; S.vid = null;
+  store.del('mcs_sess');
+  try { sessionStorage.clear(); } catch {}
+  stopVoice();
+  location.hash = '#/login';
+  render();
+}
+
+/* ---------- image / file helpers ---------- */
+function compressImage(file, max = 1280, q = 0.72) {
+  return new Promise((res, rej) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      const s = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      const d = c.toDataURL('image/jpeg', q);
+      res({ name: (file.name || 'photo').replace(/\.\w+$/, '') + '.jpg', mime: 'image/jpeg', data: d.split(',')[1], url: d });
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('เปิดภาพไม่ได้')); };
+    img.src = url;
+  });
+}
+function readFileB64(file) {
+  return new Promise((res, rej) => {
+    const fr = new FileReader();
+    fr.onload = () => res({ name: file.name, mime: file.type, data: String(fr.result).split(',')[1] });
+    fr.onerror = () => rej(new Error('อ่านไฟล์ไม่ได้'));
+    fr.readAsDataURL(file);
+  });
+}
+function b64ToBlob(b64, mime) {
+  const bin = atob(b64); const a = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i);
+  return new Blob([a], { type: mime });
+}
+function pickFiles(accept, multiple = true) {
+  return new Promise(res => {
+    const i = document.createElement('input');
+    i.type = 'file'; i.accept = accept; i.multiple = multiple;
+    i.style.display = 'none';
+    i.onchange = () => { res([...i.files]); i.remove(); };
+    document.body.appendChild(i); i.click();
+  });
+}
+function getGPS() {
+  return new Promise(res => {
+    if (!navigator.geolocation) return res(null);
+    navigator.geolocation.getCurrentPosition(p => res({ lat: p.coords.latitude, lng: p.coords.longitude }), () => res(null),
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
+  });
+}
+
+/* ---------- sheet / dialogs ---------- */
+let sheetStack = [];
+function openSheet(html, { onClose, cls = '' } = {}) {
+  const scrim = document.createElement('div');
+  scrim.className = 'scrim';
+  scrim.innerHTML = `<div class="sheet ${cls}" role="dialog" aria-modal="true"><div class="grip"></div>${html}</div>`;
+  const close = () => { scrim.remove(); sheetStack = sheetStack.filter(s => s !== api_); onClose && onClose(); };
+  const api_ = { el: scrim.firstElementChild, close };
+  scrim.addEventListener('click', e => { if (e.target === scrim) close(); });
+  scrim.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  document.body.appendChild(scrim);
+  sheetStack.push(api_);
+  $$('[data-close]', scrim).forEach(b => b.addEventListener('click', close));
+  setTimeout(() => { const f = $('input,textarea,select,button.opt[aria-selected=true]', scrim.firstElementChild); f && f.type !== 'file' && !matchMedia('(pointer:coarse)').matches && f.focus(); }, 60);
+  return api_;
+}
+function closeAllSheets() { [...sheetStack].forEach(s => s.close()); }
+function confirmBox(title, body, { ok = 'ยืนยัน', cancel = 'ยกเลิก', danger = false, input = null } = {}) {
+  return new Promise(res => {
+    let done = false;
+    const sh = openSheet(`<h3>${esc(title)}</h3>${body ? `<div class="lead" style="color:var(--mut2);white-space:pre-wrap">${body}</div>` : ''}
+      ${input ? `<label class="fl" for="cbx-in">${esc(input.label)}</label><textarea id="cbx-in" class="in" style="min-height:84px" placeholder="${esc(input.placeholder || '')}" maxlength="${input.max || 500}"></textarea>` : ''}
+      <div class="btn-row"><button class="btn btn-ghost" data-close>${esc(cancel)}</button><button class="btn ${danger ? 'btn-bad' : 'btn-acc'}" id="cbx-ok">${esc(ok)}</button></div>`,
+      { onClose: () => { if (!done) res(null); } });
+    $('#cbx-ok', sh.el).onclick = () => {
+      const v = input ? $('#cbx-in', sh.el).value.trim() : true;
+      if (input && input.required && v.length < (input.min || 1)) { toast(input.requiredMsg || 'กรุณากรอกข้อมูล', true); return; }
+      done = true; sh.close(); res(v);
+    };
+  });
+}
+function choose(title, options, current) {
+  return new Promise(res => {
+    let done = false;
+    const sh = openSheet(`<h3>${esc(title)}</h3><div role="listbox">${options.map((o, i) =>
+      `<button class="opt" role="option" data-i="${i}" aria-selected="${o.value === current}">${o.icon ? ic(o.icon) : ''}<span>${esc(o.label)}${o.sub ? `<small>${esc(o.sub)}</small>` : ''}</span></button>`).join('')}</div>`,
+      { onClose: () => { if (!done) res(null); } });
+    $$('.opt', sh.el).forEach(b => b.onclick = () => { done = true; sh.close(); res(options[+b.dataset.i].value); });
+  });
+}
+async function withBusy(btn, fn) {
+  if (btn) { if (btn.disabled) return; btn.disabled = true; btn.dataset.t = btn.innerHTML; btn.innerHTML = '<span class="spin" style="width:22px;height:22px;border-width:2px"></span>'; }
+  try { return await fn(); } finally { if (btn && btn.isConnected) { btn.disabled = false; btn.innerHTML = btn.dataset.t; } }
+}
+
+/* ---------- file viewer ---------- */
+let viewerUrl = null;
+async function openAttachment(id, nameHint) {
+  const a = await run('cs_attach_get', { p_token: T(), p_id: id });
+  if (!a) return;
+  showFile(b64ToBlob(a.data, a.mime), a.mime, a.file_name || nameHint);
+}
+function showFile(blob, mime, name) {
+  if (viewerUrl) { URL.revokeObjectURL(viewerUrl); viewerUrl = null; }
+  viewerUrl = URL.createObjectURL(blob);
+  const v = document.createElement('div');
+  v.className = 'viewer';
+  v.innerHTML = `<div class="vh"><button class="icon-btn" aria-label="ปิด" id="vw-x">${ic('x')}</button><b>${esc(name)}</b>
+    <a class="btn btn-ghost btn-sm" href="${viewerUrl}" download="${esc(name)}">${ic('dl', 'sm')} บันทึก</a>
+    <a class="btn btn-ghost btn-sm" href="${viewerUrl}" target="_blank" rel="noopener">${ic('ext', 'sm')}</a></div>
+    ${mime === 'application/pdf' ? `<iframe title="${esc(name)}" src="${viewerUrl}"></iframe>` : `<div class="img"><img alt="${esc(name)}" src="${viewerUrl}"></div>`}`;
+  document.body.appendChild(v);
+  $('#vw-x', v).onclick = () => { v.remove(); setTimeout(() => { if (viewerUrl) { URL.revokeObjectURL(viewerUrl); viewerUrl = null; } }, 100); };
+}
+function showQR(title, text, sub = '') {
+  const sh = openSheet(`<h3>${ic('qr')} ${esc(title)}</h3>${sub ? `<p class="lead">${esc(sub)}</p>` : ''}<div class="qr" id="qr-box" aria-label="QR Code"></div>
+    <p class="hint" style="text-align:center;word-break:break-all">${esc(text.length > 120 ? text.slice(0, 120) + '…' : text)}</p>
+    <div class="btn-row"><button class="btn btn-ghost" data-close>ปิด</button><button class="btn btn-acc" id="qr-copy">${ic('link', 'sm')} คัดลอก</button></div>`);
+  const box = $('#qr-box', sh.el);
+  if (window.QRCode) { try { new QRCode(box, { text, width: 440, height: 440, correctLevel: QRCode.CorrectLevel.M }); } catch { box.textContent = 'สร้าง QR ไม่ได้ (ข้อมูลยาวเกินไป)'; } }
+  else box.innerHTML = '<p style="color:#333;margin:0;padding:20px">โหลดตัวสร้าง QR ไม่ได้ (ออฟไลน์)</p>';
+  $('#qr-copy', sh.el).onclick = async () => { try { await navigator.clipboard.writeText(text); toast('คัดลอกแล้ว'); } catch { toast('คัดลอกไม่ได้', true); } };
+}
+
+/* ---------- router ---------- */
+const ROUTES = {};          // name -> { title, render(params), nav: 'home'|'activity'|'profile'|null, back: true }
+function route(name, def) { ROUTES[name] = def; }
+function parseHash() {
+  const h = (location.hash || '#/home').slice(2);
+  const [path, qs] = h.split('?');
+  const parts = path.split('/').filter(Boolean);
+  const q = Object.fromEntries(new URLSearchParams(qs || ''));
+  return { name: parts[0] || 'home', arg: parts[1] || null, arg2: parts[2] || null, q };
+}
+function go(path) { if (location.hash === '#/' + path) render(); else location.hash = '#/' + path; }
+function goBack(fallback = 'home') { if (history.length > 1 && document.referrer !== location.href) history.back(); else go(fallback); }
+window.addEventListener('hashchange', () => { closeAllSheets(); render(); });
+
+let renderSeq = 0;
+async function render() {
+  const seq = ++renderSeq;
+  const app = $('#app');
+  const r = parseHash();
+  if (!S.token) {
+    if (r.name !== 'login') { history.replaceState(null, '', '#/login'); }
+    return renderLogin(app);
+  }
+  if (r.name === 'login') { history.replaceState(null, '', '#/home'); r.name = 'home'; }
+  const def = ROUTES[r.name] || ROUTES.home;
+  if (!S.me) {
+    app.innerHTML = '<div class="page-bg"></div><div class="loading" style="padding-top:40vh"><div class="spin"></div></div>';
+    const ok = await loadMe();
+    if (!ok || seq !== renderSeq) return;
+  }
+  if (def.needVehicle !== false && !S.vid && !S.isStaff) { /* vehicle user always has vid */ }
+  app.innerHTML = `<div class="page-bg"></div>${header(def, r)}<main class="view ${def.nav === undefined || def.nav ? '' : 'no-nav'}" id="view" tabindex="-1">
+    <div class="loading"><div class="spin"></div></div></main>${def.nav === false ? '' : bottomNav(def.nav || null)}${def.fab && S.vid ? fab() : ''}`;
+  bindShell();
+  const view = $('#view');
+  try {
+    if (def.needVehicle !== false && !S.vid) {
+      view.innerHTML = noVehicle();
+      $('#pick-v', view)?.addEventListener('click', pickVehicle);
+      return;
+    }
+    await def.render(view, r);
+  } catch (e) {
+    if (e.message === 'SESSION') return;
+    if (seq === renderSeq) view.innerHTML = `<div class="empty">${ic('info')}<b>โหลดข้อมูลไม่สำเร็จ</b>${esc(e.message)}<div style="margin-top:14px"><button class="btn btn-ghost btn-sm" onclick="render()">${ic('refresh', 'sm')} ลองใหม่</button></div></div>`;
+  }
+  if (seq === renderSeq) window.scrollTo(0, 0);
+}
+function noVehicle() {
+  return `<div class="empty">${ic('van')}<b>${S.me?.vehicles?.length ? 'เลือกรถที่ต้องการดูแล' : 'ยังไม่มีรถในความดูแล'}</b>
+    ${S.me?.vehicles?.length ? '' : (S.can('admin', 'service_manager') ? 'เพิ่มรถได้ที่ บัญชี › จัดการรถ (Vehicle Master)' : 'กรุณาติดต่อผู้ดูแลระบบ')}
+    ${S.me?.vehicles?.length ? `<div style="margin-top:14px"><button class="btn btn-acc" id="pick-v">${ic('swap', 'sm')} เลือกรถ</button></div>` : ''}</div>`;
+}
+
+async function loadMe() {
+  try {
+    const me = await api('cs_me', { p_token: S.token }, { silent: false });
+    S.me = me; S.kind = me.kind; S.role = me.role; S.models = me.models || []; S.support = me.support || {};
+    if (S.kind === 'vehicle') S.vid = me.vehicles[0]?.id || null;
+    else if (!me.vehicles.find(v => v.id === S.vid)) S.vid = me.vehicles.length === 1 ? me.vehicles[0].id : null;
+    saveSess();
+    return true;
+  } catch (e) {
+    if (e.message !== 'SESSION') {
+      $('#app').innerHTML = `<div class="page-bg"></div><div class="empty" style="padding-top:30vh">${ic('info')}<b>เชื่อมต่อไม่ได้</b>${esc(e.message)}
+        <div style="margin-top:14px;display:flex;gap:10px;justify-content:center"><button class="btn btn-acc btn-sm" onclick="render()">ลองใหม่</button><button class="btn btn-ghost btn-sm" onclick="endSession()">ออกจากระบบ</button></div></div>`;
+    }
+    return false;
+  }
+}
+
+/* ---------- header / nav ---------- */
+function header(def, r) {
+  const unread = S.home?.unread || 0;
+  const right = `<button class="icon-btn" id="hd-bell" aria-label="การแจ้งเตือน${unread ? ' ' + unread + ' รายการใหม่' : ''}" ${S.vid ? '' : 'hidden'}>${ic('bell')}${unread ? '<span class="dot"></span>' : ''}</button>
+    <button class="icon-btn" id="hd-user" aria-label="บัญชี">${ic('userc')}</button>`;
+  if (def.brand) {
+    return `<header class="hdr"><div class="brand"><img src="assets/smart-logo.png" alt="SMART"><div class="wm"><b>MEA <em>CS</em></b><small>ELECTRIC VEHICLE<br>CUSTOMER SERVICE</small></div></div>${right}</header>`;
+  }
+  const title = typeof def.title === 'function' ? def.title(r) : def.title;
+  const sub = S.vehicle && def.needVehicle !== false ? `${S.vehicle.model} · ${S.vehicle.plate}` : '';
+  return `<header class="hdr solid"><div class="back"><button class="icon-btn" id="hd-back" aria-label="ย้อนกลับ">${ic('chevL')}</button>
+    <h2>${esc(title)}${sub ? `<small>${esc(sub)}</small>` : ''}</h2></div>${def.hideRight ? '' : right}</header>`;
+}
+function bottomNav(cur) {
+  const it = (k, icn, label, badge = 0) => `<button data-go="${k}" ${cur === k ? 'aria-current="page"' : ''}>${ic(icn)}<span>${label}</span>${badge ? `<span class="badge">${badge}</span>` : ''}</button>`;
+  return `<nav class="nav" aria-label="เมนูหลัก">${it('home', 'home', 'หน้าหลัก')}${it('activity', 'clip', 'งานบริการ', S.home?.to_confirm || 0)}${it('profile', 'user', 'บัญชี')}</nav>`;
+}
+function fab() { return `<button class="fab" data-go="ai" aria-label="เรียก AI CS Agent"><img src="assets/robot.webp" alt=""><span>AI CS</span></button>`; }
+function bindShell() {
+  $$('[data-go]').forEach(b => b.addEventListener('click', () => go(b.dataset.go)));
+  $('#hd-back')?.addEventListener('click', () => goBack());
+  $('#hd-bell')?.addEventListener('click', openNotifications);
+  $('#hd-user')?.addEventListener('click', () => go('profile'));
+}
+async function pickVehicle() {
+  const vs = S.me?.vehicles || [];
+  if (vs.length < 2 && S.vid) return;
+  const v = await choose('เลือกรถ', vs.map(x => ({ value: x.id, label: `${x.model} · ${x.plate}`, sub: x.unit_name || '', icon: 'van' })), S.vid);
+  if (v) { S.vid = v; S.home = null; saveSess(); sstore.set('mcs_ai', null); render(); }
+}
+
+/* ---------- notifications ---------- */
+async function openNotifications() {
+  if (!S.vid) return;
+  const list = await run('cs_notif_list', { p_token: T(), p_vehicle: S.vid });
+  if (!list) return;
+  const sh = openSheet(`<h3>${ic('bell')} การแจ้งเตือน</h3>
+    ${list.length ? `<div style="display:flex;justify-content:flex-end;margin-bottom:6px"><button class="link" id="nt-all">${ic('check', 'sm')} อ่านทั้งหมด</button></div>` : ''}
+    <div class="list">${list.length ? list.map(n => `<button class="item well" data-ref="${esc(n.ref_type || '')}" data-id="${esc(n.ref_id || '')}" data-nid="${n.id}" style="${n.read_at ? 'opacity:.65' : ''}">
+      <span class="ic ${n.read_at ? 'gray' : ''}">${ic({ ticket: 'clip', pm: 'cal', replacement: 'swap', document: 'doc', message: 'chat' }[n.kind] || 'bell')}</span>
+      <span class="bd"><b>${esc(n.title)}</b>${n.body ? `<p>${esc(n.body)}</p>` : ''}<span class="meta">${fmtRel(n.created_at)}${n.read_at ? '' : ' · <span class="tag acc">ใหม่</span>'}</span></span></button>`).join('')
+      : `<div class="empty">${ic('bell')}<b>ยังไม่มีการแจ้งเตือน</b></div>`}</div>`);
+  $('#nt-all', sh.el)?.addEventListener('click', async () => {
+    await run('cs_notif_read', { p_token: T(), p_vehicle: S.vid, p_id: null });
+    if (S.home) S.home.unread = 0;
+    sh.close(); $('#hd-bell .dot')?.remove();
+  });
+  $$('.item', sh.el).forEach(b => b.addEventListener('click', async () => {
+    run('cs_notif_read', { p_token: T(), p_vehicle: S.vid, p_id: +b.dataset.nid });
+    if (S.home && S.home.unread) S.home.unread--;
+    sh.close();
+    const ref = b.dataset.ref, id = b.dataset.id;
+    if (ref === 'ticket' && id) go('ticket/' + id);
+    else if (ref === 'maintenance') go('maint');
+    else if (ref === 'replacement') go('repl');
+    else if (ref === 'document') go('docs');
+    else if (ref === 'message') go('contact?tab=chat');
+  }));
+}
+
+/* ---------- login ---------- */
+function renderLogin(app) {
+  const staffMode = sstore.get('mcs_staff_login', false);
+  app.innerHTML = `<div class="login" role="main">
+    <h1 class="sr">MEA CS — Electric Vehicle Customer Service การไฟฟ้านครหลวง</h1>
+    <form class="login-card" id="lf" novalidate autocomplete="on">
+      <img class="login-logo" src="assets/smart-logo.png" alt="SMART Terminal">
+      <h1>${staffMode ? 'เข้าสู่ระบบเจ้าหน้าที่' : 'เข้าสู่ระบบบริการรถยนต์'}</h1>
+      <p class="sub">${staffMode ? 'SMART CS · ผู้ประสานงาน กฟน. · ผู้ดูแลระบบ' : 'สำหรับเจ้าหน้าที่การไฟฟ้านครหลวง'}</p>
+      ${staffMode ? `
+        <label for="l-user">Username <small>— ชื่อผู้ใช้</small></label>
+        <div class="field-ico">${ic('user')}<input class="in" id="l-user" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="ชื่อผู้ใช้" required></div>
+        <label for="l-pass">Password <small>— รหัสผ่าน</small></label>
+        <div class="field-ico">${ic('lock')}<input class="in" id="l-pass" name="password" type="password" autocomplete="current-password" placeholder="รหัสผ่าน" required>
+          <button type="button" class="eye" id="l-eye" aria-label="แสดงรหัสผ่าน">${ic('eyeoff')}</button></div>`
+      : `
+        <label for="l-model">Username <small>— ยี่ห้อและรุ่นรถ</small></label>
+        <div class="field-ico">${ic('car')}<button type="button" class="in picker" id="l-model" aria-haspopup="listbox"><span class="plh">เลือกยี่ห้อและรุ่นรถ</span>${ic('chevD', 'sm')}</button></div>
+        <label for="l-plate">Password <small>— เลขทะเบียนรถ</small></label>
+        <div class="field-ico">${ic('lock')}<input class="in" id="l-plate" name="password" type="password" autocomplete="current-password" placeholder="กรอกเลขทะเบียนรถ" required>
+          <button type="button" class="eye" id="l-eye" aria-label="แสดงเลขทะเบียน">${ic('eyeoff')}</button></div>`}
+      <div class="login-msg" id="l-msg" role="alert"></div>
+      <button class="btn btn-acc btn-login" id="l-go" type="submit">LOGIN ${ic('chevR')}</button>
+      <div class="login-foot">Powered by SMART TERMINAL CORPORATION</div>
+      <button type="button" class="login-switch" id="l-switch">${staffMode ? 'เข้าสู่ระบบด้วยรถ (รุ่นรถ + ทะเบียน)' : 'เข้าสู่ระบบเจ้าหน้าที่ SMART / ผู้ประสานงาน'}</button>
+      ${staffMode ? '' : '<p class="login-note">ต้นแบบ: ใช้ทะเบียนรถเป็นรหัสผ่าน — ระบบใช้งานจริงจะเพิ่มการยืนยันตัวตน</p>'}
+    </form></div>`;
+  let model = store.get('mcs_last_model', null);
+  const mBtn = $('#l-model');
+  const setModel = m => { model = m; if (mBtn) mBtn.innerHTML = `<span>${esc(m)}</span>${ic('chevD', 'sm')}`; };
+  const loadModels = async () => {
+    if (S.models.length) return S.models;
+    try { const pi = await api('cs_public_info'); S.models = pi.models || []; S.support = pi.support || {}; } catch (e) { $('#l-msg').textContent = e.message; }
+    return S.models;
+  };
+  if (mBtn) {
+    if (model) setModel(model);
+    loadModels();
+    mBtn.addEventListener('click', async () => {
+      const ms = await loadModels();
+      if (!ms.length) return;
+      const m = await choose('ยี่ห้อและรุ่นรถ', ms.map(x => ({ value: x, label: x, icon: 'car' })), model);
+      if (m) { setModel(m); $('#l-plate').focus(); }
+    });
+  }
+  $('#l-eye').addEventListener('click', e => {
+    const inp = $('#l-plate') || $('#l-pass');
+    const show = inp.type === 'password';
+    inp.type = show ? 'text' : 'password';
+    e.currentTarget.innerHTML = ic(show ? 'eye' : 'eyeoff');
+  });
+  $('#l-switch').addEventListener('click', () => { sstore.set('mcs_staff_login', !staffMode); renderLogin(app); });
+  $('#lf').addEventListener('submit', async e => {
+    e.preventDefault();
+    const msg = $('#l-msg'); msg.textContent = '';
+    let r;
+    await withBusy($('#l-go'), async () => {
+      try {
+        if (staffMode) {
+          const u = $('#l-user').value.trim(), p = $('#l-pass').value;
+          if (!u || !p) { msg.textContent = 'กรุณากรอกชื่อผู้ใช้และรหัสผ่าน'; return; }
+          r = await api('cs_login_staff', { p_username: u, p_password: p });
+        } else {
+          const p = $('#l-plate').value.trim();
+          if (!model) { msg.textContent = 'กรุณาเลือกยี่ห้อและรุ่นรถ'; return; }
+          if (!p) { msg.textContent = 'กรุณากรอกเลขทะเบียนรถ'; $('#l-plate').focus(); return; }
+          r = await api('cs_login_vehicle', { p_model: model, p_plate: p });
+          store.set('mcs_last_model', model);
+        }
+      } catch (err) { msg.textContent = err.message; }
+    });
+    if (!r || !r.token) return;
+    S.token = r.token; S.kind = r.kind; S.role = r.role; S.me = null; S.home = null;
+    S.vid = r.vehicle?.id || null;
+    saveSess();
+    if (r.must_change) store.set('mcs_must_change', true);
+    location.hash = '#/home';
+    render();
+  });
+}
+
+/* ---------- shared: vehicle visual ---------- */
+function carVisual(model, cls = 'car') {
+  return /FARIZON/i.test(model || '') ? `<img class="${cls}" src="assets/van.webp" alt="${esc(model)}">`
+    : `<span class="${cls} icon" aria-hidden="true">${ic('car', 'lg').replace('class="i lg"', 'class="i" style="width:96px;height:96px;stroke-width:1.2"')}</span>`;
+}
+
+/* =====================================================================
+   HOME
+   ===================================================================== */
+const MENU = [
+  ['vehicle', 'car', 'รถของฉัน', 'My Vehicle'],
+  ['ai', 'bot', 'AI CS Agent', 'Your EV Service Assistant'],
+  ['request', 'wrench', 'แจ้งบริการ', 'Service Request'],
+  ['activity', 'clip', 'ติดตามงาน', 'Service Activity'],
+  ['maint', 'cal', 'บำรุงรักษา', 'Maintenance'],
+  ['repl', 'van', 'รถสำรอง', 'Replacement Van'],
+  ['docs', 'doc', 'เอกสารรถ', 'Document Center'],
+  ['contact', 'headset', 'ติดต่อ CS', 'Contact Support']
+];
+route('home', {
+  brand: true, nav: 'home', fab: true, needVehicle: false,
+  async render(view) {
+    if (S.isSmart && !S.vid) return renderStaffHome(view);
+    if (!S.vid) { view.innerHTML = noVehicle(); $('#pick-v', view)?.addEventListener('click', pickVehicle); return; }
+    const h = await api('cs_home', { p_token: T(), p_vehicle: S.vid });
+    S.home = h;
+    const v = h.vehicle;
+    const multi = (S.me?.vehicles?.length || 0) > 1;
+    const alerts = [];
+    if (h.to_confirm) alerts.push(['activity?tab=confirm', 'check', `งานเสร็จแล้ว ${h.to_confirm} รายการ`, 'กรุณาตรวจรถและยืนยันผล/ประเมินบริการ', '']);
+    if (h.next_pm && h.next_pm.status === 'appointed') alerts.push(['maint', 'cal', 'นัดบำรุงรักษา ' + fmtDate(h.next_pm.appointment_at, true), h.next_pm.title, '']);
+    else if (h.next_pm && h.next_pm.due_date && daysTo(h.next_pm.due_date) <= 14) alerts.push(['maint', 'cal', `ถึงรอบ ${esc(h.next_pm.title)}`, `กำหนด ${fmtDate(h.next_pm.due_date)} — กดเพื่อขอนัด`, daysTo(h.next_pm.due_date) < 0 ? 'bad' : '']);
+    if (h.active_replacement) alerts.push(['repl', 'van', `รถสำรอง ${h.active_replacement.req_no}`, (L.rstatus[h.active_replacement.status] || [''])[0] + (h.active_replacement.replacement_plate ? ' · ' + h.active_replacement.replacement_plate : ''), '']);
+    if (h.unread_messages) alerts.push(['contact?tab=chat', 'chat', `ข้อความใหม่จาก SMART CS ${h.unread_messages} ข้อความ`, 'แตะเพื่ออ่าน', '']);
+    const expName = { insurance: 'ประกันภัย', act: 'พ.ร.บ.', tax: 'ภาษีรถ', contract: 'สัญญาเช่า' };
+    (h.expiring || []).forEach(x => { const d = daysTo(x.date); alerts.push(['docs', 'shield', `${expName[x.kind]} ${d < 0 ? 'หมดอายุแล้ว' : 'ใกล้หมดอายุ'}`, `${fmtDate(x.date)}${d >= 0 ? ` (อีก ${d} วัน)` : ''}`, d < 0 ? 'bad' : '']); });
+    view.innerHTML = `
+      <div class="greet"><h3>สวัสดีครับ</h3>
+        <button id="hm-veh" ${multi ? '' : 'disabled'}>${esc(v.model)} | ทะเบียน ${esc(v.plate)} ${multi ? ic('swap', 'sm') : ic('chevR', 'sm')}</button></div>
+      <button class="glass hero" data-go="vehicle" aria-label="ดูข้อมูลรถ ${esc(v.model)} ทะเบียน ${esc(v.plate)}">
+        <span class="t"><b>${esc(v.model)}</b><span>ทะเบียน ${esc(v.plate)}</span>${pill('vstatus', v.status)}</span>
+        ${carVisual(v.model)}<span class="chev">${ic('chevR')}</span></button>
+      ${alerts.length ? `<div class="alerts">${alerts.map(a => `<button class="glass tight alert ${a[4]}" data-go="${a[0]}"><span class="ic">${ic(a[1])}</span><span class="tx"><b>${a[2]}</b><span>${esc(a[3])}</span></span>${ic('chevR', 'sm')}</button>`).join('')}</div>` : ''}
+      <div class="menu-grid">${MENU.map(([k, icn, th, en]) => {
+        const b = k === 'activity' ? h.open_tickets : k === 'contact' ? h.unread_messages : 0;
+        return `<button class="glass mcard" data-go="${k}">${ic(icn)}<span class="t"><b>${th}</b><small>${en}</small></span><span class="chev">${ic('chevR')}</span>${b ? `<span class="badge">${b}</span>` : ''}</button>`;
+      }).join('')}</div>
+      <button class="glass help-bar" data-go="contact"><span class="ic">${ic('headset')}</span><span class="tx"><b>ต้องการความช่วยเหลือด่วน?</b><span>ติดต่อ SMART Customer Service</span></span><span class="chev">${ic('chevR')}</span></button>
+      ${S.isSmart ? `<div class="btn-row"><button class="btn btn-ghost" id="hm-staff">${ic('inbox', 'sm')} คิวงาน SMART CS (ทุกคัน)</button></div>` : ''}`;
+    $$('[data-go]', view).forEach(b => b.addEventListener('click', () => go(b.dataset.go)));
+    $('#hm-veh', view)?.addEventListener('click', pickVehicle);
+    $('#hm-staff', view)?.addEventListener('click', () => go('queue'));
+    // อัปเดต badge แจ้งเตือนบน header/nav
+    if (h.unread) { const b = $('#hd-bell'); if (b && !$('.dot', b)) b.insertAdjacentHTML('beforeend', '<span class="dot"></span>'); }
+    const nb = $('.nav [data-go=activity]'); if (nb && h.to_confirm && !$('.badge', nb)) nb.insertAdjacentHTML('beforeend', `<span class="badge">${h.to_confirm}</span>`);
+    if (store.get('mcs_must_change')) toast('กรุณาเปลี่ยนรหัสผ่านตั้งต้นที่ บัญชี › ความปลอดภัย', true, 5000);
+  }
+});
+
+/* =====================================================================
+   STAFF HOME / QUEUE (SMART CS)
+   ===================================================================== */
+async function renderStaffHome(view) {
+  const q = await api('cs_staff_queue', { p_token: T() });
+  const sosN = q.messages.filter(m => m.emergency).length;
+  view.innerHTML = `
+    <div class="greet"><h3>สวัสดีครับ ${esc(S.me.staff?.full_name || '')}</h3><button disabled>${esc(L.role[S.role] || S.role)}</button></div>
+    ${sosN ? `<div class="banner" style="background:var(--bad-soft);border-color:#E5483A;color:#FFD2CC">${ic('siren', 'sm')} มีแจ้งเหตุฉุกเฉินที่ยังไม่อ่าน ${sosN} คัน</div>` : ''}
+    <div class="menu-grid" style="margin-bottom:6px">
+      <button class="glass mcard" id="sh-pick">${ic('van')}<span class="t"><b>เลือกรถ</b><small>${S.me.vehicles.length} คันในระบบ</small></span><span class="chev">${ic('chevR')}</span></button>
+      <button class="glass mcard" data-go="queue">${ic('inbox')}<span class="t"><b>คิวงาน</b><small>${q.tickets.length} Ticket เปิดอยู่</small></span><span class="chev">${ic('chevR')}</span></button>
+    </div>
+    ${staffQueueHtml(q)}`;
+  $('#sh-pick', view).addEventListener('click', pickVehicle);
+  bindQueue(view);
+}
+function staffQueueHtml(q) {
+  const sec = (title, n, body) => `<div class="sec"><h4>${title}</h4>${n ? `<span class="badge">${n}</span>` : ''}</div>${body}`;
+  const emp = t => `<div class="glass tight empty" style="padding:18px">${t}</div>`;
+  return sec('ข้อความรอตอบ', q.messages.length, q.messages.length ? `<div class="list">${q.messages.map(m => `<button class="glass tight item" data-vchat="${m.vehicle_id}">
+      <span class="ic ${m.emergency ? '' : 'gray'}" style="${m.emergency ? 'background:var(--bad-soft);color:#FF9C8A' : ''}">${ic(m.emergency ? 'siren' : 'chat')}</span>
+      <span class="bd"><b>${esc(m.model)} · ${esc(m.plate)}</b><span class="meta">${fmtRel(m.last_at)}${m.emergency ? ' · <span class="tag bad">ฉุกเฉิน</span>' : ''}</span></span><span class="badge ${m.emergency ? 'bad' : ''}">${m.unread}</span></button>`).join('')}</div>` : emp('ไม่มีข้อความค้าง'))
+  + sec('Ticket ที่ต้องดำเนินการ', q.tickets.length, q.tickets.length ? `<div class="list">${q.tickets.map(ticketCard).join('')}</div>` : emp('ไม่มี Ticket ค้าง'))
+  + sec('คำขอนัดบำรุงรักษา', q.pm_requests.length, q.pm_requests.length ? `<div class="list">${q.pm_requests.map(m => `<button class="glass tight item" data-vgo="${m.vehicle_id}" data-to="maint">
+      <span class="ic">${ic('cal')}</span><span class="bd"><b>${esc(m.title)}</b><span style="display:block;margin:4px 0">${pill('mstatus', m.status)}</span><span class="meta">${esc(m.model)} · ${esc(m.plate)} · ${m.appointment_at ? fmtDate(m.appointment_at, true) : 'ยังไม่ระบุวัน'}</span></span></button>`).join('')}</div>` : emp('ไม่มีคำขอ'))
+  + sec('รถสำรอง', q.replacements.length, q.replacements.length ? `<div class="list">${q.replacements.map(r => `<button class="glass tight item" data-vgo="${r.vehicle_id}" data-to="repl">
+      <span class="ic">${ic('van')}</span><span class="bd"><b>${esc(r.req_no)} · ${esc(r.plate)}</b><span class="meta">${esc(r.reason)}</span></span>${pill('rstatus', r.status)}</button>`).join('')}</div>` : emp('ไม่มีคำขอ'))
+  + sec('ความคิดเห็นใหม่', q.feedback.length, q.feedback.length ? `<div class="list">${q.feedback.map(f => `<div class="glass tight item"><span class="ic gray">${ic('star')}</span>
+      <span class="bd"><b>${esc(f.topic)}${f.rating ? ' · ' + '★'.repeat(f.rating) : ''}</b><p style="-webkit-line-clamp:4">${esc(f.body)}</p><span class="meta">${esc(f.plate || '')} · ${esc(f.created_by || '')} · ${fmtRel(f.created_at)}</span></span>
+      <button class="btn btn-ghost btn-sm" data-fb="${f.id}">รับทราบ</button></div>`).join('')}</div>` : emp('ไม่มีความคิดเห็นใหม่'));
+}
+function bindQueue(view) {
+  $$('[data-go]', view).forEach(b => b.addEventListener('click', () => go(b.dataset.go)));
+  $$('[data-ticket]', view).forEach(b => b.addEventListener('click', () => go('ticket/' + b.dataset.ticket)));
+  $$('[data-vchat]', view).forEach(b => b.addEventListener('click', () => { S.vid = b.dataset.vchat; S.home = null; saveSess(); go('contact?tab=chat'); }));
+  $$('[data-vgo]', view).forEach(b => b.addEventListener('click', () => { S.vid = b.dataset.vgo; S.home = null; saveSess(); go(b.dataset.to); }));
+  $$('[data-fb]', view).forEach(b => b.addEventListener('click', async () => { if (await run('cs_feedback_mark', { p_token: T(), p_id: +b.dataset.fb, p_status: 'read' }, 'รับทราบแล้ว')) b.closest('.item').remove(); }));
+}
+route('queue', {
+  title: 'คิวงาน SMART CS', nav: 'home', needVehicle: false,
+  async render(view) {
+    if (!S.isSmart) { view.innerHTML = `<div class="empty">${ic('lock')}<b>เฉพาะเจ้าหน้าที่ SMART</b></div>`; return; }
+    const q = await api('cs_staff_queue', { p_token: T() });
+    view.innerHTML = staffQueueHtml(q);
+    bindQueue(view);
+  }
+});
+
+/* =====================================================================
+   MY VEHICLE
+   ===================================================================== */
+route('vehicle', {
+  title: 'รถของฉัน', nav: 'home',
+  async render(view, r) {
+    const d = await api('cs_vehicle_get', { p_token: T(), p_vehicle: S.vid });
+    const v = d.vehicle;
+    let tab = r.q.tab || 'info';
+    const contractLeft = v.contract_end ? daysTo(v.contract_end) : null;
+    const draw = () => {
+      view.innerHTML = `
+      <div class="glass hero" style="cursor:default"><span class="t"><b>${esc(v.model)}</b><span>ทะเบียน ${esc(v.plate)}</span>${pill('vstatus', v.status)}</span>${carVisual(v.model)}</div>
+      <div class="tabs" role="tablist">${[['info', 'ข้อมูลรถ'], ['contract', 'สถานะ / สัญญา'], ['history', 'ประวัติรถ']].map(([k, l]) =>
+        `<button role="tab" aria-selected="${tab === k}" data-tab="${k}">${l}</button>`).join('')}</div>
+      <div id="vt"></div>`;
+      $$('[data-tab]', view).forEach(b => b.addEventListener('click', () => { tab = b.dataset.tab; history.replaceState(null, '', '#/vehicle?tab=' + tab); draw(); }));
+      const box = $('#vt', view);
+      if (tab === 'info') {
+        box.innerHTML = `
+        <div class="glass card"><h5>ข้อมูลรถ</h5><dl class="kv">
+          <dt>ยี่ห้อ/รุ่น</dt><dd>${esc(v.model)}</dd><dt>ทะเบียน</dt><dd>${esc(v.plate)}</dd>
+          <dt>VIN</dt><dd class="num" style="font-size:14px">${dash(v.vin)}</dd><dt>สี</dt><dd>${dash(v.color)}</dd>
+          <dt>เลขไมล์ล่าสุด</dt><dd class="num">${v.odometer != null ? fmtNum(v.odometer) + ' กม.' : '–'}</dd>
+          <dt>ความจุแบตเตอรี่</dt><dd class="num">${v.battery_kwh != null ? v.battery_kwh + ' kWh' : '–'}</dd>
+          <dt>วันส่งมอบ</dt><dd>${fmtDate(v.delivered_at)}</dd></dl>
+          <div class="btn-row"><button class="btn btn-ghost btn-sm" id="v-qr">${ic('qr', 'sm')} QR ข้อมูลรถ</button></div></div>
+        <div class="glass card"><h5>หน่วยงานผู้ใช้งาน</h5><dl class="kv">
+          <dt>หน่วยงาน กฟน.</dt><dd>${dash(v.unit_name)}</dd><dt>รหัสหน่วยงาน</dt><dd>${dash(v.unit_code)}</dd>
+          <dt>ผู้ขับ/ผู้รับผิดชอบ</dt><dd>${dash(v.driver_name)}</dd><dt>เบอร์ติดต่อ</dt><dd>${v.driver_phone ? `<a href="tel:${esc(v.driver_phone)}">${esc(v.driver_phone)}</a>` : '–'}</dd></dl>
+          <div class="btn-row"><button class="btn btn-ghost btn-sm" id="v-drv">${ic('edit', 'sm')} แก้ไขผู้ขับ/เบอร์ติดต่อ</button></div></div>`;
+        $('#v-qr', box).onclick = () => showQR('ข้อมูลรถ', `MEA CS | ${v.model} | ทะเบียน ${v.plate}${v.vin ? ' | VIN ' + v.vin : ''}${v.unit_name ? ' | ' + v.unit_name : ''}${v.contract_no ? ' | สัญญา ' + v.contract_no : ''}`, `${v.model} · ${v.plate}`);
+        $('#v-drv', box).onclick = () => editDriver(v, nv => { Object.assign(v, nv); draw(); });
+      } else if (tab === 'contract') {
+        const exp = (d0) => { if (!d0) return '–'; const n = daysTo(d0); return `${fmtDate(d0)} ${n < 0 ? '<span class="tag bad">หมดอายุ</span>' : n <= 45 ? `<span class="tag acc">อีก ${n} วัน</span>` : ''}`; };
+        box.innerHTML = `
+        <div class="glass card"><h5>สถานะรถ</h5><div style="display:flex;justify-content:space-between;align-items:center">${pill('vstatus', v.status)}<span class="hint" style="margin:0">อัปเดต ${fmtRel(v.updated_at)}</span></div>
+          ${v.note ? `<p class="hint">${esc(v.note)}</p>` : ''}</div>
+        <div class="glass card"><h5>สัญญาเช่า</h5><dl class="kv">
+          <dt>เลขที่สัญญา</dt><dd>${dash(v.contract_no)}</dd><dt>เริ่มสัญญา</dt><dd>${fmtDate(v.contract_start)}</dd>
+          <dt>สิ้นสุดสัญญา</dt><dd>${exp(v.contract_end)}</dd>
+          ${contractLeft != null && contractLeft >= 0 ? `<dt>คงเหลือ</dt><dd class="num">${fmtNum(contractLeft)} วัน</dd>` : ''}
+          <dt>ผู้ให้บริการ</dt><dd>${esc(S.support.company || 'SMART TERMINAL CORPORATION')}</dd></dl></div>
+        <div class="glass card"><h5>ประกันภัย / พ.ร.บ. / ภาษี</h5><dl class="kv">
+          <dt>บริษัทประกัน</dt><dd>${dash(v.insurance_company)}</dd><dt>เลขกรมธรรม์</dt><dd>${dash(v.insurance_no)}</dd>
+          <dt>ประกันหมดอายุ</dt><dd>${exp(v.insurance_exp)}</dd><dt>พ.ร.บ. หมดอายุ</dt><dd>${exp(v.act_exp)}</dd><dt>ภาษีหมดอายุ</dt><dd>${exp(v.tax_exp)}</dd></dl>
+          <div class="btn-row"><button class="btn btn-ghost btn-sm" data-go="docs">${ic('doc', 'sm')} ดูเอกสาร</button></div></div>`;
+        $$('[data-go]', box).forEach(b => b.onclick = () => go(b.dataset.go));
+      } else {
+        const hs = d.history || [];
+        const name = h => h.type === 'ticket' ? 'Ticket ' + (h.no || '') : h.type === 'maintenance' ? (h.sub || '') + ' ' + (h.no || '') : h.type === 'replacement' ? 'รถสำรอง ' + (h.no || '') : 'ข้อมูลรถ';
+        const st = h => h.type === 'ticket' ? pill('tstatus', h.status) : h.type === 'maintenance' ? pill('mstatus', h.status) : h.type === 'replacement' ? pill('rstatus', h.status) : (h.status ? pill('vstatus', h.status) : '');
+        const ttl = h => h.type === 'vehicle' ? ({ create: 'ลงทะเบียนรถเข้าระบบ', status: 'เปลี่ยนสถานะรถ', update: 'ปรับปรุงข้อมูลรถ' }[h.title] || h.title) : h.title;
+        box.innerHTML = hs.length ? `<div class="glass card"><div class="tl">${hs.map(h => `<div class="e" ${h.id && h.type !== 'vehicle' ? `data-h="${h.type}" data-id="${h.id}" style="cursor:pointer"` : ''}>
+          <b>${esc(ttl(h))}</b><div class="meta">${esc(name(h))} · ${fmtDate(h.at, true)}</div><div style="margin-top:4px">${st(h)}</div></div>`).join('')}</div></div>`
+          : `<div class="glass empty">${ic('history')}<b>ยังไม่มีประวัติ</b>ประวัติการแจ้งซ่อม บำรุงรักษา และรถสำรองจะแสดงที่นี่</div>`;
+        $$('[data-h]', box).forEach(e => e.onclick = () => go(e.dataset.h === 'ticket' ? 'ticket/' + e.dataset.id : e.dataset.h === 'maintenance' ? 'maint' : 'repl'));
+      }
+    };
+    draw();
+  }
+});
+function editDriver(v, done) {
+  const sh = openSheet(`<h3>${ic('user')} ผู้ขับ / ผู้รับผิดชอบรถ</h3>
+    <label class="fl" for="dv-n">ชื่อ-สกุล</label><input class="in" id="dv-n" maxlength="120" value="${esc(v.driver_name || '')}" autocomplete="name">
+    <label class="fl" for="dv-p">เบอร์โทร</label><input class="in" id="dv-p" type="tel" inputmode="tel" maxlength="20" value="${esc(v.driver_phone || '')}" autocomplete="tel">
+    <div class="btn-row"><button class="btn btn-ghost" data-close>ยกเลิก</button><button class="btn btn-acc" id="dv-s">บันทึก</button></div>`);
+  $('#dv-s', sh.el).onclick = e => withBusy(e.currentTarget, async () => {
+    const r = await run('cs_vehicle_update_self', { p_token: T(), p_vehicle: v.id, p: { driver_name: $('#dv-n', sh.el).value, driver_phone: $('#dv-p', sh.el).value } }, 'บันทึกแล้ว');
+    if (r) { sh.close(); done(r); }
+  });
+}
+
+/* =====================================================================
+   SERVICE REQUEST (สร้าง/แก้ไขร่าง Ticket)
+   ===================================================================== */
+function ticketCard(t) {
+  const c = L.cat[t.category] || L.cat.other;
+  return `<button class="glass tight item" data-ticket="${t.id}">
+    <span class="ic ${['closed', 'cancelled'].includes(t.status) ? 'gray' : ''}">${ic(c[1])}</span>
+    <span class="bd"><b>${esc(t.title)}</b>
+      <span class="meta"><span class="num">${esc(t.ticket_no)}</span>${S.isStaff ? ` · ${esc(t.plate)}` : ''} · ${fmtRel(t.updated_at)}
+      ${t.priority === 'urgent' || t.priority === 'high' ? `<span class="tag bad">${L.pri[t.priority]}</span>` : ''}${t.source === 'ai' ? '<span class="tag">AI</span>' : ''}</span>
+      ${t.appointment_at && !['closed', 'cancelled'].includes(t.status) ? `<span class="meta">${ic('cal', 'sm')} นัด ${fmtDate(t.appointment_at, true)}</span>` : ''}</span>
+    <span class="end">${pill('tstatus', t.status)}</span></button>`;
+}
+
+route('request', {
+  title: r => r.q.id ? 'แก้ไขร่าง Ticket' : 'แจ้งบริการ', nav: 'home',
+  async render(view, r) {
+    const lkey = 'mcs_req_' + S.vid;
+    let t = null, existing = [];
+    if (r.q.id) {
+      const g = await api('cs_ticket_get', { p_token: T(), p_id: r.q.id });
+      t = g.ticket; existing = g.attachments;
+      if (t.status !== 'draft') { go('ticket/' + t.id); return; }
+    }
+    let f = t ? { category: t.category, priority: t.priority, title: t.title, detail: t.detail || '', location: t.location || '', lat: t.lat, lng: t.lng,
+                  odometer: t.odometer ?? '', can_drive: t.can_drive, reporter_name: t.reporter_name || '', reporter_phone: t.reporter_phone || '', source: t.source }
+      : (store.get(lkey) || { category: r.q.cat || '', priority: 'normal', title: '', detail: '', location: '', odometer: '', can_drive: null,
+            reporter_name: S.home?.vehicle?.driver_name || (S.isStaff ? S.me.staff?.full_name : '') || '', reporter_phone: S.home?.vehicle?.driver_phone || (S.isStaff ? S.me.staff?.phone : '') || '' });
+    if (!t && r.q.from === 'ai') {
+      const d = sstore.get('mcs_ai_draft');
+      if (d) {
+        f = Object.assign(f, { category: d.category || 'other', priority: d.priority || 'normal', title: d.title || '', detail: d.detail || '',
+          location: d.location || f.location, can_drive: typeof d.can_drive === 'boolean' ? d.can_drive : null, source: 'ai', ai_summary: d.summary || '' });
+      }
+    }
+    if (r.q.cat && !t) f.category = r.q.cat;
+    let photos = [];   // ภาพใหม่ที่ยังไม่อัปโหลด
+    const saveLocal = () => { if (!t) store.set(lkey, f); };
+    view.innerHTML = `
+      ${f.source === 'ai' ? `<div class="banner info">${ic('bot', 'sm')} ข้อมูลร่างจาก AI CS Agent — กรุณาตรวจและแก้ไขให้ถูกต้องก่อนส่ง</div>` : ''}
+      <div class="sec" style="margin-top:6px"><h4>ประเภทงาน <span style="color:var(--acc-hi)">*</span></h4></div>
+      <div class="cat-grid" role="radiogroup" aria-label="ประเภทงาน">${Object.entries(L.cat).map(([k, [l, icn]]) =>
+        `<button type="button" class="cat" role="radio" data-cat="${k}" aria-pressed="${f.category === k}" aria-checked="${f.category === k}">${ic(icn)}<span>${l}</span></button>`).join('')}</div>
+      <div id="rq-acc" ${f.category === 'accident' ? '' : 'hidden'} class="banner" style="margin-top:12px;background:var(--bad-soft);border-color:#E5483A;color:#FFD2CC">
+        ${ic('crash', 'sm')} ความปลอดภัยมาก่อน: จอดในที่ปลอดภัย เปิดไฟฉุกเฉิน มีผู้บาดเจ็บโทร <a href="tel:1669" style="color:#fff;font-weight:700">1669</a> · เหตุร้าย <a href="tel:191" style="color:#fff;font-weight:700">191</a> · หากมีควัน/กลิ่นไหม้จากแบตเตอรี่ ให้ออกห่างจากรถทันที</div>
+      <form id="rq" novalidate>
+        <label class="fl" for="rq-title">หัวข้อปัญหา <span class="req">*</span></label>
+        <input class="in" id="rq-title" maxlength="200" placeholder="เช่น ชาร์จไฟไม่เข้า / ไฟเตือนแบตเตอรี่" value="${esc(f.title)}">
+        <label class="fl" for="rq-detail">อาการ / รายละเอียด <span class="req">*</span></label>
+        <textarea class="in" id="rq-detail" maxlength="4000" placeholder="เกิดขึ้นเมื่อไร มีไฟเตือนอะไร ลองทำอะไรไปแล้วบ้าง">${esc(f.detail)}</textarea>
+        <label class="fl">ความเร่งด่วน</label>
+        <div class="seg" id="rq-pri">${Object.entries(L.pri).map(([k, l]) => `<button type="button" data-v="${k}" aria-pressed="${f.priority === k}">${l}</button>`).join('')}</div>
+        <label class="fl">รถยังขับต่อได้อย่างปลอดภัยไหม</label>
+        <div class="seg" id="rq-drive"><button type="button" data-v="true" aria-pressed="${f.can_drive === true}">ขับได้</button><button type="button" data-v="false" aria-pressed="${f.can_drive === false}">ขับไม่ได้ / ไม่แน่ใจ</button></div>
+        <label class="fl" for="rq-loc">ตำแหน่งรถ</label>
+        <div style="display:flex;gap:8px"><input class="in" id="rq-loc" maxlength="300" placeholder="สถานที่ / จุดสังเกต" value="${esc(f.location)}">
+          <button type="button" class="btn btn-ghost" id="rq-gps" style="flex-shrink:0;padding:0 14px" aria-label="ใช้ตำแหน่งปัจจุบัน">${ic('pin')}</button></div>
+        <div class="hint" id="rq-gpsinfo">${f.lat ? `พิกัด ${(+f.lat).toFixed(5)}, ${(+f.lng).toFixed(5)}` : ''}</div>
+        <div class="row2">
+          <div><label class="fl" for="rq-odo">เลขไมล์ (กม.)</label><input class="in num" id="rq-odo" inputmode="numeric" maxlength="7" value="${esc(f.odometer)}" placeholder="ไม่บังคับ"></div>
+          <div><label class="fl" for="rq-phone">เบอร์ติดต่อกลับ</label><input class="in" id="rq-phone" type="tel" inputmode="tel" maxlength="20" value="${esc(f.reporter_phone)}" autocomplete="tel"></div>
+        </div>
+        <label class="fl" for="rq-name">ชื่อผู้แจ้ง</label><input class="in" id="rq-name" maxlength="120" value="${esc(f.reporter_name)}" autocomplete="name">
+        <label class="fl">ภาพประกอบ <small style="color:var(--mut);font-weight:400">(สูงสุด 6 ภาพ)</small></label>
+        <div class="photos" id="rq-photos"></div>
+        <div class="err" id="rq-err" role="alert"></div>
+        <div class="btn-row"><button type="button" class="btn btn-ghost" id="rq-draft">${ic('doc', 'sm')} บันทึกร่าง</button><button type="button" class="btn btn-acc" id="rq-send">ตรวจและส่ง ${ic('send', 'sm')}</button></div>
+        ${t ? `<div class="btn-row"><button type="button" class="btn btn-ghost btn-sm" id="rq-del" style="color:#FF9C8A">${ic('trash', 'sm')} ลบร่างนี้</button></div>` : ''}
+      </form>`;
+    const sync = () => {
+      f.title = $('#rq-title').value; f.detail = $('#rq-detail').value; f.location = $('#rq-loc').value;
+      f.odometer = $('#rq-odo').value.replace(/\D/g, ''); f.reporter_phone = $('#rq-phone').value; f.reporter_name = $('#rq-name').value;
+      saveLocal();
+    };
+    $$('input,textarea', $('#rq')).forEach(i => i.addEventListener('input', sync));
+    $$('[data-cat]', view).forEach(b => b.addEventListener('click', () => {
+      f.category = b.dataset.cat;
+      $$('[data-cat]', view).forEach(x => { x.setAttribute('aria-pressed', x === b); x.setAttribute('aria-checked', x === b); });
+      $('#rq-acc').hidden = f.category !== 'accident';
+      if (f.category === 'accident' && ['low', 'normal'].includes(f.priority)) { f.priority = 'high'; $$('#rq-pri button').forEach(x => x.setAttribute('aria-pressed', x.dataset.v === 'high')); }
+      if (!$('#rq-title').value.trim()) { $('#rq-title').value = L.cat[f.category][0]; sync(); }
+      saveLocal();
+    }));
+    $$('#rq-pri button').forEach(b => b.addEventListener('click', () => { f.priority = b.dataset.v; $$('#rq-pri button').forEach(x => x.setAttribute('aria-pressed', x === b)); saveLocal(); }));
+    $$('#rq-drive button').forEach(b => b.addEventListener('click', () => { f.can_drive = b.dataset.v === 'true'; $$('#rq-drive button').forEach(x => x.setAttribute('aria-pressed', x === b)); saveLocal(); }));
+    $('#rq-gps').addEventListener('click', e => withBusy(e.currentTarget, async () => {
+      const p = await getGPS();
+      if (!p) { toast('ไม่ได้รับสิทธิ์ตำแหน่ง หรือหาตำแหน่งไม่ได้', true); return; }
+      f.lat = p.lat; f.lng = p.lng;
+      $('#rq-gpsinfo').innerHTML = `พิกัด ${p.lat.toFixed(5)}, ${p.lng.toFixed(5)} · <a href="https://maps.google.com/?q=${p.lat},${p.lng}" target="_blank" rel="noopener">ดูแผนที่</a>`;
+      if (!$('#rq-loc').value.trim()) { $('#rq-loc').value = `พิกัด ${p.lat.toFixed(5)}, ${p.lng.toFixed(5)}`; }
+      sync();
+    }));
+    const drawPhotos = () => {
+      const box = $('#rq-photos'); if (!box) return;
+      const total = existing.length + photos.length;
+      box.innerHTML = existing.map(a => `<div class="ph" data-aid="${a.id}"><span>${ic('camera')}</span><button type="button" class="x" data-del-a="${a.id}" aria-label="ลบภาพ">${ic('x', 'sm')}</button></div>`).join('')
+        + photos.map((p, i) => `<div class="ph"><img src="${p.url}" alt="ภาพที่ ${i + 1}"><button type="button" class="x" data-del-p="${i}" aria-label="ลบภาพ">${ic('x', 'sm')}</button></div>`).join('')
+        + (total < 6 ? `<button type="button" class="ph add" id="rq-add">${ic('camera')}<span>เพิ่มภาพ</span></button>` : '');
+      existing.forEach(a => loadThumb(a.id, $(`[data-aid="${a.id}"]`, box)));
+      $('#rq-add', box)?.addEventListener('click', async () => {
+        const files = await pickFiles('image/*', true);
+        for (const fl of files.slice(0, 6 - existing.length - photos.length)) {
+          try { photos.push(await compressImage(fl)); } catch (e) { toast(e.message, true); }
+        }
+        drawPhotos();
+      });
+      $$('[data-del-p]', box).forEach(b => b.addEventListener('click', () => { photos.splice(+b.dataset.delP, 1); drawPhotos(); }));
+      $$('[data-del-a]', box).forEach(b => b.addEventListener('click', async () => {
+        if (!await confirmBox('ลบภาพนี้?', '', { ok: 'ลบ', danger: true })) return;
+        if (await run('cs_attach_delete', { p_token: T(), p_id: b.dataset.delA }, 'ลบภาพแล้ว')) { existing = existing.filter(a => a.id !== b.dataset.delA); drawPhotos(); }
+      }));
+    };
+    drawPhotos();
+    const payload = submit => ({ id: t?.id || null, vehicle_id: S.vid, category: f.category || 'other', priority: f.priority, title: f.title.trim(), detail: f.detail.trim(),
+      location: f.location, lat: f.lat ?? null, lng: f.lng ?? null, odometer: f.odometer || null, can_drive: f.can_drive, reporter_name: f.reporter_name,
+      reporter_phone: f.reporter_phone.trim() || null, source: f.source === 'ai' ? 'ai' : 'app', ai_summary: f.ai_summary || null, submit });
+    const validate = submit => {
+      const er = $('#rq-err'); er.textContent = '';
+      if (!f.category) { er.textContent = 'กรุณาเลือกประเภทงาน'; return false; }
+      if (f.title.trim().length < 3) { er.textContent = 'กรุณากรอกหัวข้อปัญหา'; $('#rq-title').focus(); return false; }
+      if (submit && f.detail.trim().length < 5) { er.textContent = 'กรุณาอธิบายอาการ/รายละเอียด'; $('#rq-detail').focus(); return false; }
+      if (f.reporter_phone.trim() && !/^[0-9+\- ]{6,20}$/.test(f.reporter_phone.trim())) { er.textContent = 'เบอร์ติดต่อไม่ถูกต้อง'; $('#rq-phone').focus(); return false; }
+      return true;
+    };
+    const persist = async submit => {
+      sync();
+      if (!validate(submit)) return;
+      if (submit) {
+        const ok = await confirmBox('ยืนยันส่งเรื่องถึง SMART CS', `<b>${esc(L.cat[f.category][0])} · ${esc(L.pri[f.priority])}</b>\n${esc(f.title)}\n\n${esc(f.detail.slice(0, 300))}${f.location ? '\n\nตำแหน่ง: ' + esc(f.location) : ''}\nภาพ ${existing.length + photos.length} ภาพ\n\nหลังส่งแล้วจะแก้ไขรายละเอียดไม่ได้ (เพิ่มข้อความ/ภาพได้)`, { ok: 'ส่งเรื่อง' });
+        if (!ok) return;
+      }
+      await withBusy($(submit ? '#rq-send' : '#rq-draft'), async () => {
+        let saved = await run('cs_ticket_save', { p_token: T(), p: payload(false) });
+        if (!saved) return;
+        t = saved;
+        for (let i = 0; i < photos.length;) {
+          const p = photos[i];
+          const a = await run('cs_attach_add', { p_token: T(), p_ref_type: 'ticket', p_ref: t.id, p_name: p.name, p_mime: p.mime, p_data: p.data });
+          if (!a) { toast('อัปโหลดภาพไม่สำเร็จ บันทึกร่างไว้แล้ว ลองใหม่อีกครั้ง', true); history.replaceState(null, '', '#/request?id=' + t.id); return; }
+          existing.push(a); photos.splice(i, 1);
+        }
+        if (submit) {
+          saved = await run('cs_ticket_save', { p_token: T(), p: payload(true) });
+          if (!saved) { history.replaceState(null, '', '#/request?id=' + t.id); return; }
+        }
+        store.del(lkey); sstore.set('mcs_ai_draft', null);
+        if (S.home) S.home.open_tickets += submit ? 1 : 0;
+        toast(submit ? `ส่งเรื่องแล้ว · ${saved.ticket_no}` : 'บันทึกร่างแล้ว');
+        location.replace('#/ticket/' + saved.id);
+      });
+    };
+    $('#rq-draft').addEventListener('click', () => persist(false));
+    $('#rq-send').addEventListener('click', () => persist(true));
+    $('#rq-del')?.addEventListener('click', async () => {
+      if (!await confirmBox('ลบร่างนี้?', 'ร่างจะถูกนำออกจากรายการ (เก็บประวัติไว้ในระบบ)', { ok: 'ลบร่าง', danger: true })) return;
+      if (await run('cs_ticket_cancel', { p_token: T(), p_id: t.id, p_reason: 'ลบร่าง' }, 'ลบร่างแล้ว')) go('activity?tab=draft');
+    });
+  }
+});
+const thumbCache = new Map();
+async function loadThumb(id, el) {
+  if (!el) return;
+  try {
+    let url = thumbCache.get(id);
+    if (!url) {
+      const a = await api('cs_attach_get', { p_token: T(), p_id: id });
+      url = a.mime.startsWith('image/') ? `data:${a.mime};base64,${a.data}` : 'pdf';
+      thumbCache.set(id, url);
+    }
+    if (!el.isConnected) return;
+    const x = $('.x', el);
+    if (url === 'pdf') { el.classList.add('pdf'); el.firstElementChild.innerHTML = ic('file') + '<span>PDF</span>'; }
+    else { const img = document.createElement('img'); img.src = url; img.alt = 'ภาพแนบ'; el.firstElementChild.replaceWith(img); }
+    if (x) el.appendChild(x);
+  } catch {}
+}
+
+/* =====================================================================
+   SERVICE ACTIVITY (รายการ Ticket)
+   ===================================================================== */
+route('activity', {
+  title: 'ติดตามงาน', nav: 'activity',
+  async render(view, r) {
+    const all = await api('cs_ticket_list', { p_token: T(), p_vehicle: S.vid, p_filter: 'all' });
+    const groups = {
+      open: all.filter(t => ['submitted', 'acknowledged', 'in_progress', 'waiting_parts'].includes(t.status)),
+      confirm: all.filter(t => t.status === 'resolved'),
+      draft: all.filter(t => t.status === 'draft'),
+      done: all.filter(t => ['closed', 'cancelled'].includes(t.status)),
+      all
+    };
+    let tab = r.q.tab || (groups.confirm.length ? 'confirm' : 'open');
+    const names = { open: 'กำลังดำเนินการ', confirm: 'รอยืนยันผล', draft: 'ร่าง', done: 'เสร็จสิ้น', all: 'ทั้งหมด' };
+    const appts = all.filter(t => t.appointment_at && !['closed', 'cancelled'].includes(t.status) && new Date(t.appointment_at) > Date.now() - 3600e3);
+    const draw = () => {
+      const list = groups[tab];
+      view.innerHTML = `
+        ${appts.length ? `<div class="sec" style="margin-top:4px"><h4>นัดหมายที่จะถึง</h4></div>${appts.map(t => { const d = dayParts(t.appointment_at); return `<button class="appt" style="width:100%;text-align:left" data-ticket="${t.id}"><span class="d"><b>${d.d}</b><small>${d.m}</small></span>
+          <span class="tx"><b>${esc(t.title)}</b>${d.w} ${d.t}${t.appointment_note ? ' · ' + esc(t.appointment_note) : ''}<br><span style="color:var(--mut)">${esc(t.ticket_no)} ${t.appointment_ack_at ? '· ยืนยันนัดแล้ว' : '· <b style="color:var(--acc-hi);display:inline">รอยืนยันนัด</b>'}</span></span>${ic('chevR', 'sm')}</button>`; }).join('')}` : ''}
+        <div class="tabs" role="tablist">${Object.keys(names).map(k => `<button role="tab" aria-selected="${tab === k}" data-tab="${k}">${names[k]}${groups[k].length && k !== 'all' && k !== 'done' ? `<span class="badge">${groups[k].length}</span>` : ''}</button>`).join('')}</div>
+        <div class="list">${list.length ? list.map(ticketCard).join('') : `<div class="glass empty">${ic('clip')}<b>ไม่มีรายการ</b>${tab === 'open' ? 'แจ้งปัญหาใหม่ได้ที่ปุ่มด้านล่าง' : ''}</div>`}</div>
+        <div class="btn-row"><button class="btn btn-acc" id="ac-new">${ic('plus', 'sm')} แจ้งบริการใหม่</button></div>`;
+      $$('[data-tab]', view).forEach(b => b.addEventListener('click', () => { tab = b.dataset.tab; history.replaceState(null, '', '#/activity?tab=' + tab); draw(); }));
+      $$('[data-ticket]', view).forEach(b => b.addEventListener('click', () => {
+        const tk = all.find(x => x.id === b.dataset.ticket);
+        go(tk && tk.status === 'draft' ? 'request?id=' + tk.id : 'ticket/' + b.dataset.ticket);
+      }));
+      $('#ac-new', view).addEventListener('click', () => go('request'));
+    };
+    draw();
+  }
+});
+
+/* =====================================================================
+   TICKET DETAIL
+   ===================================================================== */
+const STEP_ORDER = ['submitted', 'acknowledged', 'in_progress', 'resolved', 'closed'];
+route('ticket', {
+  title: 'รายละเอียดงาน', nav: 'activity', needVehicle: false,
+  async render(view, r) {
+    const g = await api('cs_ticket_get', { p_token: T(), p_id: r.arg });
+    const t = g.ticket;
+    if (S.vid !== t.vehicle_id) { S.vid = t.vehicle_id; saveSess(); }
+    if (t.status === 'draft' && !S.isSmart) { location.replace('#/request?id=' + t.id); return; }
+    const si = t.status === 'waiting_parts' ? 2 : STEP_ORDER.indexOf(t.status);
+    const closed = ['closed', 'cancelled'].includes(t.status);
+    const c = L.cat[t.category] || L.cat.other;
+    view.innerHTML = `
+      <div class="glass card">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
+          <div style="min-width:0"><div class="hint num" style="margin:0">${esc(t.ticket_no)} · ${esc(t.model)} ${esc(t.plate)}</div>
+            <h3 style="margin:2px 0 6px;font-size:20px;line-height:1.3">${esc(t.title)}</h3>
+            <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag acc">${ic(c[1], 'sm').replace('class="i sm"', 'class="i sm" style="width:14px;height:14px;vertical-align:-2px"')} ${c[0]}</span>
+              <span class="tag ${['high', 'urgent'].includes(t.priority) ? 'bad' : ''}">${L.pri[t.priority]}</span>${t.source === 'ai' ? '<span class="tag">สร้างผ่าน AI</span>' : ''}</div></div>
+          ${pill('tstatus', t.status)}</div>
+        ${t.status === 'cancelled' ? `<p class="hint">เหตุผล: ${esc(t.cancelled_reason || '-')}</p>` : `
+        <div class="steps" style="margin-top:16px" aria-label="ความคืบหน้า">${['ส่งเรื่อง', 'รับเรื่อง', 'ดำเนินการ', 'เสร็จ', 'ยืนยันผล'].map((l, i) =>
+          `<div class="s ${i < si ? 'done' : ''} ${i === si ? 'cur' : ''} ${i <= si ? 'done' : ''}"><i></i>${l}${i === 2 && t.status === 'waiting_parts' ? '<br>(รออะไหล่)' : ''}</div>`).join('')}</div>`}
+      </div>
+      ${t.appointment_at && !closed ? (() => { const d = dayParts(t.appointment_at); return `<div class="appt"><span class="d"><b>${d.d}</b><small>${d.m}</small></span>
+        <span class="tx"><b>นัดหมาย ${d.w} ${d.t}</b>${esc(t.appointment_note || '')}${t.appointment_ack_at ? `<br><span style="color:var(--ok)">✓ ยืนยันนัดแล้ว</span>` : ''}</span>
+        ${t.appointment_ack_at || S.isSmart ? '' : `<button class="btn btn-acc btn-sm" id="tk-ack">ยืนยันนัด</button>`}</div>`; })() : ''}
+      ${t.status === 'resolved' && !S.isSmart ? `<div class="glass card" style="border-color:var(--acc)"><h5>${ic('check', 'sm')} SMART CS แจ้งว่าดำเนินการเสร็จแล้ว</h5>
+        <p style="margin:0 0 6px;color:var(--mut2);white-space:pre-wrap">${esc(t.resolution || '')}</p><p class="hint">กรุณาตรวจรถ แล้วยืนยันผลและให้คะแนนบริการ</p>
+        <div class="stars" id="tk-stars" role="radiogroup" aria-label="คะแนน">${[1, 2, 3, 4, 5].map(n => `<button type="button" role="radio" aria-checked="false" aria-label="${n} ดาว" data-n="${n}">${starSvg}</button>`).join('')}</div>
+        <textarea class="in" id="tk-fb" style="min-height:70px" maxlength="1000" placeholder="ความคิดเห็นเพิ่มเติม (ไม่บังคับ)"></textarea>
+        <div class="btn-row"><button class="btn btn-ghost" id="tk-no">ยังไม่เรียบร้อย</button><button class="btn btn-acc" id="tk-yes">ยืนยันผล</button></div></div>` : ''}
+      ${t.status === 'closed' && t.rating ? `<div class="glass card"><h5>ผลการประเมิน</h5><div class="stars ro">${starSvg.repeat(t.rating)}</div>${t.feedback ? `<p class="hint">${esc(t.feedback)}</p>` : ''}</div>` : ''}
+      <div class="glass card"><h5>รายละเอียด</h5>
+        <p style="margin:0 0 12px;white-space:pre-wrap;color:var(--mut2)">${esc(t.detail || '–')}</p>
+        <dl class="kv"><dt>ตำแหน่ง</dt><dd>${dash(t.location)}${t.lat ? `<br><a href="https://maps.google.com/?q=${t.lat},${t.lng}" target="_blank" rel="noopener">เปิดแผนที่</a>` : ''}</dd>
+          <dt>ขับต่อได้</dt><dd>${t.can_drive === true ? 'ได้' : t.can_drive === false ? 'ไม่ได้/ไม่แน่ใจ' : '–'}</dd>
+          <dt>เลขไมล์</dt><dd class="num">${t.odometer != null ? fmtNum(t.odometer) + ' กม.' : '–'}</dd>
+          <dt>ผู้แจ้ง</dt><dd>${dash(t.reporter_name || t.created_by)}</dd>
+          <dt>เบอร์ติดต่อ</dt><dd>${t.reporter_phone ? `<a href="tel:${esc(t.reporter_phone)}">${esc(t.reporter_phone)}</a>` : '–'}</dd>
+          <dt>ผู้รับผิดชอบ</dt><dd>${dash(t.assigned_name)}</dd>
+          <dt>ส่งเรื่องเมื่อ</dt><dd>${fmtDate(t.submitted_at || t.created_at, true)}</dd></dl>
+        ${t.resolution && t.status !== 'resolved' ? `<div class="well" style="padding:12px;margin-top:12px"><b style="font-size:14px">ผลการแก้ไข</b><p style="margin:4px 0 0;white-space:pre-wrap;color:var(--mut2)">${esc(t.resolution)}</p></div>` : ''}
+      </div>
+      <div class="sec"><h4>ภาพ/ไฟล์แนบ (${g.attachments.length})</h4>${!closed && g.attachments.length < 6 ? `<button class="link" id="tk-addph">${ic('camera', 'sm')} เพิ่มภาพ</button>` : ''}</div>
+      ${g.attachments.length ? `<div class="photos">${g.attachments.map(a => `<button class="ph" data-open="${a.id}" aria-label="เปิด ${esc(a.file_name)}"><span>${ic('camera')}</span></button>`).join('')}</div>` : `<div class="glass tight empty" style="padding:16px">ไม่มีภาพ</div>`}
+      <div class="sec"><h4>ข้อความเกี่ยวกับงานนี้</h4></div>
+      <div class="glass card"><div class="msgs" id="tk-msgs">${g.messages.length ? g.messages.map(msgHtml).join('') : '<p class="hint" style="text-align:center;margin:6px 0">ยังไม่มีข้อความ</p>'}</div>
+        ${closed ? '' : `<div style="display:flex;gap:8px;margin-top:8px"><input class="in" id="tk-msg" maxlength="2000" placeholder="พิมพ์ข้อความถึง ${S.isSmart ? 'ผู้ใช้รถ' : 'SMART CS'}"><button class="btn btn-acc" id="tk-send" aria-label="ส่ง" style="padding:0 16px">${ic('send', 'sm')}</button></div>`}</div>
+      <div class="sec"><h4>Timeline</h4></div>
+      <div class="glass card"><div class="tl">${g.events.map(e => `<div class="e"><b>${esc(eventLabel(e))}</b><div class="meta">${fmtDate(e.at, true)} · ${esc(e.actor_name || '')}${e.actor_role ? ' (' + esc(L.role[e.actor_role] || e.actor_role) + ')' : ''}</div>${e.note ? `<p>${esc(e.note)}</p>` : ''}</div>`).join('')}</div></div>
+      ${['submitted', 'acknowledged'].includes(t.status) && !S.isSmart ? `<div class="btn-row"><button class="btn btn-ghost" id="tk-cancel" style="color:#FF9C8A">${ic('x', 'sm')} ยกเลิกเรื่องนี้</button></div>` : ''}
+      ${!closed && ['submitted', 'acknowledged', 'in_progress', 'waiting_parts'].includes(t.status) && !S.isSmart ? `<div class="btn-row"><button class="btn btn-ghost" data-go="repl?ticket=${t.id}">${ic('van', 'sm')} ขอรถสำรองสำหรับงานนี้</button></div>` : ''}
+      <div id="tk-staff"></div>`;
+    $$('[data-go]', view).forEach(b => b.addEventListener('click', () => go(b.dataset.go)));
+    $$('[data-open]', view).forEach(b => { loadThumb(b.dataset.open, b); b.addEventListener('click', () => openAttachment(b.dataset.open)); });
+    const msgs = $('#tk-msgs'); if (msgs) msgs.scrollTop = msgs.scrollHeight;
+    $('#tk-ack')?.addEventListener('click', e => withBusy(e.currentTarget, async () => { if (await run('cs_ticket_ack_appointment', { p_token: T(), p_id: t.id }, 'ยืนยันนัดแล้ว')) render(); }));
+    let rating = 0;
+    $$('#tk-stars button').forEach(b => b.addEventListener('click', () => {
+      rating = +b.dataset.n;
+      $$('#tk-stars button').forEach(x => { x.classList.toggle('on', +x.dataset.n <= rating); x.setAttribute('aria-checked', +x.dataset.n === rating); });
+    }));
+    $('#tk-yes')?.addEventListener('click', e => {
+      if (!rating) { toast('กรุณาให้คะแนน 1–5 ดาว', true); return; }
+      withBusy(e.currentTarget, async () => { if (await run('cs_ticket_confirm', { p_token: T(), p_id: t.id, p_accept: true, p_rating: rating, p_feedback: $('#tk-fb').value }, 'ขอบคุณสำหรับการประเมิน')) { if (S.home) S.home.to_confirm = Math.max(0, S.home.to_confirm - 1); render(); } });
+    });
+    $('#tk-no')?.addEventListener('click', async () => {
+      const note = await confirmBox('ยังไม่เรียบร้อย', 'แจ้ง SMART CS ให้ดำเนินการต่อ', { ok: 'ส่งกลับไปแก้ไข', input: { label: 'สิ่งที่ยังพบ', required: true, min: 3, requiredMsg: 'กรุณาระบุสิ่งที่ยังไม่เรียบร้อย', max: 1000 } });
+      if (note && await run('cs_ticket_confirm', { p_token: T(), p_id: t.id, p_accept: false, p_rating: null, p_feedback: note }, 'ส่งกลับให้ SMART CS แล้ว')) render();
+    });
+    $('#tk-cancel')?.addEventListener('click', async () => {
+      const reason = await confirmBox('ยกเลิกเรื่องนี้?', 'SMART CS จะหยุดดำเนินการเรื่องนี้', { ok: 'ยกเลิกเรื่อง', danger: true, cancel: 'ไม่ยกเลิก', input: { label: 'เหตุผล', required: true, min: 3, requiredMsg: 'กรุณาระบุเหตุผล' } });
+      if (reason && await run('cs_ticket_cancel', { p_token: T(), p_id: t.id, p_reason: reason }, 'ยกเลิกแล้ว')) render();
+    });
+    $('#tk-addph')?.addEventListener('click', async () => {
+      const files = await pickFiles('image/*', true);
+      if (!files.length) return;
+      let n = 0;
+      for (const fl of files.slice(0, 6 - g.attachments.length)) {
+        try { const p = await compressImage(fl); if (await run('cs_attach_add', { p_token: T(), p_ref_type: 'ticket', p_ref: t.id, p_name: p.name, p_mime: p.mime, p_data: p.data })) n++; } catch (e) { toast(e.message, true); }
+      }
+      if (n) { toast(`เพิ่ม ${n} ภาพแล้ว`); render(); }
+    });
+    const send = async () => {
+      const inp = $('#tk-msg'); const body = inp.value.trim(); if (!body) return;
+      const m = await run('cs_msg_send', { p_token: T(), p_vehicle: t.vehicle_id, p_body: body, p_ticket: t.id, p_emergency: false });
+      if (m) { inp.value = ''; const box = $('#tk-msgs'); if (box.querySelector('p.hint')) box.innerHTML = ''; box.insertAdjacentHTML('beforeend', msgHtml({ ...m, sender_name: S.me.actor })); box.scrollTop = box.scrollHeight; }
+    };
+    $('#tk-send')?.addEventListener('click', e => withBusy(e.currentTarget, send));
+    $('#tk-msg')?.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); send(); } });
+    if (S.isSmart && !closed && t.status !== 'draft') staffTicketPanel($('#tk-staff'), t);
+  }
+});
+function eventLabel(e) {
+  if (e.kind === 'created') return e.status === 'submitted' ? 'สร้างและส่งเรื่อง' : 'สร้างร่าง';
+  if (e.kind === 'status') return 'สถานะ: ' + ((L.tstatus[e.status] || [e.status || ''])[0]);
+  return { note: 'บันทึก', appointment: 'นัดหมาย', assign: 'มอบหมายงาน', rating: 'ยืนยันผลและประเมิน', edit: 'แก้ไขร่าง' }[e.kind] || e.kind;
+}
+function msgHtml(m) {
+  const mine = S.isSmart ? m.sender === 'staff' : m.sender === 'user';
+  return `<div class="msg ${mine ? 'me' : 'them'} ${m.is_emergency ? 'sos' : ''}">${!mine ? `<div class="who">${esc(m.sender_name || (m.sender === 'staff' ? 'SMART CS' : 'ผู้ใช้รถ'))}</div>` : ''}${m.is_emergency ? '🚨 ' : ''}${esc(m.body)}<small>${m.ticket_no ? esc(m.ticket_no) + ' · ' : ''}${fmtDate(m.created_at, true)}</small></div>`;
+}
+async function staffTicketPanel(box, t) {
+  const staff = await api('cs_admin_staff_list', { p_token: T() }).catch(() => []);
+  const techs = staff.filter(s => s.active && ['technician', 'service_manager', 'cs_operator'].includes(s.role));
+  const next = { submitted: ['acknowledged', 'in_progress', 'cancelled'], acknowledged: ['in_progress', 'waiting_parts', 'resolved', 'cancelled'],
+                 in_progress: ['waiting_parts', 'resolved'], waiting_parts: ['in_progress', 'resolved'], resolved: ['in_progress'] }[t.status] || [];
+  box.innerHTML = `<div class="glass card staff-panel"><h5>${ic('gear', 'sm')} สำหรับเจ้าหน้าที่ SMART</h5>
+    <label class="fl" for="sp-st">เปลี่ยนสถานะ</label>
+    <select class="in" id="sp-st"><option value="">— คงเดิม (${esc(L.tstatus[t.status][0])}) —</option>${next.map(s => `<option value="${s}">${esc(L.tstatus[s][0])}</option>`).join('')}</select>
+    <label class="fl" for="sp-res">ผลการแก้ไข (ต้องกรอกเมื่อแจ้งเสร็จ)</label><textarea class="in" id="sp-res" style="min-height:80px" maxlength="2000">${esc(t.resolution || '')}</textarea>
+    <label class="fl" for="sp-note">บันทึกถึงผู้ใช้ (แสดงใน Timeline)</label><input class="in" id="sp-note" maxlength="2000">
+    <div class="row2"><div><label class="fl" for="sp-as">ผู้รับผิดชอบ</label><select class="in" id="sp-as"><option value="">— ไม่ระบุ —</option>${techs.map(s => `<option value="${s.id}" ${s.id === t.assigned_to ? 'selected' : ''}>${esc(s.full_name)}</option>`).join('')}</select></div>
+      <div><label class="fl" for="sp-pri">ความเร่งด่วน</label><select class="in" id="sp-pri">${Object.entries(L.pri).map(([k, l]) => `<option value="${k}" ${k === t.priority ? 'selected' : ''}>${l}</option>`).join('')}</select></div></div>
+    <label class="fl" for="sp-ap">นัดหมาย</label><input class="in" id="sp-ap" type="datetime-local" value="${toLocalInput(t.appointment_at)}">
+    <input class="in" id="sp-apn" style="margin-top:8px" maxlength="500" placeholder="สถานที่/หมายเหตุนัดหมาย" value="${esc(t.appointment_note || '')}">
+    <div class="btn-row"><button class="btn btn-acc" id="sp-save">บันทึกการอัปเดต</button></div></div>`;
+  $('#sp-save', box).addEventListener('click', e => withBusy(e.currentTarget, async () => {
+    const p = { status: $('#sp-st', box).value || null, note: $('#sp-note', box).value || null, priority: $('#sp-pri', box).value };
+    const res = $('#sp-res', box).value.trim(); if (res !== (t.resolution || '')) p.resolution = res;
+    const as = $('#sp-as', box).value; if (as !== (t.assigned_to || '')) p.assigned_to = as;
+    const ap = $('#sp-ap', box).value; const apn = $('#sp-apn', box).value;
+    if (ap !== toLocalInput(t.appointment_at) || apn !== (t.appointment_note || '')) { p.appointment_at = fromLocalInput(ap); p.appointment_note = apn; }
+    if (await run('cs_ticket_staff_update', { p_token: T(), p_id: t.id, p }, 'อัปเดตแล้ว')) render();
+  }));
+}
+
+/* =====================================================================
+   AI CS AGENT — Chat / Voice
+   AI ตอบและร่าง Ticket ได้ แต่บันทึกข้อมูลเองไม่ได้ ผู้ใช้ต้องยืนยันเอง
+   ===================================================================== */
+let rec = null, speakOn = false;
+function stopVoice() {
+  try { rec && rec.abort(); } catch {}
+  rec = null;
+  try { speechSynthesis.cancel(); } catch {}
+}
+function speak(text) {
+  if (!speakOn || !('speechSynthesis' in window)) return;
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text.replace(/[*#`_>]/g, '').slice(0, 900));
+    u.lang = 'th-TH';
+    const v = speechSynthesis.getVoices().find(x => /^th/i.test(x.lang));
+    if (v) u.voice = v;
+    speechSynthesis.speak(u);
+  } catch {}
+}
+async function aiAsk(messages) {
+  if (!CFG.url) throw new Error('ยังไม่ได้ตั้งค่าการเชื่อมต่อ');
+  let r;
+  try {
+    const h = apiHeaders();
+    r = await fetch(`${CFG.url}/functions/v1/${CFG.aiFn}`, { method: 'POST', headers: h,
+      body: JSON.stringify({ token: S.token, vehicle_id: S.vid, messages: messages.map(m => ({ role: m.role, content: m.content })) }) });
+  } catch { throw new Error(navigator.onLine ? 'เชื่อมต่อ AI ไม่ได้ กรุณาลองใหม่' : 'ไม่มีสัญญาณอินเทอร์เน็ต'); }
+  const d = await r.json().catch(() => null);
+  if (r.status === 401 && d && /^SESSION/.test(d.error || '')) { endSession(); throw new Error('SESSION'); }
+  if (!r.ok || !d) throw new Error((d && d.error) || 'AI ไม่พร้อมใช้งานชั่วคราว');
+  return d;
+}
+const AI_CHIPS = ['รถชาร์จไฟไม่เข้า', 'มีไฟเตือนขึ้นที่หน้าปัด', 'เกิดอุบัติเหตุ ต้องทำอย่างไร', 'งานซ่อมของฉันถึงไหนแล้ว', 'นัดบำรุงรักษาครั้งถัดไปเมื่อไร', 'วิธีชาร์จที่ถูกต้อง'];
+
+route('ai', {
+  title: 'AI CS Agent', nav: false,
+  async render(view) {
+    const key = 'mcs_ai';
+    let st = sstore.get(key);
+    if (!st || st.vid !== S.vid) st = { vid: S.vid, msgs: [] };
+    const save = () => sstore.set(key, st);
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    view.innerHTML = `<div class="ai-wrap">
+      <div class="glass ai-head"><img src="assets/robot.webp" alt="AI CS Agent"><div style="flex:1;min-width:0"><b>AI CS Agent</b><span>ผู้ช่วยบริการรถ EV · วิเคราะห์ปัญหาเบื้องต้น · ร่าง Ticket</span></div>
+        <button class="icon-btn" id="ai-spk" aria-pressed="${speakOn}" aria-label="อ่านคำตอบออกเสียง" style="background:rgba(255,255,255,.1)">${ic(speakOn ? 'speaker' : 'mute')}</button></div>
+      <div class="ai-tools">
+        <button class="btn btn-ghost btn-sm" data-go="docs">${ic('book', 'sm')} คู่มือและเอกสารรถ</button>
+        <button class="btn btn-ghost btn-sm" data-go="activity">${ic('clip', 'sm')} ติดตามงาน</button>
+        <button class="btn btn-ghost btn-sm" id="ai-fwd">${ic('forward', 'sm')} ส่งต่อ SMART CS</button>
+        <button class="btn btn-ghost btn-sm" id="ai-clear">${ic('refresh', 'sm')} เริ่มใหม่</button></div>
+      <div class="chat" id="ai-chat" aria-live="polite"></div>
+      <div class="chips" id="ai-chips">${AI_CHIPS.map(c => `<button>${esc(c)}</button>`).join('')}</div>
+      <div class="composer">
+        ${SR ? `<button class="icon-btn mic" id="ai-mic" aria-label="พูดเพื่อถาม">${ic('mic')}</button>` : ''}
+        <textarea id="ai-in" rows="1" maxlength="2000" placeholder="พิมพ์อาการหรือคำถาม…" aria-label="ข้อความถึง AI"></textarea>
+        <button class="icon-btn send" id="ai-send" aria-label="ส่ง">${ic('send')}</button></div>
+      <p class="hint" style="text-align:center;font-size:12px">AI อาจผิดพลาดได้ · ไม่บันทึกหรือแก้ไขข้อมูลเอง · เหตุฉุกเฉินโทร 191 / 1669 / 199</p></div>`;
+    $$('[data-go]', view).forEach(b => b.addEventListener('click', () => go(b.dataset.go)));
+    const chat = $('#ai-chat'), inp = $('#ai-in');
+    let busy = false;
+    const draw = () => {
+      chat.innerHTML = `<div class="bub a"><div class="who"><img src="assets/robot.webp" alt="">AI CS Agent</div>สวัสดีครับ ผม AI CS Agent ของ SMART CS 👋
+เล่าอาการหรือปัญหาของรถ ${esc(S.vehicle?.model || '')} ทะเบียน ${esc(S.vehicle?.plate || '')} ได้เลยครับ ผมจะช่วยวิเคราะห์เบื้องต้น และร่าง Ticket ให้ตรวจก่อนส่ง</div>`
+        + st.msgs.map((m, i) => m.role === 'user' ? `<div class="bub u">${esc(m.content)}</div>`
+          : m.role === 'error' ? `<div class="bub sys">${esc(m.content)}</div>`
+          : `<div class="bub a"><div class="who"><img src="assets/robot.webp" alt="">AI CS Agent</div>${esc(m.content)}</div>`
+            + (m.draft ? `<div class="draft"><h6>${ic('clip', 'sm')} ร่าง Service Ticket</h6><b>${esc(m.draft.title || '')}</b>
+              <div class="meta" style="font-size:13px;color:var(--mut);margin-top:2px">${esc((L.cat[m.draft.category] || L.cat.other)[0])} · ${esc(L.pri[m.draft.priority] || 'ปกติ')}${m.draft.can_drive === false ? ' · ขับต่อไม่ได้' : ''}</div>
+              <p>${esc(m.draft.detail || '')}</p><button class="btn btn-acc btn-block" data-draft="${i}">${ic('check', 'sm')} ใช้ร่างนี้สร้าง Ticket</button>
+              <p class="hint" style="margin:6px 0 0;font-size:12px">ยังไม่ได้ส่งเรื่อง — ตรวจ/แก้ไข แนบภาพ แล้วกดส่งเองในหน้าถัดไป</p></div>` : '')).join('')
+        + (busy ? '<div class="bub a"><span class="typing"><i></i><i></i><i></i></span></div>' : '');
+      $$('[data-draft]', chat).forEach(b => b.addEventListener('click', () => {
+        const m = st.msgs[+b.dataset.draft];
+        const convo = st.msgs.filter(x => x.role === 'user').map(x => '- ' + x.content).join('\n');
+        sstore.set('mcs_ai_draft', { ...m.draft, summary: 'บทสนทนากับ AI:\n' + convo.slice(-1500) });
+        go('request?from=ai');
+      }));
+      $('#ai-chips').hidden = st.msgs.length > 0;
+      requestAnimationFrame(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }));
+    };
+    const send = async text => {
+      text = (text ?? inp.value).trim();
+      if (!text || busy) return;
+      inp.value = ''; inp.style.height = '';
+      st.msgs.push({ role: 'user', content: text }); busy = true; save(); draw();
+      try {
+        const hist = st.msgs.filter(m => m.role === 'user' || m.role === 'assistant');
+        const d = await aiAsk(hist);
+        st.msgs.push({ role: 'assistant', content: d.reply, draft: d.draft || null });
+        speak(d.reply);
+      } catch (e) {
+        if (e.message === 'SESSION') return;
+        st.msgs.pop(); st.msgs.push({ role: 'user', content: text }, { role: 'error', content: '⚠️ ' + e.message });
+      } finally { busy = false; save(); if (chat.isConnected) draw(); }
+    };
+    draw();
+    $('#ai-send').addEventListener('click', () => send());
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing && !matchMedia('(pointer:coarse)').matches) { e.preventDefault(); send(); } });
+    inp.addEventListener('input', () => { inp.style.height = 'auto'; inp.style.height = Math.min(140, inp.scrollHeight) + 'px'; });
+    $$('#ai-chips button').forEach(b => b.addEventListener('click', () => send(b.textContent)));
+    $('#ai-clear').addEventListener('click', () => { st.msgs = []; save(); draw(); });
+    $('#ai-spk').addEventListener('click', e => {
+      speakOn = !speakOn; e.currentTarget.innerHTML = ic(speakOn ? 'speaker' : 'mute'); e.currentTarget.setAttribute('aria-pressed', speakOn);
+      if (!speakOn) try { speechSynthesis.cancel(); } catch {}
+      toast(speakOn ? 'เปิดอ่านคำตอบออกเสียง' : 'ปิดเสียงแล้ว');
+    });
+    $('#ai-fwd').addEventListener('click', async () => {
+      const conv = st.msgs.filter(m => m.role === 'user' || m.role === 'assistant');
+      if (!conv.length) { go('contact?tab=chat'); return; }
+      const body = 'ส่งต่อจาก AI CS Agent:\n' + conv.slice(-8).map(m => (m.role === 'user' ? 'ผู้ใช้: ' : 'AI: ') + m.content.slice(0, 400)).join('\n');
+      if (!await confirmBox('ส่งต่อให้เจ้าหน้าที่ SMART CS?', 'ระบบจะส่งสรุปบทสนทนาล่าสุดเป็นข้อความถึงเจ้าหน้าที่ และเปิดหน้าแชทกับเจ้าหน้าที่', { ok: 'ส่งต่อ' })) return;
+      if (await run('cs_msg_send', { p_token: T(), p_vehicle: S.vid, p_body: body.slice(0, 3900), p_ticket: null, p_emergency: false }, 'ส่งต่อ SMART CS แล้ว')) go('contact?tab=chat');
+    });
+    const mic = $('#ai-mic');
+    if (mic) mic.addEventListener('click', () => {
+      if (rec) { rec.stop(); return; }
+      try {
+        rec = new SR(); rec.lang = 'th-TH'; rec.interimResults = true; rec.continuous = false;
+        let finalText = '';
+        rec.onresult = e => { let t = ''; for (const r of e.results) { t += r[0].transcript; if (r.isFinal) finalText = t; } inp.value = t; };
+        rec.onerror = e => { if (e.error === 'not-allowed') toast('ไม่ได้รับสิทธิ์ใช้ไมโครโฟน', true); };
+        rec.onend = () => { mic.classList.remove('on'); rec = null; if (finalText.trim()) send(finalText); };
+        rec.start(); mic.classList.add('on'); toast('กำลังฟัง… พูดได้เลย');
+      } catch { toast('อุปกรณ์นี้ไม่รองรับการสั่งงานด้วยเสียง', true); rec = null; }
+    });
+  }
+});
+
+/* =====================================================================
+   MAINTENANCE (PM schedule / appointment / history / report)
+   ===================================================================== */
+route('maint', {
+  title: 'บำรุงรักษา', nav: 'home',
+  async render(view, r) {
+    const list = await api('cs_maint_list', { p_token: T(), p_vehicle: S.vid });
+    const plan = list.filter(m => ['planned', 'requested'].includes(m.status));
+    const appt = list.filter(m => ['appointed', 'in_progress'].includes(m.status));
+    const hist = list.filter(m => ['done', 'cancelled'].includes(m.status));
+    let tab = r.q.tab || (appt.length ? 'appt' : 'plan');
+    const staff = S.can('cs_operator', 'service_manager', 'technician', 'admin');
+    const card = m => {
+      const d = m.appointment_at ? dayParts(m.appointment_at) : null;
+      return `<div class="glass tight item" style="flex-direction:column;gap:10px">
+        <div style="display:flex;gap:12px;width:100%"><span class="ic ${m.status === 'done' ? 'gray' : ''}">${ic(m.kind === 'PM' ? 'cal' : 'wrench')}</span>
+        <span class="bd"><b>${esc(m.title)}</b><span style="display:block;margin:4px 0 2px">${pill('mstatus', m.status)}</span><span class="meta"><span class="tag">${m.kind}</span>
+          ${m.due_date ? `กำหนด ${fmtDate(m.due_date)}` : ''}${m.due_km ? ` · ${fmtNum(m.due_km)} กม.` : ''}${m.overdue ? ' <span class="tag bad">เลยกำหนด</span>' : ''}${m.ticket_no ? ` · ${esc(m.ticket_no)}` : ''}</span>
+          ${d && m.status !== 'done' ? `<span class="meta">${ic('cal', 'sm')} ${m.status === 'requested' ? 'ขอนัด' : 'นัด'} ${d.w} ${fmtDate(m.appointment_at, true)}${m.location ? ' · ' + esc(m.location) : ''}</span>` : ''}
+          ${m.status === 'done' ? `<span class="meta">เสร็จ ${fmtDate(m.done_at)}${m.odometer_at ? ` · ${fmtNum(m.odometer_at)} กม.` : ''}${m.report_no ? ` · ${esc(m.report_no)}` : ''}</span>` : ''}
+          ${m.staff_note && m.status !== 'done' ? `<p>${esc(m.staff_note)}</p>` : ''}</span></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;width:100%">
+          ${['planned', 'requested'].includes(m.status) && !S.isSmart ? `<button class="btn btn-acc btn-sm" data-req="${m.id}">${ic('calp', 'sm')} ${m.status === 'requested' ? 'เปลี่ยนวันนัด' : 'ขอนัด'}</button>` : ''}
+          ${m.status === 'requested' && !S.isSmart ? `<button class="btn btn-ghost btn-sm" data-cancelreq="${m.id}">ยกเลิกคำขอ</button>` : ''}
+          ${m.status === 'done' ? `<button class="btn btn-ghost btn-sm" data-report="${m.id}">${ic('doc', 'sm')} รายงาน</button>` : ''}
+          ${staff ? `<button class="btn btn-ghost btn-sm" data-edit="${m.id}">${ic('edit', 'sm')} จัดการ</button>` : ''}</div></div>`;
+    };
+    const draw = () => {
+      const cur = { plan, appt, hist }[tab];
+      view.innerHTML = `
+        <div class="tabs" role="tablist">${[['plan', 'แผน PM', plan.length], ['appt', 'นัดหมาย', appt.length], ['hist', 'ประวัติ PM/CM', 0]].map(([k, l, n]) =>
+          `<button role="tab" aria-selected="${tab === k}" data-tab="${k}">${l}${n ? `<span class="badge">${n}</span>` : ''}</button>`).join('')}</div>
+        <div class="list">${cur.length ? cur.map(card).join('') : `<div class="glass empty">${ic('cal')}<b>${tab === 'plan' ? 'ยังไม่มีแผน PM' : tab === 'appt' ? 'ยังไม่มีนัดหมาย' : 'ยังไม่มีประวัติ'}</b>${tab === 'plan' ? 'SMART CS จะลงแผนบำรุงรักษาตามระยะให้ หรือกดขอนัดได้เลย' : ''}</div>`}</div>
+        <div class="btn-row">${S.isSmart ? '' : `<button class="btn btn-acc" id="mt-new">${ic('plus', 'sm')} ขอนัดบำรุงรักษา</button>`}
+          ${staff ? `<button class="btn btn-ghost" id="mt-add">${ic('plus', 'sm')} เพิ่มแผน/บันทึก PM-CM</button>` : ''}</div>`;
+      $$('[data-tab]', view).forEach(b => b.addEventListener('click', () => { tab = b.dataset.tab; history.replaceState(null, '', '#/maint?tab=' + tab); draw(); }));
+      $$('[data-req]', view).forEach(b => b.addEventListener('click', () => requestAppt(list.find(m => m.id === b.dataset.req))));
+      $$('[data-cancelreq]', view).forEach(b => b.addEventListener('click', async () => {
+        if (await confirmBox('ยกเลิกคำขอนัด?', '', { ok: 'ยกเลิกคำขอ', danger: true, cancel: 'ไม่' }) && await run('cs_maint_cancel_request', { p_token: T(), p_id: b.dataset.cancelreq }, 'ยกเลิกคำขอแล้ว')) render();
+      }));
+      $$('[data-report]', view).forEach(b => b.addEventListener('click', () => go('report/' + b.dataset.report)));
+      $$('[data-edit]', view).forEach(b => b.addEventListener('click', () => staffMaint(list.find(m => m.id === b.dataset.edit))));
+      $('#mt-new', view)?.addEventListener('click', () => requestAppt(null));
+      $('#mt-add', view)?.addEventListener('click', () => staffMaint(null));
+    };
+    draw();
+  }
+});
+function requestAppt(m) {
+  const sh = openSheet(`<h3>${ic('calp')} ${m ? 'ขอนัด: ' + esc(m.title) : 'ขอนัดบำรุงรักษา'}</h3>
+    <p class="lead">เลือกวันเวลาที่สะดวก SMART CS จะยืนยันนัดและแจ้งเตือนกลับ</p>
+    ${m ? '' : `<label class="fl" for="ra-t">รายการ</label><input class="in" id="ra-t" maxlength="200" placeholder="เช่น ตรวจเช็กตามระยะ / เสียงผิดปกติช่วงล่าง">`}
+    <label class="fl" for="ra-at">วันเวลาที่สะดวก <span class="req">*</span></label><input class="in" id="ra-at" type="datetime-local" value="${toLocalInput(m?.appointment_at)}" min="${toLocalInput(new Date())}">
+    <label class="fl" for="ra-loc">สถานที่รับรถ/นำรถเข้า</label><input class="in" id="ra-loc" maxlength="300" value="${esc(m?.location || '')}" placeholder="ไม่บังคับ">
+    <label class="fl" for="ra-n">หมายเหตุ</label><textarea class="in" id="ra-n" style="min-height:70px" maxlength="500">${esc(m?.user_note || '')}</textarea>
+    <div class="btn-row"><button class="btn btn-ghost" data-close>ยกเลิก</button><button class="btn btn-acc" id="ra-s">ส่งคำขอนัด</button></div>`);
+  $('#ra-s', sh.el).onclick = e => {
+    const at = $('#ra-at', sh.el).value;
+    if (!at) { toast('กรุณาเลือกวันเวลา', true); return; }
+    withBusy(e.currentTarget, async () => {
+      const p = { id: m?.id || null, appointment_at: fromLocalInput(at), location: $('#ra-loc', sh.el).value, note: $('#ra-n', sh.el).value, vehicle_id: S.vid };
+      if (!m) p.title = $('#ra-t', sh.el).value;
+      if (await run('cs_maint_request', { p_token: T(), p }, 'ส่งคำขอนัดแล้ว')) { sh.close(); render(); }
+    });
+  };
+}
+function staffMaint(m) {
+  const st = m?.status || 'planned';
+  const sh = openSheet(`<h3>${ic('gear')} ${m ? 'จัดการรายการ' : 'เพิ่มแผน/บันทึก PM-CM'}</h3>
+    <div class="row2"><div><label class="fl" for="sm-k">ประเภท</label><select class="in" id="sm-k"><option ${m?.kind !== 'CM' ? 'selected' : ''}>PM</option><option ${m?.kind === 'CM' ? 'selected' : ''}>CM</option></select></div>
+      <div><label class="fl" for="sm-s">สถานะ</label><select class="in" id="sm-s">${Object.entries(L.mstatus).map(([k, [l]]) => `<option value="${k}" ${k === st ? 'selected' : ''}>${l}</option>`).join('')}</select></div></div>
+    <label class="fl" for="sm-t">รายการ <span class="req">*</span></label><input class="in" id="sm-t" maxlength="200" value="${esc(m?.title || '')}" placeholder="เช่น PM 10,000 กม.">
+    <div class="row2"><div><label class="fl" for="sm-dd">กำหนดวัน</label><input class="in" id="sm-dd" type="date" value="${m?.due_date || ''}"></div>
+      <div><label class="fl" for="sm-dk">กำหนดระยะ (กม.)</label><input class="in num" id="sm-dk" inputmode="numeric" value="${m?.due_km ?? ''}"></div></div>
+    <label class="fl" for="sm-at">วันเวลานัด</label><input class="in" id="sm-at" type="datetime-local" value="${toLocalInput(m?.appointment_at)}">
+    <label class="fl" for="sm-loc">สถานที่</label><input class="in" id="sm-loc" maxlength="300" value="${esc(m?.location || '')}">
+    ${m?.user_note ? `<p class="hint">หมายเหตุผู้ใช้: ${esc(m.user_note)}</p>` : ''}
+    <label class="fl" for="sm-sn">หมายเหตุถึงผู้ใช้</label><input class="in" id="sm-sn" maxlength="1000" value="${esc(m?.staff_note || '')}">
+    <div class="sec"><h4>ผลการดำเนินงาน (เมื่อเสร็จ)</h4></div>
+    <div class="row2"><div><label class="fl" for="sm-odo">เลขไมล์</label><input class="in num" id="sm-odo" inputmode="numeric" value="${m?.odometer_at ?? ''}"></div>
+      <div><label class="fl" for="sm-tech">ช่างผู้ดำเนินการ</label><input class="in" id="sm-tech" maxlength="120" value="${esc(m?.technician || '')}"></div></div>
+    <label class="fl" for="sm-w">งานที่ทำ</label><textarea class="in" id="sm-w" style="min-height:80px" maxlength="3000">${esc(m?.work_done || '')}</textarea>
+    <label class="fl" for="sm-p">อะไหล่/วัสดุ</label><textarea class="in" id="sm-p" style="min-height:60px" maxlength="2000">${esc(m?.parts || '')}</textarea>
+    ${m ? `<div class="btn-row"><button class="btn btn-ghost btn-sm" id="sm-ph">${ic('camera', 'sm')} แนบภาพ/ไฟล์ (${m.photo_count || 0})</button>${S.can('service_manager', 'admin') ? `<button class="btn btn-ghost btn-sm" id="sm-del" style="color:#FF9C8A">${ic('trash', 'sm')} ลบรายการ</button>` : ''}</div>` : ''}
+    <div class="btn-row"><button class="btn btn-ghost" data-close>ยกเลิก</button><button class="btn btn-acc" id="sm-save">บันทึก</button></div>`);
+  const v = id => $(id, sh.el).value;
+  $('#sm-save', sh.el).onclick = e => withBusy(e.currentTarget, async () => {
+    const p = { id: m?.id || null, vehicle_id: S.vid, kind: v('#sm-k'), status: v('#sm-s'), title: v('#sm-t'), due_date: v('#sm-dd'), due_km: v('#sm-dk').replace(/\D/g, ''),
+      appointment_at: fromLocalInput(v('#sm-at')), location: v('#sm-loc'), staff_note: v('#sm-sn'), odometer_at: v('#sm-odo').replace(/\D/g, ''),
+      technician: v('#sm-tech'), work_done: v('#sm-w'), parts: v('#sm-p'), ticket_id: m?.ticket_id || null };
+    if (await run('cs_maint_staff_save', { p_token: T(), p }, 'บันทึกแล้ว')) { sh.close(); render(); }
+  });
+  $('#sm-ph', sh.el)?.addEventListener('click', async () => {
+    const files = await pickFiles('image/*,application/pdf', true);
+    let n = 0;
+    for (const f of files) {
+      try {
+        const x = f.type === 'application/pdf' ? await readFileB64(f) : await compressImage(f);
+        if (await run('cs_attach_add', { p_token: T(), p_ref_type: 'maintenance', p_ref: m.id, p_name: x.name, p_mime: x.mime, p_data: x.data })) n++;
+      } catch (er) { toast(er.message, true); }
+    }
+    if (n) { toast(`แนบ ${n} ไฟล์แล้ว`); sh.close(); render(); }
+  });
+  $('#sm-del', sh.el)?.addEventListener('click', async () => {
+    if (await confirmBox('ลบรายการนี้?', 'ข้อมูลจะถูกซ่อน (เก็บประวัติใน Audit Log)', { ok: 'ลบ', danger: true }) && await run('cs_maint_delete', { p_token: T(), p_id: m.id }, 'ลบแล้ว')) { sh.close(); render(); }
+  });
+}
+
+/* Maintenance Report (พิมพ์/บันทึก PDF ผ่านเบราว์เซอร์) */
+route('report', {
+  title: 'รายงานบำรุงรักษา', nav: false, needVehicle: false,
+  async render(view, r) {
+    const d = await api('cs_maint_report', { p_token: T(), p_id: r.arg });
+    const m = d.maintenance, v = d.vehicle;
+    view.innerHTML = `
+      <div class="btn-row no-print" style="margin-top:4px"><button class="btn btn-acc" id="rp-print">${ic('print', 'sm')} พิมพ์ / บันทึก PDF</button></div>
+      <div class="report" style="margin-top:12px">
+        <div class="rh"><img src="assets/smart-logo.png" alt="SMART"><div style="flex:1"><h2>รายงานการบำรุงรักษา (${esc(m.kind)})</h2>
+          <div style="font-size:12px;color:#555">บริษัท สมาร์ท เทอร์มินอล คอร์ปอเรชั่น จำกัด · บริการรถยนต์ไฟฟ้า การไฟฟ้านครหลวง</div></div>
+          <img src="assets/mea-seal.png" alt="กฟน." style="height:44px"></div>
+        <dl class="kv">
+          <dt>เลขที่รายงาน</dt><dd>${dash(m.report_no)}</dd><dt>รายการ</dt><dd>${esc(m.title)}</dd>
+          <dt>รถ</dt><dd>${esc(v.model)} · ${esc(v.plate)}</dd><dt>VIN</dt><dd>${dash(v.vin)}</dd>
+          <dt>หน่วยงาน</dt><dd>${dash(v.unit_name)}</dd><dt>อ้างอิง Ticket</dt><dd>${dash(d.ticket_no)}</dd>
+          <dt>วันที่ดำเนินการ</dt><dd>${fmtDate(m.done_at || m.appointment_at, true)}</dd><dt>เลขไมล์</dt><dd>${m.odometer_at != null ? fmtNum(m.odometer_at) + ' กม.' : '–'}</dd>
+          <dt>สถานที่</dt><dd>${dash(m.location)}</dd><dt>ช่างผู้ดำเนินการ</dt><dd>${dash(m.technician)}</dd><dt>สถานะ</dt><dd>${esc(L.mstatus[m.status][0])}</dd></dl>
+        <div class="box"><b>งานที่ดำเนินการ</b>\n${esc(m.work_done || '–')}</div>
+        <div class="box"><b>อะไหล่/วัสดุ</b>\n${esc(m.parts || '–')}</div>
+        ${m.staff_note ? `<div class="box"><b>หมายเหตุ</b>\n${esc(m.staff_note)}</div>` : ''}
+        ${d.attachments.length ? `<div class="no-print" style="margin-top:10px"><b>ไฟล์แนบ</b><div class="photos" style="margin-top:6px">${d.attachments.map(a => `<button class="ph" data-open="${a.id}" style="border-color:#ccc;background:#f3f3f3"><span>${ic('camera')}</span></button>`).join('')}</div></div>` : ''}
+        <div class="sign"><div>ผู้ดำเนินการ (SMART)</div><div>ผู้รับรถ / ผู้ใช้งาน (กฟน.)</div></div>
+        <p style="font-size:11px;color:#777;margin-top:16px">พิมพ์จาก MEA CS เมื่อ ${fmtDate(new Date(), true)}</p></div>`;
+    $('#rp-print').onclick = () => window.print();
+    $$('[data-open]', view).forEach(b => { loadThumb(b.dataset.open, b); b.onclick = () => openAttachment(b.dataset.open); });
+  }
+});
+
+/* =====================================================================
+   REPLACEMENT VAN
+   ===================================================================== */
+route('repl', {
+  title: 'รถสำรอง', nav: 'home',
+  async render(view, r) {
+    const list = await api('cs_repl_list', { p_token: T(), p_vehicle: S.vid });
+    const active = list.find(x => ['requested', 'approved', 'delivered'].includes(x.status));
+    const drafts = list.filter(x => x.status === 'draft');
+    const hist = list.filter(x => ['returned', 'rejected', 'cancelled'].includes(x.status));
+    const steps = ['requested', 'approved', 'delivered', 'returned'];
+    const si = active ? steps.indexOf(active.status) : -1;
+    view.innerHTML = `
+      ${active ? `<div class="glass card"><div style="display:flex;justify-content:space-between;gap:10px"><div><div class="hint num" style="margin:0">${esc(active.req_no)}</div><h3 style="margin:2px 0;font-size:19px">คำขอรถสำรองที่ดำเนินการอยู่</h3></div>${pill('rstatus', active.status)}</div>
+        <div class="steps" style="margin:14px 0">${['ส่งคำขอ', 'อนุมัติ', 'ส่งมอบ', 'คืนรถ'].map((l, i) => `<div class="s ${i <= si ? 'done' : ''} ${i === si ? 'cur' : ''}"><i></i>${l}</div>`).join('')}</div>
+        <dl class="kv"><dt>เหตุผล</dt><dd>${esc(active.reason)}</dd>${active.ticket_no ? `<dt>อ้างอิง</dt><dd>${esc(active.ticket_no)}</dd>` : ''}
+          <dt>ต้องการ</dt><dd>${fmtDate(active.need_from, true)}${active.need_to ? '<br>ถึง ' + fmtDate(active.need_to, true) : ''}</dd>
+          <dt>สถานที่รับรถ</dt><dd>${dash(active.pickup_location)}</dd>
+          ${active.replacement_plate ? `<dt>รถสำรอง</dt><dd>${esc(active.replacement_model || '')} ${esc(active.replacement_plate)}</dd>` : ''}
+          ${active.delivered_at ? `<dt>ส่งมอบเมื่อ</dt><dd>${fmtDate(active.delivered_at, true)}${active.delivered_odo != null ? ` · ${fmtNum(active.delivered_odo)} กม.` : ''}</dd>` : ''}
+          ${active.staff_note ? `<dt>หมายเหตุ SMART</dt><dd>${esc(active.staff_note)}</dd>` : ''}</dl>
+        <div class="btn-row">${active.status === 'delivered' && !active.delivered_ack_at && !S.isSmart ? `<button class="btn btn-acc" data-act="ack_delivery">${ic('check', 'sm')} ยืนยันรับรถสำรอง</button>` : ''}
+          ${active.status === 'delivered' && !S.isSmart ? `<button class="btn btn-ghost" data-act="return">${ic('swap', 'sm')} แจ้งคืนรถ</button>` : ''}
+          ${['requested', 'approved'].includes(active.status) && !S.isSmart ? `<button class="btn btn-ghost" data-act="cancel" style="color:#FF9C8A">ยกเลิกคำขอ</button>` : ''}</div>
+        ${active.delivered_ack_at ? `<p class="hint">✓ ยืนยันรับรถเมื่อ ${fmtDate(active.delivered_ack_at, true)}</p>` : ''}</div>
+        <div id="rv-staff"></div>`
+      : `<div class="glass card" style="text-align:center"><img src="assets/van.webp" alt="" style="width:180px;max-width:60%;margin:4px auto 8px;display:block">
+          <h3 style="margin:0 0 4px">ขอรถสำรอง</h3><p class="hint" style="margin:0 0 12px">เมื่อรถเข้าซ่อมหรือบำรุงรักษาจนใช้งานไม่ได้ ตามเงื่อนไขสัญญา</p>
+          ${S.isSmart ? '' : `<button class="btn btn-acc btn-block" id="rv-new">${ic('plus', 'sm')} สร้างคำขอรถสำรอง</button>`}</div>`}
+      ${drafts.length ? `<div class="sec"><h4>ร่างคำขอ</h4></div><div class="list">${drafts.map(x => `<button class="glass tight item" data-draft="${x.id}"><span class="ic gray">${ic('doc')}</span><span class="bd"><b>${esc(x.reason)}</b><span class="meta">${esc(x.req_no)} · ${fmtRel(x.updated_at)}</span></span>${pill('rstatus', 'draft')}</button>`).join('')}</div>` : ''}
+      <div class="sec"><h4>ประวัติรถสำรอง</h4></div>
+      <div class="list">${hist.length ? hist.map(x => `<div class="glass tight item"><span class="ic gray">${ic('van')}</span><span class="bd"><b>${esc(x.reason)}</b>
+        <span class="meta">${esc(x.req_no)}${x.replacement_plate ? ' · ' + esc(x.replacement_plate) : ''} · ${fmtDate(x.created_at)}</span>
+        ${x.returned_at ? `<span class="meta">ใช้ ${fmtDate(x.delivered_at)} – ${fmtDate(x.returned_at)}${x.returned_odo != null && x.delivered_odo != null ? ` · ${fmtNum(x.returned_odo - x.delivered_odo)} กม.` : ''}</span>` : ''}</span>${pill('rstatus', x.status)}</div>`).join('')
+        : `<div class="glass tight empty" style="padding:18px">ยังไม่มีประวัติ</div>`}</div>`;
+    $('#rv-new', view)?.addEventListener('click', () => replForm(null, r.q.ticket));
+    $$('[data-draft]', view).forEach(b => b.addEventListener('click', () => replForm(list.find(x => x.id === b.dataset.draft))));
+    $$('[data-act]', view).forEach(b => b.addEventListener('click', async () => {
+      const a = b.dataset.act; let p = {};
+      if (a === 'cancel') { const why = await confirmBox('ยกเลิกคำขอรถสำรอง?', '', { ok: 'ยกเลิกคำขอ', danger: true, cancel: 'ไม่', input: { label: 'เหตุผล', required: true, min: 3, requiredMsg: 'กรุณาระบุเหตุผล' } }); if (!why) return; p.reason = why; }
+      if (a === 'ack_delivery' && !await confirmBox('ยืนยันรับรถสำรอง', `${esc(active.replacement_model || '')} ทะเบียน ${esc(active.replacement_plate || '')}\nตรวจสภาพรถเรียบร้อยแล้ว`, { ok: 'ยืนยันรับรถ' })) return;
+      if (a === 'return') { const odo = await confirmBox('แจ้งคืนรถสำรอง', 'SMART CS จะนัดรับรถคืน', { ok: 'แจ้งคืนรถ', input: { label: 'เลขไมล์ตอนคืน (กม.)', placeholder: 'ไม่บังคับ', max: 7 } }); if (odo === null) return; p.returned_odo = String(odo).replace(/\D/g, ''); }
+      if (await run('cs_repl_action', { p_token: T(), p_id: active.id, p_action: a, p }, 'บันทึกแล้ว')) render();
+    }));
+    if (active && S.can('cs_operator', 'service_manager', 'admin')) staffRepl($('#rv-staff'), active);
+    if (!active && r.q.ticket && !S.isSmart) replForm(null, r.q.ticket);
+  }
+});
+async function replForm(x, ticketId) {
+  const tickets = await api('cs_ticket_list', { p_token: T(), p_vehicle: S.vid, p_filter: 'open' }).catch(() => []);
+  const tid = x?.ticket_id || ticketId || '';
+  const sh = openSheet(`<h3>${ic('van')} ${x ? 'แก้ไขร่างคำขอ' : 'ขอรถสำรอง'}</h3>
+    <label class="fl" for="rf-r">เหตุผล <span class="req">*</span></label><textarea class="in" id="rf-r" style="min-height:70px" maxlength="1000" placeholder="เช่น รถเข้าซ่อมตาม Ticket … ใช้งานไม่ได้">${esc(x?.reason || '')}</textarea>
+    <label class="fl" for="rf-t">อ้างอิงงานซ่อม</label><select class="in" id="rf-t"><option value="">— ไม่อ้างอิง —</option>${tickets.map(t => `<option value="${t.id}" ${t.id === tid ? 'selected' : ''}>${esc(t.ticket_no)} · ${esc(t.title)}</option>`).join('')}</select>
+    <div class="row2"><div><label class="fl" for="rf-f">ต้องการตั้งแต่ <span class="req">*</span></label><input class="in" id="rf-f" type="datetime-local" value="${toLocalInput(x?.need_from)}"></div>
+      <div><label class="fl" for="rf-to">ถึง (ประมาณ)</label><input class="in" id="rf-to" type="datetime-local" value="${toLocalInput(x?.need_to)}"></div></div>
+    <label class="fl" for="rf-l">สถานที่รับรถ</label><input class="in" id="rf-l" maxlength="300" value="${esc(x?.pickup_location || S.home?.vehicle?.unit_name || '')}">
+    <div class="row2"><div><label class="fl" for="rf-cn">ผู้ติดต่อ</label><input class="in" id="rf-cn" maxlength="120" value="${esc(x?.contact_name || S.home?.vehicle?.driver_name || '')}"></div>
+      <div><label class="fl" for="rf-cp">เบอร์โทร</label><input class="in" id="rf-cp" type="tel" inputmode="tel" maxlength="20" value="${esc(x?.contact_phone || S.home?.vehicle?.driver_phone || '')}"></div></div>
+    <div class="btn-row"><button class="btn btn-ghost" id="rf-d">บันทึกร่าง</button><button class="btn btn-acc" id="rf-s">ส่งคำขอ</button></div>
+    ${x ? `<div class="btn-row"><button class="btn btn-ghost btn-sm" id="rf-del" style="color:#FF9C8A">${ic('trash', 'sm')} ลบร่าง</button></div>` : ''}`);
+  const v = id => $(id, sh.el).value;
+  const save = submit => async e => {
+    const p = { id: x?.id || null, vehicle_id: S.vid, reason: v('#rf-r'), ticket_id: v('#rf-t') || null, need_from: fromLocalInput(v('#rf-f')), need_to: fromLocalInput(v('#rf-to')),
+      pickup_location: v('#rf-l'), contact_name: v('#rf-cn'), contact_phone: v('#rf-cp').trim() || null, submit };
+    if (submit) {
+      if (!p.reason.trim()) { toast('กรุณาระบุเหตุผล', true); return; }
+      if (!p.need_from) { toast('กรุณาระบุวันเวลาที่ต้องการรถ', true); return; }
+      if (!await confirmBox('ยืนยันส่งคำขอรถสำรอง', `${esc(p.reason)}\nตั้งแต่ ${fmtDate(p.need_from, true)}`, { ok: 'ส่งคำขอ' })) return;
+    }
+    await withBusy(e.target.closest('button'), async () => { if (await run('cs_repl_save', { p_token: T(), p }, submit ? 'ส่งคำขอแล้ว' : 'บันทึกร่างแล้ว')) { sh.close(); if (location.hash.includes('ticket=')) location.replace('#/repl'); else render(); } });
+  };
+  $('#rf-d', sh.el).onclick = save(false);
+  $('#rf-s', sh.el).onclick = save(true);
+  $('#rf-del', sh.el)?.addEventListener('click', async () => { if (await run('cs_repl_action', { p_token: T(), p_id: x.id, p_action: 'cancel', p: {} }, 'ลบร่างแล้ว')) { sh.close(); render(); } });
+}
+function staffRepl(box, a) {
+  const next = { requested: ['approved', 'rejected'], approved: ['delivered', 'cancelled'], delivered: ['returned'] }[a.status] || [];
+  box.innerHTML = `<div class="glass card staff-panel"><h5>${ic('gear', 'sm')} สำหรับเจ้าหน้าที่ SMART</h5>
+    <label class="fl" for="rs-st">สถานะ</label><select class="in" id="rs-st"><option value="">— คงเดิม —</option>${next.map(s => `<option value="${s}">${L.rstatus[s][0]}</option>`).join('')}</select>
+    <div class="row2"><div><label class="fl" for="rs-m">รุ่นรถสำรอง</label><input class="in" id="rs-m" maxlength="60" value="${esc(a.replacement_model || '')}"></div>
+      <div><label class="fl" for="rs-p">ทะเบียนรถสำรอง</label><input class="in" id="rs-p" maxlength="20" value="${esc(a.replacement_plate || '')}"></div></div>
+    <div class="row2"><div><label class="fl" for="rs-do">ไมล์ส่งมอบ</label><input class="in num" id="rs-do" inputmode="numeric" value="${a.delivered_odo ?? ''}"></div>
+      <div><label class="fl" for="rs-ro">ไมล์รับคืน</label><input class="in num" id="rs-ro" inputmode="numeric" value="${a.returned_odo ?? ''}"></div></div>
+    <label class="fl" for="rs-n">หมายเหตุถึงผู้ใช้</label><input class="in" id="rs-n" maxlength="1000" value="${esc(a.staff_note || '')}">
+    <div class="btn-row"><button class="btn btn-acc" id="rs-s">บันทึก</button></div></div>`;
+  $('#rs-s', box).onclick = e => withBusy(e.currentTarget, async () => {
+    const p = { status: $('#rs-st', box).value || null, replacement_model: $('#rs-m', box).value, replacement_plate: $('#rs-p', box).value,
+      delivered_odo: $('#rs-do', box).value.replace(/\D/g, ''), returned_odo: $('#rs-ro', box).value.replace(/\D/g, ''), staff_note: $('#rs-n', box).value };
+    if (await run('cs_repl_staff_update', { p_token: T(), p_id: a.id, p }, 'อัปเดตแล้ว')) render();
+  });
+}
+
+/* =====================================================================
+   DOCUMENT CENTER
+   ===================================================================== */
+route('docs', {
+  title: 'เอกสารรถ', nav: 'home',
+  async render(view, r) {
+    const docs = await api('cs_doc_list', { p_token: T(), p_vehicle: S.vid });
+    let cat = r.q.cat || 'all';
+    const canEdit = S.can('cs_operator', 'service_manager', 'admin');
+    const cats = ['all', ...Object.keys(L.doccat).filter(k => docs.some(d => d.category === k))];
+    const draw = () => {
+      const list = cat === 'all' ? docs : docs.filter(d => d.category === cat);
+      view.innerHTML = `
+        <div class="tabs" role="tablist">${cats.map(k => `<button role="tab" aria-selected="${cat === k}" data-cat="${k}">${k === 'all' ? 'ทั้งหมด' : L.doccat[k][0]}</button>`).join('')}</div>
+        <div class="list">${list.length ? list.map(d => {
+          const exp = d.expires_at ? daysTo(d.expires_at) : null;
+          return `<div class="glass tight item"><span class="ic">${ic((L.doccat[d.category] || L.doccat.other)[1])}</span>
+            <span class="bd"><b>${esc(d.title)}</b><span class="meta">${esc((L.doccat[d.category] || L.doccat.other)[0])}${d.doc_no ? ' · ' + esc(d.doc_no) : ''}${d.issued_at ? ' · ' + fmtDate(d.issued_at) : ''}
+              ${d.model && !d.vehicle_id ? `<span class="tag">ทุกคันรุ่น ${esc(d.model)}</span>` : ''}${exp != null ? (exp < 0 ? '<span class="tag bad">หมดอายุ</span>' : exp <= 45 ? `<span class="tag acc">หมดอายุอีก ${exp} วัน</span>` : `<span class="tag">ถึง ${fmtDate(d.expires_at)}</span>`) : ''}</span>
+              <span style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+                ${d.maintenance_id ? `<button class="btn btn-ghost btn-sm" data-rep="${d.maintenance_id}">${ic('doc', 'sm')} เปิดรายงาน</button>` : ''}
+                ${d.attachment_id ? `<button class="btn btn-ghost btn-sm" data-att="${d.attachment_id}" data-name="${esc(d.title)}">${ic(d.mime === 'application/pdf' ? 'file' : 'camera', 'sm')} เปิด${d.size ? ' · ' + fmtSize(d.size) : ''}</button>` : ''}
+                ${d.url ? `<a class="btn btn-ghost btn-sm" href="${esc(d.url)}" target="_blank" rel="noopener">${ic('ext', 'sm')} เปิดลิงก์</a>` : ''}
+                ${d.url ? `<button class="btn btn-ghost btn-sm" data-qr="${esc(d.url)}" data-name="${esc(d.title)}">${ic('qr', 'sm')} QR</button>` : ''}
+                ${canEdit && !d.maintenance_id ? `<button class="btn btn-ghost btn-sm" data-edit="${d.id}">${ic('edit', 'sm')}</button>` : ''}</span></span></div>`;
+        }).join('') : `<div class="glass empty">${ic('doc')}<b>ยังไม่มีเอกสาร</b>เอกสารส่งมอบ ประกันภัย พ.ร.บ. คู่มือ และรายงานซ่อมจะแสดงที่นี่เมื่อ SMART CS อัปโหลด</div>`}</div>
+        ${canEdit ? `<div class="btn-row"><button class="btn btn-acc" id="dc-add">${ic('plus', 'sm')} เพิ่มเอกสาร</button></div>` : ''}`;
+      $$('[data-cat]', view).forEach(b => b.addEventListener('click', () => { cat = b.dataset.cat; draw(); }));
+      $$('[data-att]', view).forEach(b => b.addEventListener('click', () => openAttachment(b.dataset.att, b.dataset.name)));
+      $$('[data-rep]', view).forEach(b => b.addEventListener('click', () => go('report/' + b.dataset.rep)));
+      $$('[data-qr]', view).forEach(b => b.addEventListener('click', () => showQR(b.dataset.name, b.dataset.qr, 'สแกนเพื่อเปิดเอกสาร')));
+      $$('[data-edit]', view).forEach(b => b.addEventListener('click', () => docForm(docs.find(d => d.id === b.dataset.edit))));
+      $('#dc-add', view)?.addEventListener('click', () => docForm(null));
+    };
+    draw();
+  }
+});
+function docForm(d) {
+  let file = null;
+  const sh = openSheet(`<h3>${ic('doc')} ${d ? 'แก้ไขเอกสาร' : 'เพิ่มเอกสาร'}</h3>
+    <label class="fl" for="df-c">หมวด</label><select class="in" id="df-c">${Object.entries(L.doccat).filter(([k]) => k !== 'repair_report' || true).map(([k, [l]]) => `<option value="${k}" ${d?.category === k ? 'selected' : ''}>${l}</option>`).join('')}</select>
+    <label class="fl" for="df-t">ชื่อเอกสาร <span class="req">*</span></label><input class="in" id="df-t" maxlength="200" value="${esc(d?.title || '')}">
+    <label class="fl" for="df-sc">ใช้กับ</label><select class="in" id="df-sc"><option value="vehicle" ${!d || d.vehicle_id ? 'selected' : ''}>รถคันนี้ (${esc(S.vehicle?.plate || '')})</option>
+      ${S.models.map(m => `<option value="m:${esc(m)}" ${d && !d.vehicle_id && d.model === m ? 'selected' : ''}>ทุกคันรุ่น ${esc(m)}</option>`).join('')}<option value="all" ${d && !d.vehicle_id && !d.model ? 'selected' : ''}>ทุกคันทุกรุ่น</option></select>
+    <div class="row2"><div><label class="fl" for="df-n">เลขที่</label><input class="in" id="df-n" maxlength="60" value="${esc(d?.doc_no || '')}"></div>
+      <div><label class="fl" for="df-i">วันที่ออก</label><input class="in" id="df-i" type="date" value="${d?.issued_at || ''}"></div></div>
+    <label class="fl" for="df-e">วันหมดอายุ</label><input class="in" id="df-e" type="date" value="${d?.expires_at || ''}">
+    <label class="fl" for="df-u">ลิงก์เอกสาร (https://)</label><input class="in" id="df-u" type="url" maxlength="1000" value="${esc(d?.url || '')}" placeholder="ไม่บังคับ ถ้าแนบไฟล์">
+    <label class="fl">ไฟล์ (PDF/ภาพ ไม่เกิน 4 MB)</label><button class="btn btn-ghost btn-block" id="df-f">${ic('dl', 'sm')} ${d?.attachment_id ? 'เปลี่ยนไฟล์' : 'เลือกไฟล์'}</button><div class="hint" id="df-fn"></div>
+    <div class="btn-row">${d && S.can('service_manager', 'admin') ? `<button class="btn btn-ghost" id="df-del" style="color:#FF9C8A">${ic('trash', 'sm')}</button>` : ''}<button class="btn btn-ghost" data-close>ยกเลิก</button><button class="btn btn-acc" id="df-s">บันทึก</button></div>`);
+  $('#df-f', sh.el).onclick = async () => {
+    const [f] = await pickFiles('application/pdf,image/*', false); if (!f) return;
+    if (f.size > 4 * 1024 * 1024 && f.type === 'application/pdf') { toast('ไฟล์ใหญ่เกิน 4 MB — ใช้ลิงก์แทน', true); return; }
+    file = f.type === 'application/pdf' ? await readFileB64(f) : await compressImage(f, 2000, 0.8);
+    $('#df-fn', sh.el).textContent = `${f.name} · ${fmtSize(Math.round(file.data.length * 0.75))}`;
+  };
+  $('#df-s', sh.el).onclick = e => withBusy(e.currentTarget, async () => {
+    const sc = $('#df-sc', sh.el).value;
+    const p = { id: d?.id || null, category: $('#df-c', sh.el).value, title: $('#df-t', sh.el).value, doc_no: $('#df-n', sh.el).value,
+      issued_at: $('#df-i', sh.el).value, expires_at: $('#df-e', sh.el).value, url: $('#df-u', sh.el).value.trim(),
+      vehicle_id: sc === 'vehicle' ? S.vid : null, model: sc.startsWith('m:') ? sc.slice(2) : null };
+    if (!p.url && !file && !d?.attachment_id) { toast('กรุณาแนบไฟล์หรือใส่ลิงก์', true); return; }
+    const r = await run('cs_doc_save', { p_token: T(), p });
+    if (!r) return;
+    if (file && !await run('cs_attach_add', { p_token: T(), p_ref_type: 'document', p_ref: r.id, p_name: file.name, p_mime: file.mime, p_data: file.data })) return;
+    toast('บันทึกเอกสารแล้ว'); sh.close(); render();
+  });
+  $('#df-del', sh.el)?.addEventListener('click', async () => {
+    if (await confirmBox('ลบเอกสารนี้?', 'เอกสารจะถูกซ่อนจากผู้ใช้ (เก็บประวัติใน Audit Log)', { ok: 'ลบ', danger: true }) && await run('cs_doc_delete', { p_token: T(), p_id: d.id }, 'ลบแล้ว')) { sh.close(); render(); }
+  });
+}
+
+/* =====================================================================
+   CONTACT SMART CS — โทร / ฉุกเฉิน / ข้อความ / FAQ / Feedback
+   ===================================================================== */
+route('contact', {
+  title: 'ติดต่อ SMART CS', nav: 'home',
+  async render(view, r) {
+    const sp = S.support || {};
+    let tab = r.q.tab || 'contact';
+    const draw = async () => {
+      view.innerHTML = `<div class="tabs" role="tablist">${[['contact', 'ติดต่อ'], ['chat', 'ข้อความ'], ['faq', 'FAQ'], ['feedback', 'Feedback']].map(([k, l]) =>
+        `<button role="tab" aria-selected="${tab === k}" data-tab="${k}">${l}${k === 'chat' && S.home?.unread_messages ? `<span class="badge">${S.home.unread_messages}</span>` : ''}</button>`).join('')}</div><div id="ct"></div>`;
+      $$('[data-tab]', view).forEach(b => b.addEventListener('click', () => { tab = b.dataset.tab; history.replaceState(null, '', '#/contact?tab=' + tab); draw(); }));
+      const box = $('#ct');
+      if (tab === 'contact') {
+        const calls = [[sp.cs_phone, 'SMART Customer Service', sp.cs_hotline_hours || ''], [sp.emergency_phone, 'สายด่วนฉุกเฉิน SMART (24 ชม.)', '']].filter(x => x[0]);
+        box.innerHTML = `
+          ${S.isSmart ? '' : `<button class="sos" id="ct-sos"><span class="ic">${ic('siren', 'lg')}</span><span><b>แจ้งเหตุฉุกเฉิน</b><span>ส่งตำแหน่งและแจ้งเตือนด่วนถึง SMART CS</span></span></button>`}
+          <div class="glass group">${calls.length ? calls.map(c => `<a class="rowlink call" href="tel:${esc(c[0])}">${ic('phone')}<span>${esc(c[1])}<br><small>${esc(c[0])}${c[2] ? ' · ' + esc(c[2]) : ''}</small></span>${ic('chevR', 'sm')}</a>`).join('')
+            : `<div class="rowlink" style="color:var(--mut)">${ic('info')}<span>ผู้ดูแลระบบยังไม่ได้ตั้งค่าเบอร์ SMART CS<br><small>ใช้ "ข้อความ" เพื่อติดต่อเจ้าหน้าที่ได้ทันที</small></span></div>`}
+            ${sp.line_id ? `<a class="rowlink" href="https://line.me/R/ti/p/${encodeURIComponent(sp.line_id)}" target="_blank" rel="noopener">${ic('chat')}<span>LINE<br><small>${esc(sp.line_id)}</small></span>${ic('ext', 'sm')}</a>` : ''}
+            ${sp.email ? `<a class="rowlink" href="mailto:${esc(sp.email)}">${ic('send')}<span>อีเมล<br><small>${esc(sp.email)}</small></span>${ic('chevR', 'sm')}</a>` : ''}
+            <button class="rowlink" data-tab2="chat">${ic('chat')}<span>ส่งข้อความถึงเจ้าหน้าที่</span>${ic('chevR', 'sm')}</button></div>
+          <div class="sec"><h4>เบอร์ฉุกเฉินสาธารณะ</h4></div>
+          <div class="glass group">${(sp.public_emergency || []).map(e => `<a class="rowlink" href="tel:${esc(e.phone)}">${ic('phone')}<span>${esc(e.name)}</span><b class="num" style="color:var(--acc-hi)">${esc(e.phone)}</b></a>`).join('')}</div>`;
+        $('#ct-sos', box)?.addEventListener('click', emergency);
+        $$('[data-tab2]', box).forEach(b => b.onclick = () => { tab = 'chat'; history.replaceState(null, '', '#/contact?tab=chat'); draw(); });
+      } else if (tab === 'chat') {
+        const ms = await api('cs_msg_list', { p_token: T(), p_vehicle: S.vid });
+        if (S.home) S.home.unread_messages = 0;
+        box.innerHTML = `<div class="glass card"><div class="msgs" id="ct-msgs" style="max-height:58svh">${ms.length ? ms.map(msgHtml).join('') : `<p class="hint" style="text-align:center">เริ่มสนทนากับเจ้าหน้าที่ SMART CS ได้เลย</p>`}</div>
+          <div style="display:flex;gap:8px;margin-top:8px"><textarea class="in" id="ct-in" rows="1" style="min-height:50px;height:50px" maxlength="4000" placeholder="พิมพ์ข้อความ"></textarea>
+            <button class="btn btn-acc" id="ct-send" aria-label="ส่ง" style="padding:0 16px">${ic('send', 'sm')}</button></div></div>
+          <button class="btn btn-ghost btn-sm" id="ct-ref">${ic('refresh', 'sm')} โหลดข้อความใหม่</button>`;
+        const mb = $('#ct-msgs'); mb.scrollTop = mb.scrollHeight;
+        const send = async () => {
+          const inp = $('#ct-in'); const body = inp.value.trim(); if (!body) return;
+          const m = await run('cs_msg_send', { p_token: T(), p_vehicle: S.vid, p_body: body, p_ticket: null, p_emergency: false });
+          if (m) { inp.value = ''; if (mb.querySelector('p.hint')) mb.innerHTML = ''; mb.insertAdjacentHTML('beforeend', msgHtml({ ...m, sender_name: S.me.actor })); mb.scrollTop = mb.scrollHeight; }
+        };
+        $('#ct-send').onclick = e => withBusy(e.currentTarget, send);
+        $('#ct-ref').onclick = () => draw();
+      } else if (tab === 'faq') {
+        const faq = await api('cs_faq_list', { p_token: T() });
+        box.innerHTML = `<div class="glass card faq">${faq.map(f => `<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join('') || '<p class="hint">ยังไม่มี FAQ</p>'}</div>
+          <div class="btn-row"><button class="btn btn-ghost" data-go="ai">${ic('bot', 'sm')} ถาม AI CS Agent</button></div>`;
+        $$('[data-go]', box).forEach(b => b.onclick = () => go(b.dataset.go));
+      } else {
+        let rating = 0;
+        box.innerHTML = `<div class="glass card"><h5>ความคิดเห็นต่อบริการ</h5>
+          <div class="stars" id="fb-stars" role="radiogroup" aria-label="คะแนน">${[1, 2, 3, 4, 5].map(n => `<button type="button" role="radio" aria-checked="false" aria-label="${n} ดาว" data-n="${n}">${starSvg}</button>`).join('')}</div>
+          <label class="fl" for="fb-t">หัวข้อ</label><select class="in" id="fb-t">${['บริการ SMART CS', 'สภาพรถ', 'การบำรุงรักษา', 'รถสำรอง', 'แอป MEA CS', 'อื่น ๆ'].map(x => `<option>${x}</option>`).join('')}</select>
+          <label class="fl" for="fb-b">ความคิดเห็น <span class="req">*</span></label><textarea class="in" id="fb-b" maxlength="2000" placeholder="ข้อเสนอแนะ คำชม หรือสิ่งที่ควรปรับปรุง"></textarea>
+          <div class="btn-row"><button class="btn btn-acc" id="fb-s">ส่งความคิดเห็น</button></div></div>`;
+        $$('#fb-stars button').forEach(b => b.onclick = () => { rating = +b.dataset.n; $$('#fb-stars button').forEach(x => { x.classList.toggle('on', +x.dataset.n <= rating); x.setAttribute('aria-checked', +x.dataset.n === rating); }); });
+        $('#fb-s').onclick = e => {
+          const body = $('#fb-b').value.trim();
+          if (body.length < 5) { toast('กรุณาพิมพ์ความคิดเห็นอย่างน้อย 5 ตัวอักษร', true); return; }
+          withBusy(e.currentTarget, async () => { if (await run('cs_feedback_save', { p_token: T(), p_vehicle: S.vid, p_topic: $('#fb-t').value, p_rating: rating || null, p_body: body }, 'ขอบคุณสำหรับความคิดเห็น')) { $('#fb-b').value = ''; rating = 0; $$('#fb-stars button').forEach(x => x.classList.remove('on')); } });
+        };
+      }
+    };
+    await draw();
+  }
+});
+async function emergency() {
+  const kind = await choose('แจ้งเหตุฉุกเฉิน — เกิดอะไรขึ้น?', [
+    { value: 'อุบัติเหตุ', label: 'อุบัติเหตุ', icon: 'crash' }, { value: 'รถดับ/เสียกลางทาง', label: 'รถดับ / เสียกลางทาง', icon: 'wrench' },
+    { value: 'ควัน/กลิ่นไหม้/แบตเตอรี่ผิดปกติ', label: 'ควัน กลิ่นไหม้ แบตเตอรี่ผิดปกติ', sub: 'ออกห่างจากรถทันที · ไฟไหม้โทร 199', icon: 'siren' },
+    { value: 'เหตุร้าย/ความปลอดภัย', label: 'เหตุร้าย / ความปลอดภัย', sub: 'โทร 191', icon: 'shield' }, { value: 'อื่น ๆ', label: 'อื่น ๆ', icon: 'dots' }]);
+  if (!kind) return;
+  toast('กำลังระบุตำแหน่ง…');
+  const p = await getGPS();
+  const loc = p ? `ตำแหน่ง: https://maps.google.com/?q=${p.lat.toFixed(6)},${p.lng.toFixed(6)}` : 'ตำแหน่ง: ไม่ได้รับสิทธิ์ GPS';
+  const note = await confirmBox('ส่งแจ้งเหตุฉุกเฉิน', `<b>${esc(kind)}</b>\n${esc(loc)}\n\nมีผู้บาดเจ็บโทร 1669 ทันที`, { ok: 'ส่งแจ้งเหตุ', danger: true, input: { label: 'รายละเอียดเพิ่มเติม (ถ้ามี)', placeholder: 'เช่น จุดสังเกต อาการรถ', max: 1000 } });
+  if (note === null) return;
+  const v = S.home?.vehicle || S.vehicle || {};
+  const body = `แจ้งเหตุฉุกเฉิน: ${kind}\nรถ ${v.model || ''} ทะเบียน ${v.plate || ''}\n${loc}${note ? '\nรายละเอียด: ' + note : ''}`;
+  if (await run('cs_msg_send', { p_token: T(), p_vehicle: S.vid, p_body: body, p_ticket: null, p_emergency: true }, 'ส่งแจ้งเหตุถึง SMART CS แล้ว')) {
+    const create = await confirmBox('สร้าง Ticket ด้วยไหม?', 'เพื่อให้ติดตามงานและแนบภาพได้', { ok: 'สร้าง Ticket', cancel: 'ไม่ตอนนี้' });
+    if (create) {
+      const cat = kind === 'อุบัติเหตุ' ? 'accident' : kind.startsWith('รถดับ') ? 'breakdown' : 'help';
+      sstore.set('mcs_ai_draft', { category: cat, priority: 'urgent', title: 'แจ้งเหตุฉุกเฉิน: ' + kind, detail: (note || kind), location: p ? `พิกัด ${p.lat.toFixed(5)}, ${p.lng.toFixed(5)}` : '' });
+      go('request?from=ai');
+    } else go('contact?tab=chat');
+  }
+}
+
+/* =====================================================================
+   PROFILE & SETTINGS
+   ===================================================================== */
+route('profile', {
+  title: 'บัญชีและการตั้งค่า', nav: 'profile', needVehicle: false,
+  async render(view) {
+    const vd = S.vid ? await api('cs_vehicle_get', { p_token: T(), p_vehicle: S.vid }) : null;
+    const v = vd?.vehicle;
+    const isVeh = S.kind === 'vehicle';
+    const n = v?.notify || {};
+    const name = isVeh ? (v?.driver_name || 'ผู้ใช้รถ ' + v?.plate) : S.me.staff?.full_name;
+    view.innerHTML = `
+      <div class="glass prof"><span class="avatar">${ic('user')}</span><div style="min-width:0"><b>${esc(name)}</b><span>${esc(L.role[S.role] || S.role)}${isVeh ? '' : ' · ' + esc(S.me.staff?.username || '')}</span>
+        ${v ? `<br><span>${esc(v.model)} · ${esc(v.plate)}${v.unit_name ? ' · ' + esc(v.unit_name) : ''}</span>` : ''}</div></div>
+      ${(S.me.vehicles?.length || 0) > 1 ? `<div class="btn-row" style="margin:0 0 12px"><button class="btn btn-ghost" id="pf-veh">${ic('swap', 'sm')} เปลี่ยนรถที่ดูแล (${S.me.vehicles.length} คัน)</button></div>` : ''}
+      <div class="sec"><h4>ข้อมูลบัญชี</h4></div>
+      <div class="glass card"><dl class="kv">${isVeh ? `<dt>ประเภทบัญชี</dt><dd>บัญชีรถ (รุ่นรถ + ทะเบียน)</dd><dt>Username</dt><dd>${esc(v.model)}</dd><dt>ผู้ขับ/ผู้รับผิดชอบ</dt><dd>${dash(v.driver_name)}</dd><dt>เบอร์โทร</dt><dd>${dash(v.driver_phone)}</dd>`
+        : `<dt>ชื่อผู้ใช้</dt><dd>${esc(S.me.staff.username)}</dd><dt>บทบาท</dt><dd>${esc(L.role[S.role])}</dd>${S.me.staff.unit_name ? `<dt>หน่วยงาน</dt><dd>${esc(S.me.staff.unit_name)}</dd>` : ''}<dt>โทร</dt><dd>${dash(S.me.staff.phone)}</dd><dt>อีเมล</dt><dd>${dash(S.me.staff.email)}</dd>`}</dl>
+        ${isVeh ? `<div class="btn-row"><button class="btn btn-ghost btn-sm" id="pf-drv">${ic('edit', 'sm')} แก้ไขผู้ขับ/เบอร์โทร</button></div>` : ''}</div>
+      ${vd ? `<div class="sec"><h4>ผู้ประสานงาน</h4><button class="link" id="pf-cadd">${ic('plus', 'sm')} เพิ่ม</button></div>
+      <div class="list">${vd.contacts.length ? vd.contacts.map(c => `<div class="glass tight item"><span class="ic ${c.kind.startsWith('smart') ? '' : 'gray'}">${ic(c.kind.startsWith('smart') ? 'headset' : 'user')}</span>
+        <span class="bd"><b>${esc(c.name)}</b><span class="meta">${esc(L.ckind[c.kind] || c.kind)}${c.position ? ' · ' + esc(c.position) : ''}</span>
+          <span class="meta">${c.phone ? `<a href="tel:${esc(c.phone)}">${esc(c.phone)}</a>` : ''}${c.email ? ` · <a href="mailto:${esc(c.email)}">${esc(c.email)}</a>` : ''}${c.line_id ? ' · LINE ' + esc(c.line_id) : ''}</span></span>
+        ${canEditContact(c) ? `<button class="icon-btn" data-cedit="${c.id}" aria-label="แก้ไข">${ic('edit', 'sm')}</button>` : ''}</div>`).join('')
+        : `<div class="glass tight empty" style="padding:18px">ยังไม่มีผู้ประสานงาน</div>`}</div>
+      <div class="sec"><h4>การแจ้งเตือน</h4></div>
+      <div class="glass card" id="pf-notify">${[['ticket', 'งานบริการ / Ticket'], ['pm', 'บำรุงรักษา / นัดหมาย'], ['replacement', 'รถสำรอง'], ['document', 'เอกสารใหม่'], ['message', 'ข้อความจาก SMART CS']].map(([k, l]) =>
+        `<label class="toggle"><span>${l}</span><span class="sw"><input type="checkbox" data-n="${k}" ${n[k] !== false ? 'checked' : ''}><span></span></span></label>`).join('')}
+        <p class="hint">การแจ้งเตือนแสดงในแอป (ไอคอนกระดิ่ง) และหน้าหลัก</p></div>` : ''}
+      <div class="sec"><h4>ความปลอดภัย</h4></div>
+      <div class="glass group">
+        ${isVeh ? `<div class="rowlink">${ic('lock')}<span>รหัสผ่าน = เลขทะเบียนรถ (ต้นแบบ)<br><small>ระบบใช้งานจริงจะเพิ่มการยืนยันตัวตน เช่น OTP/รหัสพนักงาน</small></span></div>`
+          : `<button class="rowlink" id="pf-pw">${ic('lock')}<span>เปลี่ยนรหัสผ่าน</span>${ic('chevR', 'sm')}</button>`}
+        <div class="rowlink">${ic('info')}<span>เซสชันหมดอายุ<br><small>${fmtDate(S.me.expires_at, true)}</small></span></div>
+        <button class="rowlink" id="pf-out" style="color:#FF9C8A">${ic('logout')}<span>ออกจากระบบ</span></button></div>
+      ${S.isSmart || S.role === 'admin' ? `<div class="sec"><h4>ผู้ดูแลระบบ / SMART</h4></div>
+      <div class="glass group">
+        ${S.isSmart ? `<button class="rowlink" data-go="queue">${ic('inbox')}<span>คิวงาน SMART CS</span>${ic('chevR', 'sm')}</button>` : ''}
+        ${S.can('admin', 'service_manager') ? `<button class="rowlink" data-go="admin-vehicles">${ic('van')}<span>จัดการรถ (Vehicle Master)</span>${ic('chevR', 'sm')}</button>` : ''}
+        ${S.can('admin') ? `<button class="rowlink" data-go="admin-staff">${ic('users')}<span>บัญชีผู้ใช้ / บทบาท</span>${ic('chevR', 'sm')}</button>
+          <button class="rowlink" data-go="admin-settings">${ic('gear')}<span>ตั้งค่าช่องทางติดต่อ / รุ่นรถ</span>${ic('chevR', 'sm')}</button>` : ''}
+        ${S.can('admin', 'service_manager') ? `<button class="rowlink" data-go="admin-audit">${ic('audit')}<span>Audit Log</span>${ic('chevR', 'sm')}</button>` : ''}</div>` : ''}
+      <div style="text-align:center;margin:24px 0 8px"><img src="assets/mea-logo.png" alt="การไฟฟ้านครหลวง" style="width:200px;max-width:60%;background:#fff;border-radius:12px;padding:8px 12px"></div>
+      <p class="hint" style="text-align:center">MEA CS v${APP_VER} · ให้บริการโดย ${esc(S.support.company || 'SMART TERMINAL CORPORATION')}</p>`;
+    $$('[data-go]', view).forEach(b => b.onclick = () => go(b.dataset.go));
+    $('#pf-veh', view)?.addEventListener('click', pickVehicle);
+    $('#pf-drv', view)?.addEventListener('click', () => editDriver(v, () => render()));
+    $('#pf-cadd', view)?.addEventListener('click', () => contactForm(null));
+    $$('[data-cedit]', view).forEach(b => b.onclick = () => contactForm(vd.contacts.find(c => c.id === b.dataset.cedit)));
+    $$('#pf-notify input', view).forEach(i => i.addEventListener('change', async () => {
+      const nn = {}; $$('#pf-notify input', view).forEach(x => nn[x.dataset.n] = x.checked);
+      if (!await run('cs_vehicle_update_self', { p_token: T(), p_vehicle: S.vid, p: { notify: nn } }, 'บันทึกการแจ้งเตือนแล้ว')) i.checked = !i.checked;
+    }));
+    $('#pf-pw', view)?.addEventListener('click', changePassword);
+    $('#pf-out', view).onclick = async () => {
+      if (!await confirmBox('ออกจากระบบ?', '', { ok: 'ออกจากระบบ', danger: true })) return;
+      try { await api('cs_logout', { p_token: T() }); } catch {}
+      store.del('mcs_must_change');
+      endSession();
+    };
+  }
+});
+function canEditContact(c) { return S.can('admin', 'service_manager', 'cs_operator') || (c.vehicle_id && ['mea_coordinator', 'driver', 'other'].includes(c.kind)); }
+function contactForm(c) {
+  const smart = S.can('admin', 'service_manager', 'cs_operator');
+  const kinds = smart ? Object.keys(L.ckind) : ['mea_coordinator', 'driver', 'other'];
+  const sh = openSheet(`<h3>${ic('user')} ${c ? 'แก้ไขผู้ประสานงาน' : 'เพิ่มผู้ประสานงาน'}</h3>
+    <label class="fl" for="cf-k">ประเภท</label><select class="in" id="cf-k">${kinds.map(k => `<option value="${k}" ${c?.kind === k ? 'selected' : ''}>${L.ckind[k]}</option>`).join('')}</select>
+    ${smart ? `<label class="fl" for="cf-sc">ใช้กับ</label><select class="in" id="cf-sc"><option value="v" ${!c || c.vehicle_id ? 'selected' : ''}>รถคันนี้</option><option value="all" ${c && !c.vehicle_id ? 'selected' : ''}>ทุกคัน</option></select>` : ''}
+    <label class="fl" for="cf-n">ชื่อ <span class="req">*</span></label><input class="in" id="cf-n" maxlength="120" value="${esc(c?.name || '')}">
+    <label class="fl" for="cf-p">ตำแหน่ง</label><input class="in" id="cf-p" maxlength="120" value="${esc(c?.position || '')}">
+    <div class="row2"><div><label class="fl" for="cf-t">โทร</label><input class="in" id="cf-t" type="tel" maxlength="20" value="${esc(c?.phone || '')}"></div>
+      <div><label class="fl" for="cf-l">LINE ID</label><input class="in" id="cf-l" maxlength="60" value="${esc(c?.line_id || '')}"></div></div>
+    <label class="fl" for="cf-e">อีเมล</label><input class="in" id="cf-e" type="email" maxlength="120" value="${esc(c?.email || '')}">
+    <div class="btn-row">${c ? `<button class="btn btn-ghost" id="cf-d" style="color:#FF9C8A">${ic('trash', 'sm')}</button>` : ''}<button class="btn btn-ghost" data-close>ยกเลิก</button><button class="btn btn-acc" id="cf-s">บันทึก</button></div>`);
+  const v = id => $(id, sh.el)?.value;
+  $('#cf-s', sh.el).onclick = e => withBusy(e.currentTarget, async () => {
+    const p = { id: c?.id || null, kind: v('#cf-k'), name: v('#cf-n'), position: v('#cf-p'), phone: v('#cf-t'), line_id: v('#cf-l'), email: v('#cf-e'),
+      vehicle_id: smart && v('#cf-sc') === 'all' ? null : S.vid };
+    if (await run('cs_contact_save', { p_token: T(), p }, 'บันทึกแล้ว')) { sh.close(); render(); }
+  });
+  $('#cf-d', sh.el)?.addEventListener('click', async () => { if (await confirmBox('ลบผู้ประสานงานนี้?', '', { ok: 'ลบ', danger: true }) && await run('cs_contact_delete', { p_token: T(), p_id: c.id }, 'ลบแล้ว')) { sh.close(); render(); } });
+}
+function changePassword() {
+  const sh = openSheet(`<h3>${ic('lock')} เปลี่ยนรหัสผ่าน</h3>
+    <label class="fl" for="pw-o">รหัสผ่านเดิม</label><input class="in" id="pw-o" type="password" autocomplete="current-password">
+    <label class="fl" for="pw-n">รหัสผ่านใหม่ (8–64 ตัว)</label><input class="in" id="pw-n" type="password" autocomplete="new-password" minlength="8" maxlength="64">
+    <label class="fl" for="pw-c">ยืนยันรหัสผ่านใหม่</label><input class="in" id="pw-c" type="password" autocomplete="new-password">
+    <div class="btn-row"><button class="btn btn-ghost" data-close>ยกเลิก</button><button class="btn btn-acc" id="pw-s">บันทึก</button></div>`);
+  $('#pw-s', sh.el).onclick = e => {
+    const o = $('#pw-o', sh.el).value, n = $('#pw-n', sh.el).value;
+    if (n.length < 8) { toast('รหัสผ่านใหม่ต้องยาวอย่างน้อย 8 ตัว', true); return; }
+    if (n !== $('#pw-c', sh.el).value) { toast('ยืนยันรหัสผ่านไม่ตรงกัน', true); return; }
+    withBusy(e.currentTarget, async () => { if (await run('cs_change_password', { p_token: T(), p_old: o, p_new: n }, 'เปลี่ยนรหัสผ่านแล้ว')) { store.del('mcs_must_change'); sh.close(); } });
+  };
+}
+
+/* =====================================================================
+   ADMIN — Vehicle Master / Staff / Settings / Audit
+   ===================================================================== */
+const VSTAT_OPTS = () => Object.entries(L.vstatus).map(([k, [l]]) => `<option value="${k}">${l}</option>`).join('');
+route('admin-vehicles', {
+  title: 'จัดการรถ (Vehicle Master)', nav: 'profile', needVehicle: false,
+  async render(view) {
+    if (!S.can('admin', 'service_manager')) { view.innerHTML = `<div class="empty">${ic('lock')}<b>เฉพาะผู้ดูแลระบบ</b></div>`; return; }
+    const list = await api('cs_admin_vehicle_list', { p_token: T() });
+    let q = '';
+    const draw = () => {
+      const f = list.filter(v => !q || `${v.model} ${v.plate} ${v.unit_name || ''} ${v.vin || ''}`.toLowerCase().includes(q.toLowerCase()));
+      $('#av-list').innerHTML = f.length ? f.map(v => `<button class="glass tight item" data-v="${v.id}"><span class="ic">${ic('van')}</span>
+        <span class="bd"><b>${esc(v.model)} · ${esc(v.plate)}</b><span class="meta">${dash(v.unit_name)}${v.contract_no ? ' · ' + esc(v.contract_no) : ''}${v.open_tickets ? ` · <span class="tag acc">${v.open_tickets} งานเปิด</span>` : ''}</span></span>${pill('vstatus', v.status)}</button>`).join('')
+        : `<div class="glass empty">${ic('van')}<b>${list.length ? 'ไม่พบรถที่ค้นหา' : 'ยังไม่มีรถในระบบ'}</b>${list.length ? '' : 'กด "เพิ่มรถ" เพื่อลงทะเบียนรถจริงทีละคัน'}</div>`;
+      $$('[data-v]', view).forEach(b => b.onclick = () => vehicleForm(list.find(v => v.id === b.dataset.v)));
+    };
+    view.innerHTML = `<div class="banner info">${ic('info', 'sm')} รถในระบบ ${list.length} คัน · ผู้ใช้เข้าระบบด้วย รุ่นรถ + ทะเบียน ตามที่ลงทะเบียนไว้ที่นี่</div>
+      <div style="display:flex;gap:8px;margin-bottom:12px"><input class="in" id="av-q" type="search" placeholder="ค้นหา ทะเบียน / รุ่น / หน่วยงาน / VIN"><button class="btn btn-acc" id="av-add" style="flex-shrink:0">${ic('plus', 'sm')} เพิ่มรถ</button></div>
+      <div class="list" id="av-list"></div>`;
+    $('#av-q').oninput = e => { q = e.target.value; draw(); };
+    $('#av-add').onclick = () => vehicleForm(null);
+    draw();
+  }
+});
+function vehicleForm(v) {
+  const f = (id, label, val, attrs = '') => `<div><label class="fl" for="${id}">${label}</label><input class="in" id="${id}" value="${esc(val ?? '')}" ${attrs}></div>`;
+  const sh = openSheet(`<h3>${ic('van')} ${v ? 'แก้ไขข้อมูลรถ' : 'ลงทะเบียนรถ'}</h3>
+    <div class="row2"><div><label class="fl" for="vf-model">รุ่นรถ <span class="req">*</span></label><select class="in" id="vf-model"><option value="">— เลือก —</option>${S.models.map(m => `<option ${v?.model === m ? 'selected' : ''}>${esc(m)}</option>`).join('')}</select></div>
+      ${f('vf-plate', 'ทะเบียน <span class="req">*</span>', v?.plate, 'maxlength="20" placeholder="เช่น 1นข 1234"')}</div>
+    <div class="row2">${f('vf-vin', 'VIN', v?.vin, 'maxlength="17" autocapitalize="characters"')}${f('vf-color', 'สี', v?.color, 'maxlength="40"')}</div>
+    <label class="fl" for="vf-status">สถานะรถ</label><select class="in" id="vf-status">${VSTAT_OPTS()}</select>
+    <div class="row2">${f('vf-unit', 'หน่วยงาน กฟน.', v?.unit_name, 'maxlength="200"')}${f('vf-ucode', 'รหัสหน่วยงาน', v?.unit_code, 'maxlength="40"')}</div>
+    <div class="row2">${f('vf-dn', 'ผู้ขับ/ผู้รับผิดชอบ', v?.driver_name, 'maxlength="120"')}${f('vf-dp', 'เบอร์โทร', v?.driver_phone, 'type="tel" maxlength="20"')}</div>
+    <div class="row2">${f('vf-cno', 'เลขที่สัญญา', v?.contract_no, 'maxlength="60"')}${f('vf-del', 'วันส่งมอบ', v?.delivered_at, 'type="date"')}</div>
+    <div class="row2">${f('vf-cs', 'เริ่มสัญญา', v?.contract_start, 'type="date"')}${f('vf-ce', 'สิ้นสุดสัญญา', v?.contract_end, 'type="date"')}</div>
+    <div class="row2">${f('vf-odo', 'เลขไมล์', v?.odometer, 'inputmode="numeric"')}${f('vf-bat', 'แบตเตอรี่ (kWh)', v?.battery_kwh, 'inputmode="decimal"')}</div>
+    <div class="row2">${f('vf-ic', 'บริษัทประกัน', v?.insurance_company, 'maxlength="120"')}${f('vf-in', 'เลขกรมธรรม์', v?.insurance_no, 'maxlength="60"')}</div>
+    <div class="row2">${f('vf-ie', 'ประกันหมดอายุ', v?.insurance_exp, 'type="date"')}${f('vf-ae', 'พ.ร.บ. หมดอายุ', v?.act_exp, 'type="date"')}</div>
+    <div class="row2">${f('vf-te', 'ภาษีหมดอายุ', v?.tax_exp, 'type="date"')}<div></div></div>
+    <label class="fl" for="vf-note">หมายเหตุสถานะ (แสดงต่อผู้ใช้)</label><input class="in" id="vf-note" maxlength="1000" value="${esc(v?.note || '')}">
+    <div class="btn-row">${v && S.can('admin') ? `<button class="btn btn-ghost" id="vf-rm" style="color:#FF9C8A">${ic('trash', 'sm')}</button>` : ''}<button class="btn btn-ghost" data-close>ยกเลิก</button><button class="btn btn-acc" id="vf-s">บันทึก</button></div>`);
+  $('#vf-status', sh.el).value = v?.status || 'ready';
+  const g = id => $(id, sh.el).value.trim();
+  $('#vf-s', sh.el).onclick = e => withBusy(e.currentTarget, async () => {
+    const p = { id: v?.id || null, model: g('#vf-model'), plate: g('#vf-plate'), vin: g('#vf-vin').toUpperCase(), color: g('#vf-color'), status: g('#vf-status'),
+      unit_name: g('#vf-unit'), unit_code: g('#vf-ucode'), driver_name: g('#vf-dn'), driver_phone: g('#vf-dp'), contract_no: g('#vf-cno'), delivered_at: g('#vf-del'),
+      contract_start: g('#vf-cs'), contract_end: g('#vf-ce'), odometer: g('#vf-odo').replace(/\D/g, ''), battery_kwh: g('#vf-bat'), insurance_company: g('#vf-ic'),
+      insurance_no: g('#vf-in'), insurance_exp: g('#vf-ie'), act_exp: g('#vf-ae'), tax_exp: g('#vf-te'), note: g('#vf-note') };
+    if (await run('cs_admin_vehicle_save', { p_token: T(), p }, 'บันทึกข้อมูลรถแล้ว')) { sh.close(); S.me = null; render(); }
+  });
+  $('#vf-rm', sh.el)?.addEventListener('click', async () => {
+    const why = await confirmBox('ยกเลิกรถคันนี้จากระบบ?', 'ผู้ใช้รถคันนี้จะเข้าระบบไม่ได้ · ข้อมูลเก็บไว้ (Soft Delete)', { ok: 'ยกเลิกรถ', danger: true, input: { label: 'เหตุผล', required: true, min: 3, requiredMsg: 'กรุณาระบุเหตุผล' } });
+    if (why && await run('cs_admin_vehicle_delete', { p_token: T(), p_id: v.id, p_reason: why }, 'ยกเลิกรถแล้ว')) { sh.close(); if (S.vid === v.id) S.vid = null; S.me = null; render(); }
+  });
+}
+route('admin-staff', {
+  title: 'บัญชีผู้ใช้ / บทบาท', nav: 'profile', needVehicle: false,
+  async render(view) {
+    if (!S.can('admin')) { view.innerHTML = `<div class="empty">${ic('lock')}<b>เฉพาะผู้ดูแลระบบ</b></div>`; return; }
+    const list = await api('cs_admin_staff_list', { p_token: T() });
+    view.innerHTML = `<div class="banner info">${ic('info', 'sm')} ผู้ใช้รถ กฟน. เข้าระบบด้วยรุ่นรถ + ทะเบียน (ไม่ต้องสร้างบัญชี) · บัญชีที่นี่สำหรับผู้ประสานงาน กฟน. และเจ้าหน้าที่ SMART</div>
+      <div class="list">${list.map(s => `<button class="glass tight item" data-s="${s.id}" style="${s.active ? '' : 'opacity:.55'}"><span class="ic ${s.role === 'coordinator' ? 'gray' : ''}">${ic(s.role === 'coordinator' ? 'user' : 'headset')}</span>
+        <span class="bd"><b>${esc(s.full_name)}</b><span class="meta">${esc(s.username)} · ${esc(L.role[s.role])}${s.unit_name ? ' · ' + esc(s.unit_name) : ''}${s.active ? '' : ' · <span class="tag bad">ระงับ</span>'}</span></span>${ic('chevR', 'sm')}</button>`).join('')}</div>
+      <div class="btn-row"><button class="btn btn-acc" id="as-add">${ic('plus', 'sm')} เพิ่มบัญชี</button></div>`;
+    $$('[data-s]', view).forEach(b => b.onclick = () => staffForm(list.find(s => s.id === b.dataset.s)));
+    $('#as-add').onclick = () => staffForm(null);
+  }
+});
+function staffForm(s) {
+  const roles = ['coordinator', 'cs_operator', 'service_manager', 'technician', 'admin'];
+  const sh = openSheet(`<h3>${ic('users')} ${s ? 'แก้ไขบัญชี' : 'เพิ่มบัญชี'}</h3>
+    <label class="fl" for="sf-u">ชื่อผู้ใช้ (a-z 0-9 . _ -)</label><input class="in" id="sf-u" maxlength="32" autocapitalize="none" value="${esc(s?.username || '')}">
+    <label class="fl" for="sf-n">ชื่อ-สกุล</label><input class="in" id="sf-n" maxlength="120" value="${esc(s?.full_name || '')}">
+    <label class="fl" for="sf-r">บทบาท</label><select class="in" id="sf-r">${roles.map(r => `<option value="${r}" ${s?.role === r ? 'selected' : ''}>${L.role[r]}</option>`).join('')}</select>
+    <label class="fl" for="sf-unit">หน่วยงาน กฟน. (ผู้ประสานงานเห็นรถของหน่วยงานนี้)</label><input class="in" id="sf-unit" maxlength="200" value="${esc(s?.unit_name || '')}" list="sf-units">
+    <datalist id="sf-units">${[...new Set((S.me.vehicles || []).map(v => v.unit_name).filter(Boolean))].map(u => `<option value="${esc(u)}">`).join('')}</datalist>
+    <div class="row2"><div><label class="fl" for="sf-p">โทร</label><input class="in" id="sf-p" type="tel" maxlength="20" value="${esc(s?.phone || '')}"></div>
+      <div><label class="fl" for="sf-e">อีเมล</label><input class="in" id="sf-e" type="email" maxlength="120" value="${esc(s?.email || '')}"></div></div>
+    <label class="fl" for="sf-pw">${s ? 'ตั้งรหัสผ่านใหม่ (เว้นว่าง = คงเดิม)' : 'รหัสผ่านเริ่มต้น (8 ตัวขึ้นไป)'}</label><input class="in" id="sf-pw" type="text" autocomplete="off" maxlength="64">
+    <label class="toggle"><span>เปิดใช้งาน</span><span class="sw"><input type="checkbox" id="sf-a" ${s?.active === false ? '' : 'checked'}><span></span></span></label>
+    <div class="btn-row"><button class="btn btn-ghost" data-close>ยกเลิก</button><button class="btn btn-acc" id="sf-s">บันทึก</button></div>`);
+  const g = id => $(id, sh.el).value;
+  $('#sf-s', sh.el).onclick = e => withBusy(e.currentTarget, async () => {
+    const p = { id: s?.id || null, username: g('#sf-u'), full_name: g('#sf-n'), role: g('#sf-r'), unit_name: g('#sf-unit'), phone: g('#sf-p'), email: g('#sf-e'), password: g('#sf-pw'), active: $('#sf-a', sh.el).checked };
+    if (await run('cs_admin_staff_save', { p_token: T(), p }, 'บันทึกบัญชีแล้ว')) { sh.close(); render(); }
+  });
+}
+route('admin-settings', {
+  title: 'ตั้งค่าระบบ', nav: 'profile', needVehicle: false,
+  async render(view) {
+    if (!S.can('admin')) { view.innerHTML = `<div class="empty">${ic('lock')}<b>เฉพาะผู้ดูแลระบบ</b></div>`; return; }
+    const pi = await api('cs_public_info');
+    const sp = pi.support || {};
+    view.innerHTML = `<div class="glass card"><h5>ช่องทางติดต่อ SMART CS</h5>
+      <label class="fl" for="st-co">ชื่อบริษัท</label><input class="in" id="st-co" value="${esc(sp.company || '')}">
+      <div class="row2"><div><label class="fl" for="st-ph">โทร SMART CS</label><input class="in" id="st-ph" type="tel" value="${esc(sp.cs_phone || '')}"></div>
+        <div><label class="fl" for="st-hr">เวลาให้บริการ</label><input class="in" id="st-hr" value="${esc(sp.cs_hotline_hours || '')}" placeholder="เช่น ทุกวัน 08.00–20.00 น."></div></div>
+      <label class="fl" for="st-em">สายด่วนฉุกเฉิน 24 ชม.</label><input class="in" id="st-em" type="tel" value="${esc(sp.emergency_phone || '')}">
+      <div class="row2"><div><label class="fl" for="st-line">LINE ID</label><input class="in" id="st-line" value="${esc(sp.line_id || '')}"></div>
+        <div><label class="fl" for="st-mail">อีเมล</label><input class="in" id="st-mail" type="email" value="${esc(sp.email || '')}"></div></div>
+      <div class="btn-row"><button class="btn btn-acc" id="st-s">บันทึก</button></div></div>
+      <div class="glass card"><h5>รุ่นรถ (ใช้เป็น Username)</h5><p class="hint">หนึ่งบรรทัดต่อหนึ่งรุ่น · ต้องสะกดตรงกับข้อมูลรถ</p>
+        <textarea class="in" id="st-models">${esc((pi.models || []).join('\n'))}</textarea><div class="btn-row"><button class="btn btn-ghost" id="st-ms">บันทึกรุ่นรถ</button></div></div>`;
+    $('#st-s').onclick = e => withBusy(e.currentTarget, async () => {
+      const v = { ...sp, company: $('#st-co').value.trim(), cs_phone: $('#st-ph').value.trim() || null, cs_hotline_hours: $('#st-hr').value.trim() || null,
+        emergency_phone: $('#st-em').value.trim() || null, line_id: $('#st-line').value.trim() || null, email: $('#st-mail').value.trim() || null };
+      if (await run('cs_admin_config_save', { p_token: T(), p_key: 'support', p_value: v }, 'บันทึกแล้ว')) S.support = v;
+    });
+    $('#st-ms').onclick = e => withBusy(e.currentTarget, async () => {
+      const ms = [...new Set($('#st-models').value.split('\n').map(x => x.trim()).filter(Boolean))];
+      if (await run('cs_admin_config_save', { p_token: T(), p_key: 'models', p_value: ms }, 'บันทึกรุ่นรถแล้ว')) S.models = ms;
+    });
+  }
+});
+route('admin-audit', {
+  title: 'Audit Log', nav: 'profile', needVehicle: false,
+  async render(view) {
+    if (!S.can('admin', 'service_manager')) { view.innerHTML = `<div class="empty">${ic('lock')}<b>เฉพาะผู้ดูแลระบบ</b></div>`; return; }
+    let onlyV = false;
+    const draw = async () => {
+      const list = await api('cs_audit_list', { p_token: T(), p_vehicle: onlyV ? S.vid : null, p_limit: 300 });
+      view.innerHTML = `${S.vid ? `<label class="toggle glass tight" style="padding:10px 14px;margin-bottom:10px"><span>เฉพาะรถ ${esc(S.vehicle?.plate || '')}</span><span class="sw"><input type="checkbox" id="au-v" ${onlyV ? 'checked' : ''}><span></span></span></label>` : ''}
+        <div class="glass card" style="padding:6px 10px;overflow-x:auto"><table class="table"><thead><tr><th>เวลา</th><th>ผู้กระทำ</th><th>การกระทำ</th></tr></thead><tbody>
+        ${list.map(a => `<tr><td class="num" style="white-space:nowrap">${fmtDate(a.at, true)}</td><td>${esc(a.actor_name || '')}<br><small style="color:var(--mut)">${esc(L.role[a.role] || a.role || '')}</small></td>
+          <td><b>${esc(a.action)}</b> · ${esc(a.entity)}${a.entity_id ? `<br><small style="color:var(--mut);word-break:break-all">${esc(String(a.entity_id).slice(0, 8))}</small>` : ''}</td></tr>`).join('')}</tbody></table></div>`;
+      $('#au-v')?.addEventListener('change', e => { onlyV = e.target.checked; draw(); });
+    };
+    await draw();
+  }
+});
+
+/* =====================================================================
+   BOOT
+   ===================================================================== */
+function boot() {
+  const s = store.get('mcs_sess');
+  if (s?.token) Object.assign(S, { token: s.token, kind: s.kind, role: s.role, vid: s.vid });
+  const upd = () => { const o = !navigator.onLine; let b = $('.offline'); if (o && !b) { b = document.createElement('div'); b.className = 'offline'; b.textContent = 'ออฟไลน์ — ข้อมูลอาจไม่เป็นปัจจุบัน'; document.body.appendChild(b); } else if (!o && b) b.remove(); };
+  addEventListener('online', upd); addEventListener('offline', upd); upd();
+  if (window.visualViewport) visualViewport.addEventListener('resize', () => document.body.classList.toggle('kb', visualViewport.height < innerHeight * 0.75));
+  if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+  render();
+}
+boot();
+
+</script>
+</body>
+</html>
