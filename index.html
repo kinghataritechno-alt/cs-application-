@@ -440,7 +440,7 @@ const __A = {"smart-logo.webp":"data:image/webp;base64,UklGRhwoAABXRUJQVlA4WAoAA
    บจก. สมาร์ท เทอร์มินอล คอร์ปอเรชั่น — ผู้ให้บริการรถยนต์ไฟฟ้า กฟน.
    ใช้ publishable/anon key เท่านั้น — ห้ามใส่ service_role
    ===================================================================== */
-const APP_VER = '1.1.1';
+const APP_VER = '1.1.2';
 const CFG = {
   url: 'https://tfyhyrmbrqvitqnewzzv.supabase.co',
   key: 'sb_publishable_rRejJXeG3YAuH7Uc---ACA_GwmHxlEf',   // publishable key (ปลอดภัยสำหรับหน้าเว็บ)
@@ -2279,7 +2279,7 @@ route('admin-staff', {
 function staffForm(s) {
   const roles = ['coordinator', 'cs_operator', 'service_manager', 'technician', 'admin'];
   const sh = openSheet(`<h3>${ic('users')} ${s ? 'แก้ไขบัญชี' : 'เพิ่มบัญชี'}</h3>
-    <label class="fl" for="sf-u">ชื่อผู้ใช้ (a-z 0-9 . _ -)</label><input class="in" id="sf-u" maxlength="32" autocapitalize="none" value="${esc(s?.username || '')}">
+    <label class="fl" for="sf-u">ชื่อผู้ใช้ (ภาษาไทย/อังกฤษ ไม่มีช่องว่าง)</label><input class="in" id="sf-u" maxlength="40" autocapitalize="none" value="${esc(s?.username || '')}">
     <label class="fl" for="sf-n">ชื่อ-สกุล</label><input class="in" id="sf-n" maxlength="120" value="${esc(s?.full_name || '')}">
     <label class="fl" for="sf-r">บทบาท</label><select class="in" id="sf-r">${roles.map(r => `<option value="${r}" ${s?.role === r ? 'selected' : ''}>${L.role[r]}</option>`).join('')}</select>
     <label class="fl" for="sf-unit">หน่วยงาน กฟน. (ผู้ประสานงานเห็นรถของหน่วยงานนี้)</label><input class="in" id="sf-unit" maxlength="200" value="${esc(s?.unit_name || '')}" list="sf-units">
