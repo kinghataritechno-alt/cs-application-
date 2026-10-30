@@ -427,6 +427,13 @@ a.rowlink,a.call{color:inherit;text-decoration:none}
 .sheet .hot{background:rgba(255,255,255,.06)}
 .sheet .hot .rowlink{font-size:16px}
 .login-hint{margin:0;font-size:13px;line-height:1.5;color:var(--mut)}
+.flist{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.frow{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid var(--line);width:100%;text-align:left;color:inherit}
+.frow .fi{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:var(--acc-soft);color:var(--acc-hi);flex-shrink:0}
+.frow .fn{flex:1;min-width:0;font-size:14px;line-height:1.3;overflow-wrap:anywhere}
+.frow .fn small{display:block;color:var(--mut);font-size:12px;margin-top:2px}
+.frow.btnrow{cursor:pointer;min-height:52px}
+.icon-btn.sm{width:36px;height:36px;flex-shrink:0}
 
 </style>
 </head>
@@ -441,7 +448,7 @@ const __A = {"smart-logo.webp":"data:image/webp;base64,UklGRhwoAABXRUJQVlA4WAoAA
    บจก. สมาร์ท เทอร์มินอล คอร์ปอเรชั่น — ผู้ให้บริการรถยนต์ไฟฟ้า กฟน.
    ใช้ publishable/anon key เท่านั้น — ห้ามใส่ service_role
    ===================================================================== */
-const APP_VER = '1.1.3';
+const APP_VER = '1.1.5';
 const CFG = {
   url: 'https://tfyhyrmbrqvitqnewzzv.supabase.co',
   key: 'sb_publishable_rRejJXeG3YAuH7Uc---ACA_GwmHxlEf',   // publishable key (ปลอดภัยสำหรับหน้าเว็บ)
@@ -1915,9 +1922,22 @@ function staffRepl(box, a) {
 const canAddDoc = () => S.kind === 'vehicle' || S.can('coordinator', 'cs_operator', 'service_manager', 'admin');
 function openDoc(d) {
   if (d.maintenance_id) return go('report/' + d.maintenance_id);
+  const fs = d.files || [];
+  if (fs.length > 1 || (fs.length && d.url)) return docFilesSheet(d);
+  if (fs.length) return openAttachment(fs[0].id, fs[0].file_name || d.title);
   if (d.attachment_id) return openAttachment(d.attachment_id, d.file_name || d.title);
   if (d.url) return window.open(d.url, '_blank', 'noopener');
   toast('เอกสารนี้ยังไม่มีไฟล์แนบ', true);
+}
+function docFilesSheet(d) {
+  const fs = d.files || [];
+  const sh = openSheet(`<h3>${ic('doc')} ${esc(d.title)}</h3><p class="lead">${fs.length} ไฟล์${d.url ? ' + ลิงก์' : ''} · แตะเพื่อเปิดดู</p>
+    <div class="flist">${fs.map((f, i) => `<button class="frow btnrow" data-i="${i}"><span class="fi">${ic(f.mime === 'application/pdf' ? 'file' : 'camera', 'sm')}</span>
+      <span class="fn">${i + 1}. ${esc(f.file_name || 'ไฟล์')}<small>${f.mime === 'application/pdf' ? 'PDF' : 'ภาพ'}${f.size ? ' · ' + fmtSize(f.size) : ''}</small></span>${ic('chevR', 'sm')}</button>`).join('')}
+    ${d.url ? `<button class="frow btnrow" id="dfs-url"><span class="fi">${ic('link', 'sm')}</span><span class="fn">เปิดลิงก์เอกสาร<small>${esc(d.url.length > 50 ? d.url.slice(0, 50) + '…' : d.url)}</small></span>${ic('ext', 'sm')}</button>` : ''}</div>
+    <div class="btn-row"><button class="btn btn-ghost" data-close>ปิด</button></div>`);
+  $$('[data-i]', sh.el).forEach(b => b.onclick = () => { const f = fs[+b.dataset.i]; openAttachment(f.id, f.file_name || d.title); });
+  $('#dfs-url', sh.el)?.addEventListener('click', () => window.open(d.url, '_blank', 'noopener'));
 }
 async function deleteDoc(d) {
   if (!await confirmBox('ลบเอกสารนี้?', `${esc(d.title)}\nเอกสารจะถูกนำออกจากรายการ (เก็บประวัติไว้ใน Audit Log)`, { ok: 'ลบเอกสาร', danger: true })) return false;
@@ -1943,7 +1963,7 @@ route('docs', {
               <span class="ic">${ic((L.doccat[d.category] || L.doccat.other)[1])}</span>
               <span class="bd"><b>${esc(d.title)}</b>
                 <span class="meta">${esc((L.doccat[d.category] || L.doccat.other)[0])}${d.doc_no ? ' · ' + esc(d.doc_no) : ''}${d.issued_at ? ' · ' + fmtDate(d.issued_at) : ''}</span>
-                <span class="meta">${d.attachment_id ? `${ic(d.mime === 'application/pdf' ? 'file' : 'camera', 'sm')} ${d.mime === 'application/pdf' ? 'PDF' : 'ภาพ'}${d.size ? ' · ' + fmtSize(d.size) : ''}` : d.url ? `${ic('link', 'sm')} ลิงก์` : d.maintenance_id ? 'รายงานจากระบบ' : '<span class="tag bad">ยังไม่มีไฟล์</span>'}
+                <span class="meta">${(d.files || []).length > 1 ? `${ic('file', 'sm')} ${d.files.length} ไฟล์ · ${fmtSize(d.files.reduce((n, f) => n + (f.size || 0), 0))}` : d.attachment_id ? `${ic(d.mime === 'application/pdf' ? 'file' : 'camera', 'sm')} ${d.mime === 'application/pdf' ? 'PDF' : 'ภาพ'}${d.size ? ' · ' + fmtSize(d.size) : ''}` : d.url ? `${ic('link', 'sm')} ลิงก์` : d.maintenance_id ? 'รายงานจากระบบ' : '<span class="tag bad">ยังไม่มีไฟล์</span>'}
                   ${d.model && !d.vehicle_id ? `<span class="tag">ทุกคันรุ่น ${esc(d.model)}</span>` : ''}
                   ${exp != null ? (exp < 0 ? '<span class="tag bad">หมดอายุ</span>' : exp <= 45 ? `<span class="tag acc">หมดอายุอีก ${exp} วัน</span>` : `<span class="tag">ถึง ${fmtDate(d.expires_at)}</span>`) : ''}</span></span>
               ${hasFile ? ic('chevR', 'sm') : ''}</button>
@@ -1966,14 +1986,16 @@ route('docs', {
 });
 function docForm(d) {
   const staff = S.can('cs_operator', 'service_manager', 'admin');
-  let file = null;
-  const curFile = d?.attachment_id ? `${esc(d.file_name || 'ไฟล์แนบ')}${d.size ? ' · ' + fmtSize(d.size) : ''}` : '';
+  const MAXF = 10;
+  const keep = (d?.files || []).slice();   // ไฟล์เดิมที่ยังเก็บไว้
+  const drop = [];                         // ไฟล์เดิมที่จะลบเมื่อกดบันทึก
+  const adds = [];                         // ไฟล์ใหม่ที่จะอัปโหลด
   const sh = openSheet(`<h3>${ic('doc')} ${d ? 'แก้ไขเอกสาร' : 'อัปโหลดเอกสาร'}</h3>
-    <label class="fl">ไฟล์เอกสาร (PDF หรือภาพ ไม่เกิน 4 MB)</label>
+    <label class="fl">ไฟล์เอกสาร (PDF หรือภาพ ไฟล์ละไม่เกิน 4 MB · สูงสุด ${MAXF} ไฟล์)</label>
     <div class="filebox" id="df-box">
-      <div id="df-fn" class="hint" style="margin:0 0 8px">${curFile ? `ไฟล์ปัจจุบัน: ${curFile}` : 'ยังไม่ได้เลือกไฟล์'}</div>
+      <div id="df-list" class="flist"></div>
       <div class="row2"><button type="button" class="btn btn-ghost" id="df-f">${ic('file', 'sm')} เลือกไฟล์</button><button type="button" class="btn btn-ghost" id="df-cam">${ic('camera', 'sm')} ถ่ายภาพ</button></div>
-      ${d?.attachment_id ? `<button type="button" class="link" id="df-view" style="margin-top:8px">${ic('eye', 'sm')} เปิดดูไฟล์ปัจจุบัน</button>` : ''}</div>
+      <div class="hint" style="margin:8px 0 0">เลือกได้ทีละหลายไฟล์ · ถ่ายภาพได้ทีละหน้าแล้วกดถ่ายต่อ</div></div>
     <label class="fl" for="df-t">ชื่อเอกสาร <span class="req">*</span></label><input class="in" id="df-t" maxlength="200" value="${esc(d?.title || '')}" placeholder="เช่น ใบส่งมอบรถ / กรมธรรม์ประกันภัย">
     <label class="fl" for="df-c">หมวด</label><select class="in" id="df-c">${Object.entries(L.doccat).map(([k, [l]]) => `<option value="${k}" ${(d?.category || 'other') === k ? 'selected' : ''}>${l}</option>`).join('')}</select>
     ${staff ? `<label class="fl" for="df-sc">ใช้กับ</label><select class="in" id="df-sc"><option value="vehicle" ${!d || d.vehicle_id ? 'selected' : ''}>รถคันนี้ (${esc(S.vehicle?.plate || '')})</option>
@@ -1983,34 +2005,65 @@ function docForm(d) {
     <label class="fl" for="df-e">วันหมดอายุ (ถ้ามี — ระบบจะแจ้งเตือนก่อนหมดอายุ)</label><input class="in" id="df-e" type="date" value="${d?.expires_at || ''}">
     <label class="fl" for="df-u">หรือใส่ลิงก์เอกสาร (https://)</label><input class="in" id="df-u" type="url" maxlength="1000" value="${esc(d?.url || '')}" placeholder="ไม่บังคับ ถ้าแนบไฟล์แล้ว">
     <div class="btn-row">${d ? `<button class="btn btn-ghost" id="df-del" style="color:#FF9C8A;flex:0 0 auto">${ic('trash', 'sm')} ลบ</button>` : ''}<button class="btn btn-ghost" data-close>ยกเลิก</button><button class="btn btn-acc" id="df-s">${d ? 'บันทึก' : 'อัปโหลด'}</button></div>`);
-  const pick = async (accept, cam = false) => {
-    const [f] = await pickFiles(accept, false, cam); if (!f) return;
-    try {
-      if (f.type === 'application/pdf') {
-        if (f.size > 4 * 1024 * 1024) { toast('ไฟล์ PDF ใหญ่เกิน 4 MB — กรุณาบีบอัดหรือใช้ลิงก์แทน', true); return; }
-        file = await readFileB64(f);
-      } else if (f.type.startsWith('image/')) file = await compressImage(f, 2000, 0.8);
-      else { toast('รองรับเฉพาะ PDF หรือภาพ', true); return; }
-      $('#df-fn', sh.el).innerHTML = `${ic('check', 'sm')} ${esc(f.name)} · ${fmtSize(Math.round(file.data.length * 0.75))}`;
-      const t = $('#df-t', sh.el); if (!t.value.trim()) t.value = f.name.replace(/\.[^.]+$/, '').replace(/[_-]+/g, ' ').trim();
-    } catch (e) { toast(e.message, true); }
+  const total = () => keep.length + adds.length;
+  const drawList = () => {
+    const row = (f, kind, i) => `<div class="frow"><span class="fi">${ic(f.mime === 'application/pdf' ? 'file' : 'camera', 'sm')}</span>
+      <span class="fn">${esc(f.file_name || f.name || 'ไฟล์')}<small>${kind === 'new' ? 'ไฟล์ใหม่ · ' : ''}${f.size ? fmtSize(f.size) : ''}</small></span>
+      ${kind === 'old' ? `<button type="button" class="icon-btn sm" data-fv="${i}" aria-label="เปิดดู">${ic('eye', 'sm')}</button>` : ''}
+      <button type="button" class="icon-btn sm" data-fx="${kind}:${i}" aria-label="นำไฟล์ออก" style="color:#FF9C8A">${ic('trash', 'sm')}</button></div>`;
+    $('#df-list', sh.el).innerHTML = total()
+      ? `<div class="hint" style="margin:0 0 6px">${total()} ไฟล์${drop.length ? ` · จะลบ ${drop.length} ไฟล์เมื่อกดบันทึก` : ''}</div>` + keep.map((f, i) => row(f, 'old', i)).join('') + adds.map((f, i) => row(f, 'new', i)).join('')
+      : `<div class="hint" style="margin:0 0 8px">${drop.length ? `จะลบ ${drop.length} ไฟล์เมื่อกดบันทึก · ` : ''}ยังไม่ได้เลือกไฟล์</div>`;
+    $$('[data-fv]', sh.el).forEach(b => b.onclick = () => { const f = keep[+b.dataset.fv]; openAttachment(f.id, f.file_name); });
+    $$('[data-fx]', sh.el).forEach(b => b.onclick = () => {
+      const [k, i] = b.dataset.fx.split(':');
+      if (k === 'old') drop.push(...keep.splice(+i, 1)); else adds.splice(+i, 1);
+      drawList();
+    });
+    $('#df-f', sh.el).disabled = $('#df-cam', sh.el).disabled = total() >= MAXF;
   };
+  const pick = async (accept, cam = false) => {
+    const fs = await pickFiles(accept, !cam, cam); if (!fs.length) return;
+    let skipped = 0;
+    for (const f of fs) {
+      if (total() >= MAXF) { skipped++; continue; }
+      try {
+        let x;
+        if (f.type === 'application/pdf') {
+          if (f.size > 4 * 1024 * 1024) { toast(`${f.name} ใหญ่เกิน 4 MB — กรุณาบีบอัดหรือใช้ลิงก์แทน`, true); continue; }
+          x = await readFileB64(f);
+        } else if (f.type.startsWith('image/')) x = await compressImage(f, 2000, 0.8);
+        else { toast(`${f.name}: รองรับเฉพาะ PDF หรือภาพ`, true); continue; }
+        adds.push({ ...x, size: Math.round(x.data.length * 0.75) });
+        const t = $('#df-t', sh.el); if (!t.value.trim()) t.value = f.name.replace(/\.[^.]+$/, '').replace(/[_-]+/g, ' ').trim();
+      } catch (e) { toast(e.message, true); }
+    }
+    if (skipped) toast(`แนบได้สูงสุด ${MAXF} ไฟล์ — ข้าม ${skipped} ไฟล์`, true);
+    drawList();
+  };
+  drawList();
   $('#df-f', sh.el).onclick = () => pick('application/pdf,image/*');
   $('#df-cam', sh.el).onclick = () => pick('image/*', true);
-  $('#df-view', sh.el)?.addEventListener('click', () => openAttachment(d.attachment_id, d.file_name || d.title));
   $('#df-s', sh.el).onclick = e => withBusy(e.currentTarget, async () => {
     const sc = staff ? $('#df-sc', sh.el).value : 'vehicle';
     const p = { id: d?.id || null, category: $('#df-c', sh.el).value, title: $('#df-t', sh.el).value.trim(), doc_no: $('#df-n', sh.el).value,
       issued_at: $('#df-i', sh.el).value, expires_at: $('#df-e', sh.el).value, url: $('#df-u', sh.el).value.trim(),
       vehicle_id: sc === 'vehicle' ? S.vid : null, model: sc.startsWith('m:') ? sc.slice(2) : null };
     if (!p.title) { toast('กรุณาระบุชื่อเอกสาร', true); $('#df-t', sh.el).focus(); return; }
-    if (!p.url && !file && !d?.attachment_id) { toast('กรุณาเลือกไฟล์ หรือใส่ลิงก์เอกสาร', true); return; }
+    if (!p.url && !total()) { toast('กรุณาเลือกไฟล์อย่างน้อย 1 ไฟล์ หรือใส่ลิงก์เอกสาร', true); return; }
     const r = await run('cs_doc_save', { p_token: T(), p });
     if (!r) return;
-    if (file && !await run('cs_attach_add', { p_token: T(), p_ref_type: 'document', p_ref: r.id, p_name: file.name, p_mime: file.mime, p_data: file.data })) {
-      toast('บันทึกข้อมูลแล้ว แต่อัปโหลดไฟล์ไม่สำเร็จ — กดแก้ไขเพื่อแนบใหม่', true); sh.close(); render(); return;
+    let fail = 0;
+    for (const f of drop) if (!await run('cs_attach_delete', { p_token: T(), p_id: f.id })) fail++;
+    drop.length = 0;
+    for (let i = 0; i < adds.length; i++) {
+      const f = adds[i];
+      const btn = $('#df-s', sh.el); if (btn && adds.length > 1) btn.innerHTML = `<span class="spin" style="width:18px;height:18px;border-width:2px"></span> ${i + 1}/${adds.length}`;
+      if (!await run('cs_attach_add', { p_token: T(), p_ref_type: 'document', p_ref: r.id, p_name: f.name, p_mime: f.mime, p_data: f.data })) fail++;
     }
-    toast(d ? 'บันทึกเอกสารแล้ว' : 'อัปโหลดเอกสารแล้ว'); sh.close(); render();
+    if (fail) toast(`บันทึกข้อมูลแล้ว แต่มี ${fail} ไฟล์ไม่สำเร็จ — กดแก้ไขเพื่อแนบใหม่`, true);
+    else toast(d ? 'บันทึกเอกสารแล้ว' : `อัปโหลดเอกสารแล้ว${adds.length > 1 ? ` (${adds.length} ไฟล์)` : ''}`);
+    sh.close(); render();
   });
   $('#df-del', sh.el)?.addEventListener('click', async () => { if (await deleteDoc(d)) { sh.close(); render(); } });
 }
