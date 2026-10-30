@@ -435,6 +435,137 @@ a.rowlink,a.call{color:inherit;text-decoration:none}
 .frow.btnrow{cursor:pointer;min-height:52px}
 .icon-btn.sm{width:36px;height:36px;flex-shrink:0}
 
+/* =====================================================================
+   แท็บเล็ต (≥720px) — กว้างขึ้น เมนู 3 คอลัมน์ รายการ 2 คอลัมน์ ชีตเป็นหน้าต่างกลางจอ
+   ===================================================================== */
+.mainc{min-width:0}
+@media(min-width:720px){
+  #app{max-width:900px}
+  .page-bg{background:linear-gradient(180deg,rgba(18,19,23,.45),rgba(18,19,23,.88)),var(--img-app-bg) center top/cover no-repeat,var(--bg)}
+  main.view{padding-left:24px;padding-right:24px}
+  .hdr{padding-left:24px;padding-right:24px}
+  .tabs{margin-left:-24px;margin-right:-24px;padding-left:24px;padding-right:24px}
+  .menu-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .view .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));align-items:start}
+  .view .list.one{grid-template-columns:minmax(0,1fr)}
+  .view .list>.empty,.view .list>.glass.empty,.view .list>.loading{grid-column:1/-1}
+  main.view.narrow{max-width:760px;margin:0 auto}
+  main.view.narrow .list{grid-template-columns:minmax(0,1fr)}
+  .photos{grid-template-columns:repeat(auto-fill,minmax(110px,150px))}
+  .nav{width:min(560px,calc(100vw - 48px))}
+  .fab{right:max(16px,calc(50% - 450px + 16px))}
+  .scrim{align-items:center;padding:24px}
+  .sheet{max-width:600px;max-height:88vh;border-radius:24px;border-bottom:1px solid var(--line)}
+  .sheet .grip{display:none}
+  /* หน้า Login: กรอบมือถือกลางจอ บนพื้นหลังภาพเดียวกันแบบเบลอ */
+  .login{margin:24px auto;min-height:calc(100svh - 48px);border-radius:28px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.12)}
+  body:has(.login){background:#141518 var(--img-login-bg) center/cover no-repeat fixed}
+  body:has(.login):before{content:"";position:fixed;inset:0;backdrop-filter:blur(22px) brightness(.4);-webkit-backdrop-filter:blur(22px) brightness(.4);z-index:0}
+  .login{z-index:1}
+}
+/* PC / แท็บเล็ตแนวนอน: หน้า Login แบ่งสองฝั่ง — ภาพแบรนด์ซ้าย ฟอร์มขวา */
+@media(min-width:1024px) and (min-aspect-ratio:5/4){
+  body:has(.login){background:#16171b}
+  body:has(.login):before{display:none}
+  #app:has(.login){max-width:none}
+  .login{--u:4.8px;max-width:none;width:auto;margin:0;min-height:100vh;border:0;border-radius:0;box-shadow:none;padding:0;background:#16171b;
+    display:grid;grid-template-columns:minmax(0,1.15fr) minmax(460px,1fr);grid-template-rows:1fr auto auto 1fr;overflow:hidden}
+  .login:before{content:"";grid-column:1;grid-row:1/-1;background:var(--img-login-bg) center top/max(100%,116vh) auto no-repeat;box-shadow:inset -120px 0 120px -60px #16171b}
+  .login-card{grid-column:2;grid-row:2;margin:0 auto;width:400px}
+  .login-below{grid-column:2;grid-row:3;width:400px;margin:14px auto 0}
+}
+
+/* =====================================================================
+   PC (≥1100px) — Platform: แถบเมนูข้างถาวร + แถบหัว + พื้นที่ทำงานกว้าง
+   ===================================================================== */
+@media(min-width:1100px){
+  #app.desk{max-width:none;display:grid;grid-template-columns:276px minmax(0,1fr);min-height:100vh}
+  #app.desk .page-bg{background:linear-gradient(180deg,rgba(18,19,23,.55),rgba(18,19,23,.9)),var(--img-app-bg) center top/cover no-repeat fixed,var(--bg)}
+  #app.desk .hdr{padding:16px 36px;min-height:72px}
+  #app.desk .hdr .back h2{font-size:22px}
+  #app.desk .hdr .back h2 small{font-size:13px;margin-top:0}
+  #app.desk main.view{max-width:1320px;margin:0 auto;padding:22px 36px 56px}
+  #app.desk main.view.narrow{max-width:880px}
+  #app.desk .tabs{margin-left:0;margin-right:0;padding-left:0;padding-right:0;flex-wrap:wrap}
+  #app.desk .view .list{grid-template-columns:repeat(auto-fill,minmax(360px,1fr))}
+  #app.desk .view .list.one,#app.desk main.view.narrow .list{grid-template-columns:minmax(0,1fr)}
+  #app.desk .mcard:hover,#app.desk .item:hover,#app.desk .kpi:hover{background:var(--card2)}
+  #app.desk .composer{bottom:16px}
+  #app.desk #vt:has(>.card+.card){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+  #app.desk #vt:has(>.card+.card)>.card{margin:0}
+  #app.desk main.view:not(.narrow)>.btn-row{justify-content:flex-end}
+  #app.desk main.view:not(.narrow)>.btn-row>.btn{flex:0 1 300px}
+
+  .side{position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding:18px 14px 14px;
+    background:rgba(17,18,22,.86);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-right:1px solid rgba(255,255,255,.1);scrollbar-width:thin}
+  .sn-brand{display:flex;align-items:center;gap:10px;padding:2px 6px 6px}
+  .sn-brand img{width:40px;height:auto}
+  .sn-brand .wm{line-height:1}
+  .sn-brand .wm b{font-size:24px;font-weight:800;letter-spacing:.5px}
+  .sn-brand .wm b em{font-style:normal;color:var(--acc)}
+  .sn-brand .wm small{display:block;font-size:9.5px;letter-spacing:1.3px;color:var(--mut2);margin-top:4px;font-weight:600}
+  .sn-veh{display:flex;align-items:center;gap:10px;width:100%;padding:10px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid var(--line);text-align:left}
+  .sn-veh:not([disabled]):hover{background:rgba(255,255,255,.12)}
+  .sn-veh[disabled]{cursor:default}
+  .sn-veh .sn-car{width:74px;height:46px;object-fit:contain;flex-shrink:0}
+  .sn-veh .sn-car.icon{display:grid;place-items:center;color:var(--acc-hi);background:var(--acc-soft);border-radius:12px;width:46px}
+  .sn-veh .tx{flex:1;min-width:0;line-height:1.3}
+  .sn-veh .tx b{display:block;font-size:16px}
+  .sn-veh .tx small{display:block;font-size:12.5px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sn-cta{height:46px}
+  .sn-nav{display:flex;flex-direction:column;gap:12px;flex:1}
+  .sn-g{display:flex;flex-direction:column;gap:2px}
+  .sn-g>small{font-size:11.5px;letter-spacing:.8px;color:var(--dim);font-weight:700;padding:0 12px 4px;text-transform:uppercase}
+  .sn-it{display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;border-radius:12px;color:var(--mut2);font-size:15px;text-align:left;position:relative}
+  .sn-it svg.i{width:20px;height:20px;color:var(--mut)}
+  .sn-it span:not(.badge){flex:1;min-width:0}
+  .sn-it:hover{background:rgba(255,255,255,.07);color:#fff}
+  .sn-it[aria-current=page]{background:var(--acc-soft);color:#fff;font-weight:700}
+  .sn-it[aria-current=page] svg.i{color:var(--acc-hi)}
+  .sn-it[aria-current=page]:before{content:"";position:absolute;left:-14px;top:8px;bottom:8px;width:4px;border-radius:0 4px 4px 0;background:var(--acc)}
+  .sn-foot{display:flex;align-items:center;gap:10px;padding:12px 6px 0;border-top:1px solid rgba(255,255,255,.1)}
+  .sn-foot .avatar{width:40px;height:40px}
+  .sn-foot .avatar svg.i{width:22px;height:22px}
+  .sn-foot .tx{flex:1;min-width:0;line-height:1.3}
+  .sn-foot .tx b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sn-foot .tx small{font-size:12px;color:var(--mut)}
+
+  /* แดชบอร์ดหน้าหลัก */
+  .dk-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin:4px 0 18px;flex-wrap:wrap}
+  .dk-head h3{margin:0;font-size:26px}
+  .dk-head p{margin:2px 0 0;color:var(--mut)}
+  .dk-acts{display:flex;gap:10px;flex-wrap:wrap}
+  .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:16px}
+  .kpi{display:flex;align-items:flex-start;gap:14px;padding:16px 18px;text-align:left;min-width:0}
+  .kpi .ic{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:var(--acc-soft);color:var(--acc-hi);flex-shrink:0}
+  .kpi .tx{min-width:0;line-height:1.25}
+  .kpi small{display:block;font-size:13px;color:var(--mut)}
+  .kpi b{display:block;font-size:28px;font-weight:800;margin:4px 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .kpi b.sm{font-size:21px;margin:8px 0 5px}
+  .kpi em{display:block;font-style:normal;font-size:12.5px;color:var(--mut2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .kpi.acc{border-color:rgba(243,115,33,.6);background:linear-gradient(180deg,rgba(243,115,33,.22),rgba(243,115,33,.08))}
+  .dk-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:16px;align-items:start}
+  .dk-veh,.dk-ai{padding:18px}
+  .dk-veh .hero{padding:0 0 10px;min-height:0}
+  .dk-veh .kv{margin-top:6px}
+  .dk-veh .btn-row,.dk-ai .btn-row{flex-wrap:wrap}
+  .dk-ai-h{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+  .dk-ai-h img{width:52px;height:52px;object-fit:contain}
+  .dk-ai-h b{display:block;font-size:18px}
+  .dk-ai-h span{font-size:13px;color:var(--mut)}
+  .dk-ai .ai-alerts{margin:0 0 14px}
+  .dk-cols{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:16px;align-items:start;margin-top:6px}
+  .dk-cols .menu-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(min-width:1100px){
+  #app.desk .qwrap{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 20px;align-items:start}
+  #app.desk .qwrap .list{grid-template-columns:minmax(0,1fr)}
+  #app.desk .qsec{scroll-margin-top:90px}
+}
+@media(min-width:1500px){
+  .dk-cols .menu-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
 </style>
 </head>
 <body>
@@ -448,7 +579,7 @@ const __A = {"smart-logo.webp":"data:image/webp;base64,UklGRhwoAABXRUJQVlA4WAoAA
    บจก. สมาร์ท เทอร์มินอล คอร์ปอเรชั่น — ผู้ให้บริการรถยนต์ไฟฟ้า กฟน.
    ใช้ publishable/anon key เท่านั้น — ห้ามใส่ service_role
    ===================================================================== */
-const APP_VER = '1.1.5';
+const APP_VER = '1.2.0';
 const CFG = {
   url: 'https://tfyhyrmbrqvitqnewzzv.supabase.co',
   key: 'sb_publishable_rRejJXeG3YAuH7Uc---ACA_GwmHxlEf',   // publishable key (ปลอดภัยสำหรับหน้าเว็บ)
@@ -785,11 +916,17 @@ function go(path) { if (location.hash === '#/' + path) render(); else location.h
 function goBack(fallback = 'home') { if (history.length > 1 && document.referrer !== location.href) history.back(); else go(fallback); }
 window.addEventListener('hashchange', () => { closeAllSheets(); render(); });
 
+/* ---------- มุมมองตามขนาดจอ: มือถือ / แท็บเล็ต (CSS) / PC แบบ Platform (แถบเมนูข้าง) ---------- */
+const DESK = matchMedia('(min-width:1100px)');
+const isDesk = () => DESK.matches;
+(DESK.addEventListener ? DESK.addEventListener.bind(DESK, 'change') : DESK.addListener.bind(DESK))(() => { if (S.token && S.me && $('#app').classList.contains('desk') !== DESK.matches) render(); });
+
 let renderSeq = 0;
 async function render() {
   const seq = ++renderSeq;
   const app = $('#app');
   const r = parseHash();
+  app.className = '';
   if (!S.token) {
     if (r.name !== 'login') { history.replaceState(null, '', '#/login'); }
     return renderLogin(app);
@@ -802,9 +939,12 @@ async function render() {
     if (!ok || seq !== renderSeq) return;
   }
   if (def.needVehicle !== false && !S.vid && !S.isStaff) { /* vehicle user always has vid */ }
-  app.innerHTML = `<div class="page-bg"></div>${header(def, r)}<main class="view ${def.nav === undefined || def.nav ? '' : 'no-nav'}" id="view" tabindex="-1">
-    <div class="loading"><div class="spin"></div></div></main>${def.nav === false ? '' : bottomNav(def.nav || null)}${def.fab && S.vid ? fab() : ''}`;
+  const desk = isDesk();
+  app.className = desk ? 'desk' : '';
+  app.innerHTML = `<div class="page-bg"></div>${desk ? sideNav(r) : ''}<div class="mainc">${header(def, r)}<main class="view ${def.nav === undefined || def.nav ? '' : 'no-nav'} ${def.narrow ? 'narrow' : ''}" id="view" tabindex="-1">
+    <div class="loading"><div class="spin"></div></div></main></div>${desk || def.nav === false ? '' : bottomNav(def.nav || null)}${!desk && def.fab && S.vid ? fab() : ''}`;
   bindShell();
+  if (desk && S.vid && !homeCached()) fetchHome().then(refreshBadges).catch(() => {});
   window.scrollTo(0, 0);
   const view = $('#view');
   try {
@@ -847,6 +987,13 @@ function header(def, r) {
   const unread = S.home?.unread || 0;
   const right = `<button class="icon-btn" id="hd-bell" aria-label="การแจ้งเตือน${unread ? ' ' + unread + ' รายการใหม่' : ''}" ${S.vid ? '' : 'hidden'}>${ic('bell')}${unread ? '<span class="dot"></span>' : ''}</button>
     <button class="icon-btn" id="hd-user" aria-label="บัญชี">${ic('userc')}</button>`;
+  if (isDesk()) {
+    const title = r.name === 'home' ? (S.vid ? 'ภาพรวม' : 'ภาพรวม SMART CS') : (typeof def.title === 'function' ? def.title(r) : def.title);
+    const sub = S.vehicle && (def.needVehicle !== false || r.name === 'home') ? `${S.vehicle.model} · ${S.vehicle.plate}${S.vehicle.unit_name ? ' · ' + S.vehicle.unit_name : ''}` : (L.role[S.role] || '');
+    const back = ['ticket', 'report'].includes(r.name) || (r.name === 'request' && r.q.id);
+    return `<header class="hdr solid"><div class="back">${back ? `<button class="icon-btn" id="hd-back" aria-label="ย้อนกลับ">${ic('chevL')}</button>` : ''}
+      <h2>${esc(title || '')}${sub ? `<small>${esc(sub)}</small>` : ''}</h2></div>${right}</header>`;
+  }
   if (def.brand) {
     return `<header class="hdr"><div class="brand"><img src="${__A["smart-logo.webp"]}" alt="SMART"><div class="wm"><b>MEA <em>CS</em></b><small>ELECTRIC VEHICLE<br>CUSTOMER SERVICE</small></div></div>${right}</header>`;
   }
@@ -859,12 +1006,54 @@ function bottomNav(cur) {
   const it = (k, icn, label, badge = 0) => `<button data-go="${k}" ${cur === k ? 'aria-current="page"' : ''}>${ic(icn)}<span>${label}</span>${badge ? `<span class="badge">${badge}</span>` : ''}</button>`;
   return `<nav class="nav" aria-label="เมนูหลัก">${it('home', 'home', 'หน้าหลัก')}${it('activity', 'clip', 'งานบริการ', S.home?.to_confirm || 0)}${it('profile', 'user', 'บัญชี')}</nav>`;
 }
+function userName() {
+  return S.kind === 'vehicle' ? (S.me?.vuser?.full_name || S.vehicle?.driver_name || 'ผู้ใช้รถ ' + (S.vehicle?.plate || '')) : (S.me?.staff?.full_name || 'เจ้าหน้าที่');
+}
+function sideNav(r) {
+  const cur = ({ ticket: 'activity', report: 'maint' })[r.name] || r.name;
+  const v = S.vehicle, h = homeCached(), multi = (S.me?.vehicles?.length || 0) > 1;
+  const it = (k, icn, label, badge = 0) => `<button class="sn-it" data-go="${k}" data-sn="${k}" ${cur === k ? 'aria-current="page"' : ''}>${ic(icn)}<span>${label}</span>${badge ? `<span class="badge">${badge}</span>` : ''}</button>`;
+  const grp = (t, items) => `<div class="sn-g"><small>${t}</small>${items}</div>`;
+  const nAlert = h ? homeAlerts(h).length : 0;
+  return `<aside class="side" aria-label="เมนูระบบ">
+    <div class="sn-brand"><img src="${__A["smart-logo.webp"]}" alt="SMART"><div class="wm"><b>MEA <em>CS</em></b><small>EV CUSTOMER SERVICE</small></div></div>
+    ${v ? `<button class="sn-veh" id="sn-veh" ${multi ? '' : 'disabled'} title="${multi ? 'เปลี่ยนรถ' : ''}">${carVisual(v.model, 'sn-car')}<span class="tx"><b>${esc(v.plate)}</b><small>${esc(v.model)}</small></span>${multi ? ic('swap', 'sm') : ''}</button>`
+      : (S.me?.vehicles?.length ? `<button class="sn-veh" id="sn-veh"><span class="sn-car icon">${ic('van')}</span><span class="tx"><b>เลือกรถ</b><small>${S.me.vehicles.length} คันในระบบ</small></span>${ic('swap', 'sm')}</button>` : '')}
+    ${S.vid ? `<button class="btn btn-acc btn-block sn-cta" data-go="request">${ic('plus', 'sm')} แจ้งบริการ</button>` : ''}
+    <nav class="sn-nav">
+      ${grp('ภาพรวม', it('home', 'home', 'หน้าหลัก') + (S.isSmart ? it('queue', 'inbox', 'คิวงาน SMART CS') : '') + (S.vid ? it('activity', 'clip', 'ติดตามงาน', h?.to_confirm || 0) : ''))}
+      ${S.vid ? grp('รถและบริการ', it('vehicle', 'car', 'รถของฉัน') + it('maint', 'cal', 'บำรุงรักษา') + it('repl', 'van', 'รถสำรอง') + it('docs', 'doc', 'เอกสารรถ')) : ''}
+      ${S.vid ? grp('ช่วยเหลือ', it('contact', 'headset', 'AI CS Agent', nAlert || h?.unread_messages || 0) + it('ai', 'chat', 'ถาม AI')) : ''}
+      ${S.can('admin', 'service_manager') ? grp('ผู้ดูแลระบบ', it('admin-vehicles', 'van', 'จัดการรถ') + (S.can('admin') ? it('admin-staff', 'users', 'บัญชีผู้ใช้') + it('admin-settings', 'gear', 'ตั้งค่าระบบ') : '') + it('admin-audit', 'list', 'Audit Log')) : ''}
+      ${grp('บัญชี', it('profile', 'user', 'บัญชีของฉัน'))}
+    </nav>
+    <div class="sn-foot"><span class="avatar">${ic('user')}</span><span class="tx"><b>${esc(userName())}</b><small>${esc(L.role[S.role] || S.role || '')}</small></span>
+      <button class="icon-btn" id="sn-out" aria-label="ออกจากระบบ" title="ออกจากระบบ">${ic('logout')}</button></div>
+  </aside>`;
+}
+// อัปเดตตัวเลขบนเมนู (มือถือ: แถบล่าง · PC: แถบข้าง) หลังได้ข้อมูล cs_home
+function refreshBadges(h) {
+  if (!h) return;
+  const set = (el, n) => { if (!el) return; $('.badge', el)?.remove(); if (n) el.insertAdjacentHTML('beforeend', `<span class="badge">${n}</span>`); };
+  set($('.nav [data-go=activity]'), h.to_confirm);
+  set($('.side [data-sn=activity]'), h.to_confirm);
+  set($('.side [data-sn=contact]'), homeAlerts(h).length || h.unread_messages);
+  const bell = $('#hd-bell'); if (bell) { $('.dot', bell)?.remove(); if (h.unread) bell.insertAdjacentHTML('beforeend', '<span class="dot"></span>'); }
+}
+async function logoutFlow() {
+  if (!await confirmBox('ออกจากระบบ?', '', { ok: 'ออกจากระบบ', danger: true })) return;
+  try { await api('cs_logout', { p_token: T() }); } catch {}
+  store.del('mcs_must_change');
+  endSession();
+}
 function fab() { return `<button class="fab" data-go="ai" aria-label="เรียก AI CS Agent"><img src="${__A["robot.webp"]}" alt=""><span>AI CS</span></button>`; }
 function bindShell() {
   $$('[data-go]').forEach(b => b.addEventListener('click', () => go(b.dataset.go)));
   $('#hd-back')?.addEventListener('click', () => goBack());
   $('#hd-bell')?.addEventListener('click', openNotifications);
   $('#hd-user')?.addEventListener('click', () => go('profile'));
+  $('#sn-veh')?.addEventListener('click', pickVehicle);
+  $('#sn-out')?.addEventListener('click', logoutFlow);
 }
 async function pickVehicle() {
   const vs = S.me?.vehicles || [];
@@ -1022,6 +1211,7 @@ route('home', {
   async render(view) {
     if (S.isSmart && !S.vid) return renderStaffHome(view);
     if (!S.vid) { view.innerHTML = noVehicle(); $('#pick-v', view)?.addEventListener('click', pickVehicle); return; }
+    if (isDesk()) return renderDeskHome(view);
     const multi = (S.me?.vehicles?.length || 0) > 1;
     const draw = h => {
       if (!view.isConnected) return;
@@ -1042,8 +1232,7 @@ route('home', {
       $$('[data-go]', view).forEach(b => b.addEventListener('click', () => go(b.dataset.go)));
       $('#hm-veh', view)?.addEventListener('click', pickVehicle);
       $('#hm-staff', view)?.addEventListener('click', () => go('queue'));
-      const bell = $('#hd-bell'); if (bell) { $('.dot', bell)?.remove(); if (h.unread) bell.insertAdjacentHTML('beforeend', '<span class="dot"></span>'); }
-      const nb = $('.nav [data-go=activity]'); if (nb) { $('.badge', nb)?.remove(); if (h.to_confirm) nb.insertAdjacentHTML('beforeend', `<span class="badge">${h.to_confirm}</span>`); }
+      refreshBadges(h);
     };
     await withHome(draw);
     if (store.get('mcs_must_change') && !sstore.get('mcs_pw_warned')) { sstore.set('mcs_pw_warned', true); toast('กรุณาเปลี่ยนรหัสผ่านตั้งต้นที่ บัญชี › ความปลอดภัย', true, 5000); }
@@ -1051,11 +1240,93 @@ route('home', {
 });
 
 /* =====================================================================
+   HOME บน PC — แดชบอร์ดแบบ Platform
+   ===================================================================== */
+async function renderDeskHome(view) {
+  let tickets = null;
+  const expRow = (label, d0) => {
+    if (!d0) return `<dt>${label}</dt><dd>–</dd>`;
+    const n = daysTo(d0);
+    return `<dt>${label}</dt><dd>${fmtDate(d0)} ${n < 0 ? '<span class="tag bad">หมดอายุ</span>' : n <= 45 ? `<span class="tag acc">อีก ${n} วัน</span>` : ''}</dd>`;
+  };
+  const kpi = (go_, icn, label, val, sub = '', tone = '') => `<button class="glass kpi ${tone}" data-go="${go_}"><span class="ic">${ic(icn)}</span>
+    <span class="tx"><small>${label}</small><b class="num ${typeof val === 'string' && val.length > 4 ? 'sm' : ''}">${val}</b>${sub ? `<em>${esc(sub)}</em>` : ''}</span></button>`;
+  const drawTickets = () => {
+    const box = $('#dk-tk', view); if (!box || !tickets) return;
+    const list = tickets.filter(t => t.status !== 'draft').slice(0, 6);
+    box.innerHTML = list.length ? list.map(ticketCard).join('') : `<div class="glass empty">${ic('clip')}<b>ยังไม่มีงานบริการ</b>กด "แจ้งบริการ" เมื่อพบปัญหาของรถ</div>`;
+    $$('[data-ticket]', box).forEach(b => b.addEventListener('click', () => go('ticket/' + b.dataset.ticket)));
+  };
+  const draw = h => {
+    if (!view.isConnected) return;
+    const v = h.vehicle, al = homeAlerts(h), pm = h.next_pm;
+    const today = new Date().toLocaleDateString('th-TH', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    view.innerHTML = `
+    <div class="dk-head"><div><h3>สวัสดีครับ ${esc(userName())}</h3><p>${today}</p></div>
+      <div class="dk-acts"><button class="btn btn-acc" data-go="request">${ic('plus', 'sm')} แจ้งบริการ</button>
+        <button class="btn btn-ghost" data-go="ai">${ic('chat', 'sm')} ถาม AI</button>
+        <button class="btn btn-ghost" data-go="contact">${ic('phone', 'sm')} สายด่วน / ฉุกเฉิน</button></div></div>
+    <div class="kpis">
+      ${kpi('activity?tab=open', 'clip', 'งานกำลังดำเนินการ', h.open_tickets || 0, h.open_tickets ? 'แตะเพื่อติดตาม' : 'ไม่มีงานค้าง')}
+      ${kpi('activity?tab=confirm', 'check', 'รอยืนยันผล', h.to_confirm || 0, h.to_confirm ? 'กรุณาตรวจรถและยืนยัน' : '—', h.to_confirm ? 'acc' : '')}
+      ${kpi('maint', 'cal', 'บำรุงรักษาถัดไป', pm ? (pm.appointment_at ? fmtDate(pm.appointment_at) : pm.due_date ? fmtDate(pm.due_date) : 'รอนัด') : '–', pm ? pm.title : 'ยังไม่มีแผน')}
+      ${kpi('contact', 'bell', 'AI CS Agent ตรวจพบ', al.length, al.length ? 'รายการที่ต้องดำเนินการ' : 'ไม่มีรายการค้าง', al.length ? 'acc' : '')}
+    </div>
+    <div class="dk-grid">
+      <section class="glass dk-veh">
+        <div class="hero" style="cursor:default;margin:0;background:none;border:0"><span class="t"><b>${esc(v.model)}</b><span>ทะเบียน ${esc(v.plate)}</span>${pill('vstatus', v.status)}</span>${carVisual(v.model)}</div>
+        <dl class="kv">
+          <dt>หน่วยงาน</dt><dd>${dash(v.unit_name)}</dd>
+          <dt>สัญญาเช่า</dt><dd>${v.contract_start || v.contract_end ? `${fmtDate(v.contract_start)} – ${fmtDate(v.contract_end)}` : '–'}</dd>
+          ${expRow('ประกันภัย', v.insurance_exp)}${expRow('พ.ร.บ.', v.act_exp)}${expRow('ภาษีรถ', v.tax_exp)}
+        </dl>
+        <div class="btn-row"><button class="btn btn-ghost btn-sm" data-go="vehicle">${ic('car', 'sm')} ข้อมูลรถ</button><button class="btn btn-ghost btn-sm" data-go="vehicle?tab=contract">${ic('shield', 'sm')} สถานะ / สัญญา</button><button class="btn btn-ghost btn-sm" data-go="docs">${ic('doc', 'sm')} เอกสารรถ</button></div>
+      </section>
+      <section class="glass dk-ai">
+        <div class="dk-ai-h"><img src="${__A["robot.webp"]}" alt=""><div><b>AI CS Agent</b><span>ตรวจสถานะรถ งาน นัดหมาย และเอกสารให้อัตโนมัติ</span></div></div>
+        ${aiAlertsHtml(h)}
+        <div class="btn-row" style="margin-top:0"><button class="btn btn-ghost btn-sm" data-go="ai">${ic('chat', 'sm')} ถาม AI</button><button class="btn btn-ghost btn-sm" data-go="contact">${ic('headset', 'sm')} ติดต่อ / ข้อความ${h.unread_messages ? ` <span class="badge">${h.unread_messages}</span>` : ''}</button></div>
+      </section>
+    </div>
+    <div class="dk-cols">
+      <div><div class="sec"><h4>งานบริการล่าสุด</h4><button class="link" data-go="activity">ดูทั้งหมด ${ic('chevR', 'sm')}</button></div>
+        <div class="list one" id="dk-tk"><div class="loading"><div class="spin"></div></div></div></div>
+      <div><div class="sec"><h4>บริการทั้งหมด</h4></div>
+        <div class="menu-grid">${MENU.map(([k, icn, th, en]) => `<button class="glass mcard" data-go="${k}">${ic(icn)}<span class="t"><b>${th}</b><small>${en}</small></span><span class="chev">${ic('chevR')}</span>${k === 'activity' && h.open_tickets ? `<span class="badge">${h.open_tickets}</span>` : ''}</button>`).join('')}</div></div>
+    </div>`;
+    $$('[data-go]', view).forEach(b => b.addEventListener('click', () => go(b.dataset.go)));
+    drawTickets();
+    refreshBadges(h);
+  };
+  await withHome(draw);
+  try { tickets = await api('cs_ticket_list', { p_token: T(), p_vehicle: S.vid, p_filter: 'all' }); } catch { tickets = []; }
+  drawTickets();
+}
+
+/* =====================================================================
    STAFF HOME / QUEUE (SMART CS)
    ===================================================================== */
 async function renderStaffHome(view) {
   const q = await api('cs_staff_queue', { p_token: T() });
   const sosN = q.messages.filter(m => m.emergency).length;
+  if (isDesk()) {
+    const kpi = (sel, icn, label, val, sub, tone = '') => `<button class="glass kpi ${tone}" data-k="${sel}"><span class="ic">${ic(icn)}</span><span class="tx"><small>${label}</small><b class="num">${val}</b><em>${sub}</em></span></button>`;
+    view.innerHTML = `
+    <div class="dk-head"><div><h3>สวัสดีครับ ${esc(S.me.staff?.full_name || '')}</h3><p>${new Date().toLocaleDateString('th-TH', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} · ${esc(L.role[S.role] || S.role)}</p></div>
+      <div class="dk-acts"><button class="btn btn-acc" id="sh-pick">${ic('van', 'sm')} เลือกรถ (${S.me.vehicles.length} คัน)</button>${S.can('admin', 'service_manager') ? `<button class="btn btn-ghost" data-go="admin-vehicles">${ic('plus', 'sm')} จัดการรถ</button>` : ''}</div></div>
+    ${sosN ? `<div class="banner" style="background:var(--bad-soft);border-color:#E5483A;color:#FFD2CC">${ic('siren', 'sm')} มีแจ้งเหตุฉุกเฉินที่ยังไม่อ่าน ${sosN} คัน</div>` : ''}
+    <div class="kpis">
+      ${kpi(0, 'chat', 'ข้อความรอตอบ', q.messages.length, sosN ? `ฉุกเฉิน ${sosN} คัน` : 'จากผู้ใช้รถ', sosN ? 'acc' : '')}
+      ${kpi(1, 'clip', 'Ticket ที่ต้องดำเนินการ', q.tickets.length, 'ทุกคันในระบบ', q.tickets.length ? 'acc' : '')}
+      ${kpi(2, 'cal', 'คำขอนัดบำรุงรักษา', q.pm_requests.length, 'รอนัด/ยืนยัน')}
+      ${kpi(3, 'van', 'คำขอรถสำรอง', q.replacements.length, 'รออนุมัติ/ส่งมอบ')}
+    </div>
+    ${staffQueueHtml(q)}`;
+    $('#sh-pick', view).addEventListener('click', pickVehicle);
+    $$('[data-k]', view).forEach(b => b.addEventListener('click', () => $$('.qsec', view)[+b.dataset.k]?.scrollIntoView({ behavior: 'smooth', block: 'start' })));
+    bindQueue(view);
+    return;
+  }
   view.innerHTML = `
     <div class="greet"><h3>สวัสดีครับ ${esc(S.me.staff?.full_name || '')}</h3><button disabled>${esc(L.role[S.role] || S.role)}</button></div>
     ${sosN ? `<div class="banner" style="background:var(--bad-soft);border-color:#E5483A;color:#FFD2CC">${ic('siren', 'sm')} มีแจ้งเหตุฉุกเฉินที่ยังไม่อ่าน ${sosN} คัน</div>` : ''}
@@ -1068,9 +1339,9 @@ async function renderStaffHome(view) {
   bindQueue(view);
 }
 function staffQueueHtml(q) {
-  const sec = (title, n, body) => `<div class="sec"><h4>${title}</h4>${n ? `<span class="badge">${n}</span>` : ''}</div>${body}`;
+  const sec = (title, n, body) => `<div class="qsec"><div class="sec"><h4>${title}</h4>${n ? `<span class="badge">${n}</span>` : ''}</div>${body}</div>`;
   const emp = t => `<div class="glass tight empty" style="padding:18px">${t}</div>`;
-  return sec('ข้อความรอตอบ', q.messages.length, q.messages.length ? `<div class="list">${q.messages.map(m => `<button class="glass tight item" data-vchat="${m.vehicle_id}">
+  return '<div class="qwrap">' + sec('ข้อความรอตอบ', q.messages.length, q.messages.length ? `<div class="list">${q.messages.map(m => `<button class="glass tight item" data-vchat="${m.vehicle_id}">
       <span class="ic ${m.emergency ? '' : 'gray'}" style="${m.emergency ? 'background:var(--bad-soft);color:#FF9C8A' : ''}">${ic(m.emergency ? 'siren' : 'chat')}</span>
       <span class="bd"><b>${esc(m.model)} · ${esc(m.plate)}</b><span class="meta">${fmtRel(m.last_at)}${m.emergency ? ' · <span class="tag bad">ฉุกเฉิน</span>' : ''}</span></span><span class="badge ${m.emergency ? 'bad' : ''}">${m.unread}</span></button>`).join('')}</div>` : emp('ไม่มีข้อความค้าง'))
   + sec('Ticket ที่ต้องดำเนินการ', q.tickets.length, q.tickets.length ? `<div class="list">${q.tickets.map(ticketCard).join('')}</div>` : emp('ไม่มี Ticket ค้าง'))
@@ -1080,7 +1351,7 @@ function staffQueueHtml(q) {
       <span class="ic">${ic('van')}</span><span class="bd"><b>${esc(r.req_no)} · ${esc(r.plate)}</b><span class="meta">${esc(r.reason)}</span></span>${pill('rstatus', r.status)}</button>`).join('')}</div>` : emp('ไม่มีคำขอ'))
   + sec('ความคิดเห็นใหม่', q.feedback.length, q.feedback.length ? `<div class="list">${q.feedback.map(f => `<div class="glass tight item"><span class="ic gray">${ic('star')}</span>
       <span class="bd"><b>${esc(f.topic)}${f.rating ? ' · ' + '★'.repeat(f.rating) : ''}</b><p style="-webkit-line-clamp:4">${esc(f.body)}</p><span class="meta">${esc(f.plate || '')} · ${esc(f.created_by || '')} · ${fmtRel(f.created_at)}</span></span>
-      <button class="btn btn-ghost btn-sm" data-fb="${f.id}">รับทราบ</button></div>`).join('')}</div>` : emp('ไม่มีความคิดเห็นใหม่'));
+      <button class="btn btn-ghost btn-sm" data-fb="${f.id}">รับทราบ</button></div>`).join('')}</div>` : emp('ไม่มีความคิดเห็นใหม่')) + '</div>';
 }
 function bindQueue(view) {
   $$('[data-go]', view).forEach(b => b.addEventListener('click', () => go(b.dataset.go)));
@@ -1224,7 +1495,7 @@ function ticketCard(t) {
 }
 
 route('request', {
-  title: r => r.q.id ? 'แก้ไขร่าง Ticket' : 'แจ้งบริการ', nav: 'home',
+  title: r => r.q.id ? 'แก้ไขร่าง Ticket' : 'แจ้งบริการ', nav: 'home', narrow: true,
   async render(view, r) {
     const lkey = 'mcs_req_' + S.vid;
     let t = null, existing = [];
@@ -1428,7 +1699,7 @@ route('activity', {
    ===================================================================== */
 const STEP_ORDER = ['submitted', 'acknowledged', 'in_progress', 'resolved', 'closed'];
 route('ticket', {
-  title: 'รายละเอียดงาน', nav: 'activity', needVehicle: false,
+  title: 'รายละเอียดงาน', nav: 'activity', needVehicle: false, narrow: true,
   async render(view, r) {
     const g = await api('cs_ticket_get', { p_token: T(), p_id: r.arg });
     const t = g.ticket;
@@ -1591,7 +1862,7 @@ async function aiAsk(messages) {
 const AI_CHIPS = ['ประกันภัยคุ้มครองอะไรบ้าง', 'เกิดอุบัติเหตุ ต้องโทรหาใคร', 'พ.ร.บ./ภาษีหมดอายุเมื่อไร', 'รถชาร์จไฟไม่เข้า', 'มีไฟเตือนขึ้นที่หน้าปัด', 'งานซ่อมของฉันถึงไหนแล้ว', 'ศูนย์บริการใกล้ที่สุด', 'อุปกรณ์ประจำรถมีอะไรบ้าง'];
 
 route('ai', {
-  title: 'AI CS Agent', nav: false,
+  title: 'AI CS Agent', nav: false, narrow: true,
   async render(view) {
     const key = 'mcs_ai';
     let st = sstore.get(key);
@@ -1795,7 +2066,7 @@ function staffMaint(m) {
 
 /* Maintenance Report (พิมพ์/บันทึก PDF ผ่านเบราว์เซอร์) */
 route('report', {
-  title: 'รายงานบำรุงรักษา', nav: false, needVehicle: false,
+  title: 'รายงานบำรุงรักษา', nav: false, needVehicle: false, narrow: true,
   async render(view, r) {
     const d = await api('cs_maint_report', { p_token: T(), p_id: r.arg });
     const m = d.maintenance, v = d.vehicle;
@@ -2072,7 +2343,7 @@ function docForm(d) {
    CONTACT SMART CS — โทร / ฉุกเฉิน / ข้อความ / FAQ / Feedback
    ===================================================================== */
 route('contact', {
-  title: 'AI CS Agent', nav: 'home',
+  title: 'AI CS Agent', nav: 'home', narrow: true,
   async render(view, r) {
     const sp = S.support || {};
     let tab = r.q.tab || 'contact';
@@ -2163,7 +2434,7 @@ async function emergency() {
    PROFILE & SETTINGS
    ===================================================================== */
 route('profile', {
-  title: 'บัญชีและการตั้งค่า', nav: 'profile', needVehicle: false,
+  title: 'บัญชีและการตั้งค่า', nav: 'profile', needVehicle: false, narrow: true,
   async render(view) {
     const vd = S.vid ? await api('cs_vehicle_get', { p_token: T(), p_vehicle: S.vid }) : null;
     const v = vd?.vehicle;
@@ -2215,12 +2486,7 @@ route('profile', {
       if (!await run('cs_vehicle_update_self', { p_token: T(), p_vehicle: S.vid, p: { notify: nn } }, 'บันทึกการแจ้งเตือนแล้ว')) i.checked = !i.checked;
     }));
     $('#pf-pw', view)?.addEventListener('click', changePassword);
-    $('#pf-out', view).onclick = async () => {
-      if (!await confirmBox('ออกจากระบบ?', '', { ok: 'ออกจากระบบ', danger: true })) return;
-      try { await api('cs_logout', { p_token: T() }); } catch {}
-      store.del('mcs_must_change');
-      endSession();
-    };
+    $('#pf-out', view).onclick = logoutFlow;
   }
 });
 function canEditContact(c) { return S.can('admin', 'service_manager', 'cs_operator') || (c.vehicle_id && ['mea_coordinator', 'driver', 'other'].includes(c.kind)); }
@@ -2275,7 +2541,7 @@ route('admin-vehicles', {
         : `<div class="glass empty">${ic('van')}<b>${list.length ? 'ไม่พบรถที่ค้นหา' : 'ยังไม่มีรถในระบบ'}</b>${list.length ? '' : 'กด "เพิ่มรถ" เพื่อลงทะเบียนรถจริงทีละคัน'}</div>`;
       $$('[data-v]', view).forEach(b => b.onclick = () => vehicleForm(list.find(v => v.id === b.dataset.v)));
     };
-    view.innerHTML = `<div class="banner info">${ic('info', 'sm')} รถในระบบ ${list.length} คัน · ผู้ใช้เข้าระบบด้วย รุ่นรถ + ทะเบียน ตามที่ลงทะเบียนไว้ที่นี่</div>
+    view.innerHTML = `<div class="banner info">${ic('info', 'sm')} รถในระบบ ${list.length} คัน · ผู้ใช้รถเข้าระบบด้วย ชื่อ-สกุล + ทะเบียน (เพิ่มชื่อได้ที่ปุ่ม "ผู้มีสิทธิ์เข้าใช้แอป" ในข้อมูลรถ)</div>
       <div style="display:flex;gap:8px;margin-bottom:12px"><input class="in" id="av-q" type="search" placeholder="ค้นหา ทะเบียน / รุ่น / หน่วยงาน / VIN"><button class="btn btn-acc" id="av-add" style="flex-shrink:0">${ic('plus', 'sm')} เพิ่มรถ</button></div>
       <div class="list" id="av-list"></div>`;
     $('#av-q').oninput = e => { q = e.target.value; draw(); };
@@ -2349,7 +2615,7 @@ function staffForm(s) {
   });
 }
 route('admin-settings', {
-  title: 'ตั้งค่าระบบ', nav: 'profile', needVehicle: false,
+  title: 'ตั้งค่าระบบ', nav: 'profile', needVehicle: false, narrow: true,
   async render(view) {
     if (!S.can('admin')) { view.innerHTML = `<div class="empty">${ic('lock')}<b>เฉพาะผู้ดูแลระบบ</b></div>`; return; }
     const pi = await api('cs_public_info');
