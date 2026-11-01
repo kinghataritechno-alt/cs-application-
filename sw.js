@@ -1,10 +1,15 @@
 // MEA CS service worker — แคชไฟล์แอปเพื่อเปิดเร็ว/ออฟไลน์ (ไม่แคชข้อมูล API)
-const VERSION = 'mcs-1.2.0';
+const VERSION = 'mcs-1.4.1';
+const FONTS = 'mcs-fonts-1';   // แบบอักษร Noto Sans Thai (ไม่มีหัว) เก็บไว้ใช้ตอนออฟไลน์
 const CORE = ['./', './index.html', './manifest.json'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(VERSION).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
-self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== VERSION).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
+self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== VERSION && k !== FONTS).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
   const u = new URL(e.request.url);
+  if (e.request.method === 'GET' && /^fonts\.(googleapis|gstatic)\.com$/.test(u.hostname)) {
+    e.respondWith(caches.open(FONTS).then(c => c.match(e.request).then(m => m || fetch(e.request).then(r => { if (r.ok || r.type === 'opaque') c.put(e.request, r.clone()); return r; }))));
+    return;
+  }
   if (e.request.method !== 'GET' || u.origin !== location.origin) return;   // API/CDN ไม่ผ่านแคช
   if (e.request.mode === 'navigate') {
     e.respondWith(fetch(e.request).then(r => { const c = r.clone(); caches.open(VERSION).then(x => x.put('./index.html', c)); return r; }).catch(() => caches.match('./index.html')));
